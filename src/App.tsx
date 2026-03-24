@@ -1,7 +1,6 @@
 import {useEffect, useMemo, useState} from "react";
 import type {BPReading} from "./types.ts";
 import ReadingList from "./components/ReadingList.tsx";
-// import SelectedReading from "./components/SelectedReading.tsx";
 import Graph from "./components/Graph.tsx";
 import {getBucketedReadings, readingsLastNDays} from "./functions/timeFunctions.ts";
 import LastWeek from "./components/LastWeek.tsx";
