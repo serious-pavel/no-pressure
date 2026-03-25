@@ -398,6 +398,7 @@ button:focus-visible {
 
 .dot-grade-2 {
   background-color: var(--dot-grade-2-color);
+  fill: var(--dot-grade-2-color-bright);
 }
 
 .text-grade-2 {
@@ -406,6 +407,7 @@ button:focus-visible {
 
 .dot-grade-1 {
   background-color: var(--dot-grade-1-color);
+  fill: var(--dot-grade-1-color-bright);
 }
 
 .text-grade-1 {
@@ -414,6 +416,7 @@ button:focus-visible {
 
 .dot-high-normal {
   background-color: var(--dot-high-normal-color);
+  fill: var(--dot-high-normal-color-bright);
 }
 
 .text-high-normal {
@@ -431,6 +434,7 @@ button:focus-visible {
 
 .dot-low {
   background-color: var(--dot-low-color);
+  fill: var(--dot-low-color);
 }
 
 .text-low {
@@ -439,6 +443,7 @@ button:focus-visible {
 
 .dot-out {
   background-color: var(--dot-out-color);
+  fill: var(--dot-out-color);
 }
 
 .text-out {
