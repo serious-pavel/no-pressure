@@ -1,6 +1,6 @@
 import type {Grade} from "../types.ts";
 
-export const getGrade = ({sys, dia}: { sys:number, dia:number }): Grade => {
+export const getGrade = ({sys, dia}: { sys: number, dia: number }): Grade => {
 
   switch (true) {
     case (160 <= sys || 100 <= dia):
