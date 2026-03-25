@@ -422,6 +422,7 @@ button:focus-visible {
 
 .dot-normal {
   background-color: var(--dot-normal-color);
+  fill: var(--dot-normal-color-bright);
 }
 
 .text-normal {
@@ -446,6 +447,7 @@ button:focus-visible {
 
 .dot-unset {
   background-color: var(--dot-unset-color);
+  fill: var(--dot-unset-color-bright);
 }
 
 .text-unset {
