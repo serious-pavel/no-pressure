@@ -8,8 +8,8 @@ import {
   ResponsiveContainer,
   Tooltip,
   type ScatterShapeProps
-} from 'recharts';
-import {getGrade} from "../functions/colorFunctions.ts";
+} from 'recharts'
+import {getGrade} from "../functions/colorFunctions.ts"
 
 
 interface GraphProps {
@@ -17,10 +17,10 @@ interface GraphProps {
 }
 
 type Point = {
-  x: number;
-  y: number;
-  kind: "sys" | "dia";
-  id: string;
+  x: number
+  y: number
+  kind: "sys" | "dia"
+  id: string
 }
 
 const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
@@ -36,14 +36,14 @@ const Graph = ({readings}: GraphProps) => {
     x: reading.time.getTime(),
     y: reading.sys,
     kind: "sys",
-  }));
+  }))
 
   const diastolicData: Point[] = readings.map((reading) => ({
     id: reading.id,
     x: reading.time.getTime(),
     y: reading.dia,
     kind: "dia",
-  }));
+  }))
 
   return (
     <div className="graphWrapper">
