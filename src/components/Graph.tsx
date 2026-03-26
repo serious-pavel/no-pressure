@@ -1,4 +1,4 @@
-import type {BPReading} from "../types.ts"
+import type {BPReading, PressureType} from "../types.ts"
 
 import {
   ScatterChart,
@@ -10,6 +10,8 @@ import {
   type ScatterShapeProps
 } from 'recharts'
 import {getGrade} from "../functions/colorFunctions.ts"
+import {FaChevronCircleUp, FaChevronCircleDown, FaCircle} from "react-icons/fa";
+import type {IconType} from "react-icons";
 
 
 interface GraphProps {
@@ -19,14 +21,32 @@ interface GraphProps {
 type Point = {
   x: number
   y: number
-  kind: "sys" | "dia"
+  kind: PressureType
   id: string
 }
 
 const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
-  const grade = payload.kind === "sys" ? getGrade({sys: payload.y, dia: 0}) : getGrade({dia: payload.y, sys: 0})
+  if (cx == null || cy == null) return null
+  const point = payload as Point
+
+  const grade = point.kind === "sys" ? getGrade({sys: point.y, dia: 0}) : getGrade({dia: point.y, sys: 0})
+  const size = 10
+  const offset = size / 2
+
+  const iconSet: Record<PressureType, IconType> = {
+    'sys': FaChevronCircleUp,
+    'dia': FaChevronCircleDown,
+  }
+
+  const Icon = iconSet[point.kind] ?? FaCircle
+
   return (
-    <circle cx={cx} cy={cy} r={4} className={`dot-${grade}`}/>
+    <>
+      <g transform={`translate(${cx - offset}, ${cy - offset})`}>
+        <Icon size={size} className={`dot-${grade}`}/>
+      </g>
+      {/*<circle cx={cx} cy={cy} r={offset} className={`dot-${grade}`}/>*/}
+    </>
   )
 }
 
