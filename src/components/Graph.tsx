@@ -73,7 +73,7 @@ const Graph = ({readings}: GraphProps) => {
             type="number"
             name="date"
             dataKey="x"
-            domain={["dataMin", "dataMax"]}
+            domain={["dataMin - 20000000", "dataMax + 20000000"]}
             tickFormatter={(value) => new Date(value).toLocaleDateString()}
           />
           <YAxis
