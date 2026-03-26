@@ -13,8 +13,8 @@ const AddReading = ({setBPList, setSelectedReading}:AddReadingProps) => {
   const CreateReading = (time = new Date()) => {
     const reading: BPReading = {
       id: crypto.randomUUID(),
-      sys: Math.floor(Math.random() * (160 - 105 + 1)) + 105,
-      dia: Math.floor(Math.random() * (105 - 70 + 1)) + 70,
+      sys: Math.floor(Math.random() * (165 - 110 + 1)) + 110,
+      dia: Math.floor(Math.random() * (100 - 70 + 1)) + 70,
       time: time,
     }
     return reading
