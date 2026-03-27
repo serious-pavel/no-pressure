@@ -552,10 +552,12 @@ body {
   user-select: none;
 }
 
-.timeRangeMode {
+.timeRangeMode,
+.timeRangeScale {
   color: oklch(from currentColor calc(l - 0.25) c h);
 }
 
-.timeRangeMode.active {
+.timeRangeMode.active,
+.timeRangeScale.active {
   color: oklch(from currentColor calc(l - 0.04) c h);
 }
