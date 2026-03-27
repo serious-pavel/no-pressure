@@ -9,7 +9,7 @@ interface TimeRangeControlsProps {
   setTimeRangeScale: Dispatch<SetStateAction<TimeRangeScale>>,
 }
 
-const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, setTimeRangeScale }:TimeRangeControlsProps) => {
+const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, setTimeRangeScale}:TimeRangeControlsProps) => {
   const toggleTimeRangeMode = () => {
     setTimeRangeMode(prev => prev === 'calendar' ? 'relative' : 'calendar')
   }
@@ -26,13 +26,22 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, set
         </div>
       </div>
       <div className="timeRangeScaleSwitcher">
-        <div className="timeRangeScale">
+        <div
+          className={`timeRangeScale ${timeRangeScale === 'week' ? 'active' : ''}`}
+          onClick={() => setTimeRangeScale("week")}
+        >
           week
         </div>
-        <div className="timeRangeScale">
+        <div
+          className={`timeRangeScale ${timeRangeScale === 'month' ? 'active' : ''}`}
+          onClick={() => setTimeRangeScale("month")}
+        >
           month
         </div>
-        <div className="timeRangeScale">
+        <div
+          className={`timeRangeScale ${timeRangeScale === 'year' ? 'active' : ''}`}
+          onClick={() => setTimeRangeScale("year")}
+        >
           year
         </div>
       </div>
