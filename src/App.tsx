@@ -23,13 +23,23 @@ const initialSelectedReadingId: string =
     ? JSON.parse(localStorage.getItem('selectedReading')!)
     : (initialBPList.at(-1)?.id ?? "")
 
+const initialTimeRangeMode: TimeRangeMode =
+  localStorage.getItem('timeRangeMode')
+    ? JSON.parse(localStorage.getItem('timeRangeMode')!)
+    : "relative"
+
+const initialTimeRangeScale: TimeRangeScale =
+  localStorage.getItem('timeRangeScale')
+    ? JSON.parse(localStorage.getItem('timeRangeScale')!)
+    : "week"
+
 function App() {
   const [bplist, setBPList] = useState<BPReading[]>(initialBPList)
   const [selectedReadingId, setSelectedReadingId] = useState<string>(initialSelectedReadingId)
 
   // time range controls states
-  const [timeRangeMode, setTimeRangeMode] = useState<TimeRangeMode>('calendar')
-  const [timeRangeScale, setTimeRangeScale] = useState<TimeRangeScale>('week')
+  const [timeRangeMode, setTimeRangeMode] = useState<TimeRangeMode>(initialTimeRangeMode)
+  const [timeRangeScale, setTimeRangeScale] = useState<TimeRangeScale>(initialTimeRangeScale)
 
   const sortedBPList = useMemo(
     () => [...bplist].sort(
@@ -62,6 +72,14 @@ function App() {
     localStorage.setItem('selectedReading', JSON.stringify(selectedReadingId))
     console.log("ef", selectedReadingId)
   }, [selectedReadingId])
+
+  useEffect(() => {
+    localStorage.setItem('timeRangeMode', JSON.stringify(timeRangeMode))
+  }, [timeRangeMode])
+
+  useEffect(() => {
+    localStorage.setItem('timeRangeScale', JSON.stringify(timeRangeScale))
+  }, [timeRangeScale]);
 
   return (
     <>
