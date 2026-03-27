@@ -539,7 +539,9 @@ body {
   position: absolute;
   top: var(--position-offset);
   right: var(--position-offset);
-
+  box-shadow: 0 0 1px 1px oklch(from currentColor calc(l - 0.25) c h);
+  padding: var(--block-padding) calc(var(--block-padding) * 2);
+  border-radius: calc(var(--block-padding) * 1.5);
 }
 
 .timeRangeModeSwitcher,
