@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import type {BPReading} from "./types.ts";
+import type {BPReading, TimeRangeMode, TimeRangeScale} from "./types.ts";
 import ReadingList from "./components/ReadingList.tsx";
 import Graph from "./components/Graph.tsx";
 import {getBucketedReadings, readingsLastNDays} from "./functions/timeFunctions.ts";
@@ -26,6 +26,10 @@ const initialSelectedReadingId: string =
 function App() {
   const [bplist, setBPList] = useState<BPReading[]>(initialBPList)
   const [selectedReadingId, setSelectedReadingId] = useState<string>(initialSelectedReadingId)
+
+  // time range controls states
+  const [timeRangeMode, setTimeRangeMode] = useState<TimeRangeMode>('calendar')
+  const [timeRangeScale, setTimeRangeScale] = useState<TimeRangeScale>('week')
 
   const sortedBPList = useMemo(
     () => [...bplist].sort(
