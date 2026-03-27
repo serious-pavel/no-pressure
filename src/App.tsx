@@ -5,6 +5,7 @@ import Graph from "./components/Graph.tsx";
 import {getBucketedReadings, readingsLastNDays} from "./functions/timeFunctions.ts";
 import LastWeek from "./components/LastWeek.tsx";
 import AddReading from "./components/AddReading.tsx";
+import TimeRangeControls from "./components/TimeRangeControls.tsx";
 
 const initialBPList: BPReading[] =
   localStorage.getItem('bplist')
@@ -71,6 +72,7 @@ function App() {
         />
         <Graph readings={sortedBPList}/>
         <LastWeek days={bucketedWeek}/>
+        <TimeRangeControls/>
       </main>
       <footer>FOOTER</footer>
     </>

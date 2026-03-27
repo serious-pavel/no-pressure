@@ -178,6 +178,7 @@ button:focus-visible {
   gap: var(--block-gap) var(--block-gap);
   min-width: calc(var(--reading-list-width) + var(--block-gap) + var(--last-week-min-width) + 2 * var(--main-padding));
   overflow: hidden;
+  position: relative;
 }
 
 /**/
@@ -531,4 +532,20 @@ body {
   right: 25%;
   bottom: 35%;
   transform: translate(50%, 50%);
+}
+
+.timeRangeControlsWrapper {
+  --position-offset: calc(var(--main-padding) + var(--block-padding));
+  position: absolute;
+  top: var(--position-offset);
+  right: var(--position-offset);
+
+}
+
+.timeRangeModeSwitcher,
+.timeRangeScaleSwitcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
 }
