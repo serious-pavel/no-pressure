@@ -13,3 +13,7 @@ export interface WeightReading {
 export type Grade = 'grade-2' | 'grade-1' | 'high-normal' | 'normal' | 'low' | 'out' | 'unset'
 
 export type PressureType = 'sys' | 'dia'
+
+export type TimeRangeMode = 'calendar' | 'relative'
+
+export type TimeRangeScale = 'week' | 'month' | 'year'
