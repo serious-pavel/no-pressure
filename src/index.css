@@ -546,6 +546,16 @@ body {
 .timeRangeScaleSwitcher {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
 
+.timeRangeMode {
+  color: oklch(from currentColor calc(l - 0.25) c h);
+}
+
+.timeRangeMode.active {
+  color: oklch(from currentColor calc(l - 0.04) c h);
 }
