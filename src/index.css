@@ -142,7 +142,7 @@ button:focus-visible {
   /*--last-week-height: 7rem;*/
   --last-week-height: 10rem;
   --block-gap: 1rem;
-  --block-padding: 0.3rem;
+  --block-padding: 0.5rem;
 
   /*--day-width: 5rem;*/
   --day-width: 7rem;
@@ -326,6 +326,7 @@ button:focus-visible {
     --main-padding: 0.5rem;
     --block-gap: 0.5rem;
     --graph-height: 45vh;
+    --block-padding: 0.3rem;
   }
 
   .main {
