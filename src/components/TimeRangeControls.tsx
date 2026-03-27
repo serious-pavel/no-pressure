@@ -10,10 +10,13 @@ interface TimeRangeControlsProps {
 }
 
 const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, setTimeRangeScale }:TimeRangeControlsProps) => {
+  const toggleTimeRangeMode = () => {
+    setTimeRangeMode(prev => prev === 'calendar' ? 'relative' : 'calendar')
+  }
 
   return (
     <div className="timeRangeControlsWrapper">
-      <div className="timeRangeModeSwitcher">
+      <div className="timeRangeModeSwitcher" onClick={toggleTimeRangeMode}>
         <div className={`timeRangeCalendarMode timeRangeMode ${timeRangeMode === 'calendar' ? 'active' : ''}`}>
           calendar
         </div>
