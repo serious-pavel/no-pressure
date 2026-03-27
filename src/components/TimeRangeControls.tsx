@@ -1,14 +1,24 @@
 import {FaToggleOn} from "react-icons/fa";
+import type {Dispatch, SetStateAction} from "react";
+import type {TimeRangeMode, TimeRangeScale} from "../types.ts";
 
-const TimeRangeControls = () => {
+interface TimeRangeControlsProps {
+  timeRangeMode: TimeRangeMode,
+  timeRangeScale: TimeRangeScale,
+  setTimeRangeMode: Dispatch<SetStateAction<TimeRangeMode>>,
+  setTimeRangeScale: Dispatch<SetStateAction<TimeRangeScale>>,
+}
+
+const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, setTimeRangeScale }:TimeRangeControlsProps) => {
+
   return (
     <div className="timeRangeControlsWrapper">
       <div className="timeRangeModeSwitcher">
-        <div className="timeRangeCalendarMode timeRangeMode">
+        <div className={`timeRangeCalendarMode timeRangeMode ${timeRangeMode === 'calendar' ? 'active' : ''}`}>
           calendar
         </div>
-        <FaToggleOn className="timeRangeToggle"/>
-        <div className="timeRangeRelativeMode timeRangeMode">
+        <FaToggleOn className="timeRangeToggle" />
+        <div className={`timeRangeCalendarMode timeRangeMode ${timeRangeMode === 'relative' ? 'active' : ''}`}>
           relative
         </div>
       </div>

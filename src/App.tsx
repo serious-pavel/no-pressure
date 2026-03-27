@@ -76,7 +76,12 @@ function App() {
         />
         <Graph readings={sortedBPList}/>
         <LastWeek days={bucketedWeek}/>
-        <TimeRangeControls/>
+        <TimeRangeControls
+          timeRangeMode={timeRangeMode}
+          timeRangeScale={timeRangeScale}
+          setTimeRangeMode={setTimeRangeMode}
+          setTimeRangeScale={setTimeRangeScale}
+        />
       </main>
       <footer>FOOTER</footer>
     </>
