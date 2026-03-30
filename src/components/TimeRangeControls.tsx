@@ -7,6 +7,7 @@ interface TimeRangeControlsProps {
   timeRangeScale: TimeRangeScale,
   setTimeRangeMode: Dispatch<SetStateAction<TimeRangeMode>>,
   setTimeRangeScale: Dispatch<SetStateAction<TimeRangeScale>>,
+  setTimeRangeOffset: Dispatch<SetStateAction<number>>,
 }
 
 const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, setTimeRangeScale}:TimeRangeControlsProps) => {

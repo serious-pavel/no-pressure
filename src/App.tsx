@@ -6,6 +6,7 @@ import {getBucketedReadings, readingsLastNDays} from "./functions/timeFunctions.
 import LastWeek from "./components/LastWeek.tsx";
 import AddReading from "./components/AddReading.tsx";
 import TimeRangeControls from "./components/TimeRangeControls.tsx";
+import {getVisibleReadings} from "./functions/timeRangeHelper.tsx";
 
 const initialBPList: BPReading[] =
   localStorage.getItem('bplist')
@@ -40,6 +41,7 @@ function App() {
   // time range controls states
   const [timeRangeMode, setTimeRangeMode] = useState<TimeRangeMode>(initialTimeRangeMode)
   const [timeRangeScale, setTimeRangeScale] = useState<TimeRangeScale>(initialTimeRangeScale)
+  const [timeRangeOffset, setTimeRangeOffset] = useState<number>(0)
 
   const sortedBPList = useMemo(
     () => [...bplist].sort(
@@ -47,6 +49,11 @@ function App() {
         return new Date(b.time).getTime() - new Date(a.time).getTime()
       }
     ), [bplist]
+  )
+
+  const visibleReadings = useMemo(
+    () => getVisibleReadings(sortedBPList, timeRangeScale, timeRangeMode, timeRangeOffset),
+    [sortedBPList, timeRangeMode, timeRangeOffset, timeRangeScale]
   )
 
   const bucketedWeek = useMemo(
@@ -92,13 +99,14 @@ function App() {
           setBPList={setBPList}
           setSelectedReading={setSelectedReadingId}
         />
-        <Graph readings={sortedBPList}/>
+        <Graph readings={visibleReadings}/>
         <LastWeek days={bucketedWeek}/>
         <TimeRangeControls
           timeRangeMode={timeRangeMode}
           timeRangeScale={timeRangeScale}
           setTimeRangeMode={setTimeRangeMode}
           setTimeRangeScale={setTimeRangeScale}
+          setTimeRangeOffset={setTimeRangeOffset}
         />
       </main>
       <footer>FOOTER</footer>
