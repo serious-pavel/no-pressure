@@ -1,4 +1,4 @@
-import {FaToggleOn} from "react-icons/fa";
+import {FaArrowCircleLeft, FaArrowCircleRight, FaToggleOn} from "react-icons/fa";
 import type {Dispatch, SetStateAction} from "react";
 import type {TimeRangeMode, TimeRangeScale} from "../types.ts";
 
@@ -26,6 +26,13 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, set
           relative
         </div>
       </div>
+      <div className="timeRangeOffsetSwitcher">
+        <FaArrowCircleLeft />
+        <div className="timeRangeOffset">
+          0
+        </div>
+        <FaArrowCircleRight />
+      </div>
       <div className="timeRangeScaleSwitcher">
         <div
           className={`timeRangeScale ${timeRangeScale === 'week' ? 'active' : ''}`}
@@ -46,6 +53,7 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, set
           year
         </div>
       </div>
+
     </div>
   )
 }
