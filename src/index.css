@@ -546,7 +546,8 @@ body {
 }
 
 .timeRangeModeSwitcher,
-.timeRangeScaleSwitcher {
+.timeRangeScaleSwitcher,
+.timeRangeOffsetSwitcher {
   display: flex;
   align-items: center;
   justify-content: center;
