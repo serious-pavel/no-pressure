@@ -10,7 +10,7 @@ interface TimeRangeControlsProps {
   setTimeRangeOffset: Dispatch<SetStateAction<number>>,
 }
 
-const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, setTimeRangeScale}:TimeRangeControlsProps) => {
+const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, setTimeRangeScale, setTimeRangeOffset}:TimeRangeControlsProps) => {
   const toggleTimeRangeMode = () => {
     setTimeRangeMode(prev => prev === 'calendar' ? 'relative' : 'calendar')
   }
@@ -27,11 +27,25 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, set
         </div>
       </div>
       <div className="timeRangeOffsetSwitcher">
-        <FaArrowCircleLeft />
+        <button
+          className="timeRangeOffsetButton"
+          type="button"
+          onClick={() => setTimeRangeOffset(prev => prev - 1)}
+          aria-label="Decrease time range offset"
+        >
+          <FaArrowCircleLeft />
+        </button>
         <div className="timeRangeOffset">
           0
         </div>
-        <FaArrowCircleRight />
+        <button
+          className="timeRangeOffsetButton"
+          type="button"
+          onClick={() => setTimeRangeOffset(prev => prev + 1)}
+          aria-label="Increase time range offset"
+        >
+          <FaArrowCircleRight />
+        </button>
       </div>
       <div className="timeRangeScaleSwitcher">
         <div
