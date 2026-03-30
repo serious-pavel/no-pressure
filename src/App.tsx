@@ -104,6 +104,7 @@ function App() {
         <TimeRangeControls
           timeRangeMode={timeRangeMode}
           timeRangeScale={timeRangeScale}
+          timeRangeOffset={timeRangeOffset}
           setTimeRangeMode={setTimeRangeMode}
           setTimeRangeScale={setTimeRangeScale}
           setTimeRangeOffset={setTimeRangeOffset}

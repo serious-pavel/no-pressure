@@ -5,12 +5,13 @@ import type {TimeRangeMode, TimeRangeScale} from "../types.ts";
 interface TimeRangeControlsProps {
   timeRangeMode: TimeRangeMode,
   timeRangeScale: TimeRangeScale,
+  timeRangeOffset: number,
   setTimeRangeMode: Dispatch<SetStateAction<TimeRangeMode>>,
   setTimeRangeScale: Dispatch<SetStateAction<TimeRangeScale>>,
   setTimeRangeOffset: Dispatch<SetStateAction<number>>,
 }
 
-const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, setTimeRangeScale, setTimeRangeOffset}:TimeRangeControlsProps) => {
+const TimeRangeControls = ({timeRangeMode, timeRangeScale, timeRangeOffset, setTimeRangeMode, setTimeRangeScale, setTimeRangeOffset}:TimeRangeControlsProps) => {
   const toggleTimeRangeMode = () => {
     setTimeRangeMode(prev => prev === 'calendar' ? 'relative' : 'calendar')
   }
@@ -36,7 +37,7 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, setTimeRangeMode, set
           <FaArrowCircleLeft />
         </button>
         <div className="timeRangeOffset">
-          0
+          {timeRangeOffset}
         </div>
         <button
           className="timeRangeOffsetButton"
