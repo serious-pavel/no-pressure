@@ -565,3 +565,13 @@ body {
 .timeRangeScale.active {
   color: oklch(from currentColor calc(l - 0.04) c h);
 }
+
+.timeRangeOffsetButton {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+}
