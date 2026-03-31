@@ -22,6 +22,11 @@
   --button-color: #1a1a1a;
 }
 
+.recharts-cartesian-axis-tick-value {
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
 ul, li {
   padding: 0;
   margin: 0;
