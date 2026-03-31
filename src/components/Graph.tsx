@@ -47,6 +47,9 @@ const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
 }
 
 const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
+  const {start, end} = timeWindow
+  const rangePadding = (end.getTime() - start.getTime()) * 0.01
+
   const systolicData: Point[] = visibleReadings.map((reading) => ({
     id: reading.id,
     x: reading.time.getTime(),
@@ -69,7 +72,7 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
             type="number"
             name="date"
             dataKey="x"
-            domain={["dataMin - 20000000", "dataMax + 20000000"]}
+            domain={[start.getTime() - rangePadding, end.getTime() + rangePadding]}
             tickFormatter={(value) => new Date(value).toLocaleDateString()}
           />
           <YAxis
