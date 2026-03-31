@@ -1,9 +1,4 @@
-import type {BPReading, TimeRangeMode, TimeRangeScale} from "../types.ts"
-
-type TimeWindow = {
-  start: Date
-  end: Date
-}
+import type {BPReading, TimeRangeMode, TimeRangeScale, TimeWindow, VisibleRangeResult} from "../types.ts"
 
 function startOfDay(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate())

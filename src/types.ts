@@ -17,3 +17,8 @@ export type PressureType = 'sys' | 'dia'
 export type TimeRangeMode = 'calendar' | 'relative'
 
 export type TimeRangeScale = 'week' | 'month' | 'year'
+
+export interface TimeWindow {
+  start: Date
+  end: Date
+}
