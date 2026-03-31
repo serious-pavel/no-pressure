@@ -1,4 +1,4 @@
-import type {BPReading, PressureType} from "../types.ts"
+import type {PressureType, VisibleRangeResult} from "../types.ts"
 
 import {
   ScatterChart,
@@ -13,10 +13,6 @@ import {getGrade} from "../functions/colorFunctions.ts"
 import {FaChevronCircleUp, FaChevronCircleDown, FaCircle} from "react-icons/fa";
 import type {IconType} from "react-icons";
 
-
-interface GraphProps {
-  readings: BPReading[]
-}
 
 type Point = {
   x: number
@@ -50,15 +46,15 @@ const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
   )
 }
 
-const Graph = ({readings}: GraphProps) => {
-  const systolicData: Point[] = readings.map((reading) => ({
+const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
+  const systolicData: Point[] = visibleReadings.map((reading) => ({
     id: reading.id,
     x: reading.time.getTime(),
     y: reading.sys,
     kind: "sys",
   }))
 
-  const diastolicData: Point[] = readings.map((reading) => ({
+  const diastolicData: Point[] = visibleReadings.map((reading) => ({
     id: reading.id,
     x: reading.time.getTime(),
     y: reading.dia,

@@ -76,7 +76,8 @@ export function getVisibleReadings(
   scale: TimeRangeScale,
   mode: TimeRangeMode,
   offset: number,
-) {
-  const {start, end} = getWindowBounds(scale, mode, offset)
-  return readings.filter(reading => reading.time >= start && reading.time <= end)
+): VisibleRangeResult {
+  const timeWindow = getWindowBounds(scale, mode, offset)
+  const visibleReadings = readings.filter(reading => reading.time >= timeWindow.start && reading.time <= timeWindow.end)
+  return {visibleReadings, timeWindow}
 }

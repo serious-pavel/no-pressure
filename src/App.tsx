@@ -99,7 +99,7 @@ function App() {
           setBPList={setBPList}
           setSelectedReading={setSelectedReadingId}
         />
-        <Graph readings={visibleReadings}/>
+        <Graph {...visibleReadings}/>
         <LastWeek days={bucketedWeek}/>
         <TimeRangeControls
           timeRangeMode={timeRangeMode}
