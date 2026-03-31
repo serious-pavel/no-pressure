@@ -22,3 +22,8 @@ export interface TimeWindow {
   start: Date
   end: Date
 }
+
+export interface VisibleRangeResult {
+  visibleReadings: BPReading[]
+  timeWindow: TimeWindow
+}
