@@ -9,7 +9,7 @@ interface ReadingListProps {
 }
 
 const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading}: ReadingListProps) => {
-  const RemoveReading = (readingId: string) => {
+  const removeReading = (readingId: string) => {
     const newReadings = readings.filter((reading) => reading.id !== readingId)
     setBPList(newReadings)
   }
@@ -32,7 +32,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
           {getShortDate(reading.time)}: {reading.sys}/{reading.dia}
           <button onClick={(e) => {
             e.stopPropagation()
-            RemoveReading(reading.id)
+            removeReading(reading.id)
           }}>X
           </button>
         </div>

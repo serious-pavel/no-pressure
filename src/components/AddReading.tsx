@@ -10,7 +10,7 @@ interface AddReadingProps {
 }
 
 const AddReading = ({setBPList, setSelectedReading}:AddReadingProps) => {
-  const CreateReading = (time = new Date()) => {
+  const createReading = (time = new Date()) => {
     const reading: BPReading = {
       id: crypto.randomUUID(),
       sys: Math.floor(Math.random() * (165 - 110 + 1)) + 110,
@@ -20,12 +20,12 @@ const AddReading = ({setBPList, setSelectedReading}:AddReadingProps) => {
     return reading
   }
 
-  const AddTwoWeeksReading = () => {
+  const addTwoWeeksReading = () => {
     const addedReadings: BPReading[] = []
     for (let i = 0; i < 14; i++) {
       const dt = new Date(Date.now() - (i + 1) * 24 * 60 * 60 * 1000)
       const newDate = new Date(dt.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60)))
-      addedReadings.push(CreateReading(newDate))
+      addedReadings.push(createReading(newDate))
     }
 
     setBPList(prev => [...prev, ...addedReadings])
@@ -36,8 +36,8 @@ const AddReading = ({setBPList, setSelectedReading}:AddReadingProps) => {
       <DropdownMenu>
         <DropdownMenuItem >Add Reading</DropdownMenuItem>
         <DropdownMenuItem onClick={() => setSelectedReading('')}>Clear Selection</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => AddTwoWeeksReading()}>Add 2 random weeks</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setBPList(prev => [...prev, CreateReading()])}>Add an arbitrary reading</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => addTwoWeeksReading()}>Add 2 random weeks</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setBPList(prev => [...prev, createReading()])}>Add an arbitrary reading</DropdownMenuItem>
         <DropdownMenuItem onClick={() => setBPList([])}>Clear all readings</DropdownMenuItem>
       </DropdownMenu>
     </div>
