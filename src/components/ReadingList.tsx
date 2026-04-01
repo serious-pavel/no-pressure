@@ -18,6 +18,10 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
     return date.toLocaleDateString(undefined, {day: "2-digit", month: "short", year: "2-digit"})
   }
 
+  const getShortTime = (date: Date) => {
+    return date.toLocaleTimeString(undefined, {hour: "2-digit", minute: "2-digit"})
+  }
+
   return (
     <div className="readingListWrapper">
       {readings.map((reading: BPReading) =>
@@ -29,7 +33,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
           key={reading.id}
           className={reading.id === selectedReadingId ? 'bpListItem selected' : 'bpListItem'}
         >
-          {getShortDate(reading.time)}: {reading.sys}/{reading.dia}
+          {getShortDate(reading.time)} {getShortTime(reading.time)}: {reading.sys}/{reading.dia}
           <button onClick={(e) => {
             e.stopPropagation()
             removeReading(reading.id)
