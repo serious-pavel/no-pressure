@@ -1,5 +1,6 @@
 import type {BPReading} from "../types.ts";
 import {type Dispatch, type SetStateAction} from "react";
+import {FaEllipsisV} from "react-icons/fa";
 
 interface ReadingListProps {
   readings: BPReading[],
@@ -52,10 +53,13 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
             </div>
           </div>
           <div className="readingListItemControl">
-            <button onClick={(e) => {
+            <button
+              className="readingListItemControlButton"
+              onClick={(e) => {
               e.stopPropagation()
               removeReading(reading.id)
-            }}>X
+            }}>
+              <FaEllipsisV />
             </button>
           </div>
         </div>

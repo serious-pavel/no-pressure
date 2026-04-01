@@ -413,6 +413,10 @@ button:focus-visible {
 .readingListItem.selected {
   font-weight: bold;
   background-color: #0000006b;
+
+  .readingListItemControlButton {
+    background-color: var(--main-color-light);
+  }
 }
 
 .readingListItemData {
@@ -423,6 +427,7 @@ button:focus-visible {
 
 .readingListItemControl {
   align-self: center;
+  justify-self: center;
 }
 
 .readingDot {
@@ -599,14 +604,27 @@ body {
   color: oklch(from currentColor calc(l - 0.04) c h);
 }
 
-.timeRangeOffsetButton {
+.timeRangeOffsetButton,
+.readingListItemControlButton {
   padding: 0;
   margin: 0;
   border: none;
-  background: none;
   cursor: pointer;
   user-select: none;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.timeRangeOffsetButton {
+  background: none;
+}
+
+.readingListItemControlButton {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--main-color-light);
 }
 
 .timeRangeOffset {
