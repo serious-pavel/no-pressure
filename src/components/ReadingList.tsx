@@ -31,7 +31,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
             console.log("Selected")
           }}
           key={reading.id}
-          className={reading.id === selectedReadingId ? 'bpListItem selected' : 'bpListItem'}
+          className={`bpListItem ${reading.id === selectedReadingId ? 'selected' : ''}`}
         >
           {getShortDate(reading.time)} {getShortTime(reading.time)}: {reading.sys}/{reading.dia}
           <button onClick={(e) => {
