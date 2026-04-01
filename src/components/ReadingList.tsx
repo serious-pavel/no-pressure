@@ -41,7 +41,14 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
               {getShortTime(reading.time)}
             </div>
           </div>
-          {reading.sys}/{reading.dia}
+          <div className="readingValueWrapper">
+            <div className="readingValue">
+              {reading.sys}
+            </div>
+            <div className="readingValue">
+              {reading.dia}
+            </div>
+          </div>
           <button onClick={(e) => {
             e.stopPropagation()
             removeReading(reading.id)
