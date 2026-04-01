@@ -33,27 +33,31 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
           key={reading.id}
           className={`readingListItem ${reading.id === selectedReadingId ? 'selected' : ''}`}
         >
-          <div className="readingDateWrapper">
-            <div className="readingDate">
-              {getShortDate(reading.time)}
+          <div className="readingListItemData">
+            <div className="readingDateWrapper">
+              <div className="readingDate">
+                {getShortDate(reading.time)}
+              </div>
+              <div className="readingTime">
+                {getShortTime(reading.time)}
+              </div>
             </div>
-            <div className="readingTime">
-              {getShortTime(reading.time)}
+            <div className="readingValueWrapper">
+              <div className="readingValue">
+                {reading.sys}
+              </div>
+              <div className="readingValue">
+                {reading.dia}
+              </div>
             </div>
           </div>
-          <div className="readingValueWrapper">
-            <div className="readingValue">
-              {reading.sys}
-            </div>
-            <div className="readingValue">
-              {reading.dia}
-            </div>
+          <div className="readingListItemControl">
+            <button onClick={(e) => {
+              e.stopPropagation()
+              removeReading(reading.id)
+            }}>X
+            </button>
           </div>
-          <button onClick={(e) => {
-            e.stopPropagation()
-            removeReading(reading.id)
-          }}>X
-          </button>
         </div>
       )}
     </div>

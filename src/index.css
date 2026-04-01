@@ -397,11 +397,11 @@ button:focus-visible {
 /**/
 
 .readingListItem {
-  display: flex;
-  align-items: center;
-  gap: var(--block-gap);
+  display: grid;
+  grid-template-columns: 1fr 3rem;
+  grid-template-rows: 1fr;
+  gap: calc(var(--block-gap) * 2);
   padding: var(--block-padding) calc(var(--block-padding) * 2);
-  justify-content: space-between;
   cursor: pointer;
   user-select: none;
 }
@@ -413,6 +413,16 @@ button:focus-visible {
 .readingListItem.selected {
   font-weight: bold;
   background-color: #0000006b;
+}
+
+.readingListItemData {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.readingListItemControl {
+  align-self: center;
 }
 
 .readingDot {
