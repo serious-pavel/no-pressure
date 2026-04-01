@@ -192,9 +192,14 @@ button:focus-visible {
 .readingListWrapper,
 .graphWrapper,
 .lastWeekWrapper {
-  padding: var(--block-padding);
   box-sizing: border-box;
   border-radius: 0.5rem;
+}
+
+.addReadingWrapper,
+.graphWrapper,
+.lastWeekWrapper {
+  padding: var(--block-padding);
 }
 
 .readingListWrapper,
@@ -223,7 +228,6 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   scrollbar-width: thin;
-  scrollbar-gutter: stable both-edges;
   flex-basis: calc(100% - var(--add-reading-height) - var(--block-gap));
   width: var(--reading-list-width);
 
@@ -392,10 +396,21 @@ button:focus-visible {
 
 /**/
 
-.readingListItem.selected {
-  font-weight: bold;
+.readingListItem {
+  display: flex;
+  align-items: center;
+  gap: var(--block-gap);
+  padding: var(--block-padding) calc(var(--block-padding) * 2);
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: inset 0 -1px 0 0 oklch(from var(--main-color) calc(l + 0.14) c h);
 }
 
+.readingListItem.selected {
+  font-weight: bold;
+  background-color: #0000006b;
+}
 
 .readingDot {
   width: 1.5rem;

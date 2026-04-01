@@ -33,7 +33,15 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
           key={reading.id}
           className={`readingListItem ${reading.id === selectedReadingId ? 'selected' : ''}`}
         >
-          {getShortDate(reading.time)} {getShortTime(reading.time)}: {reading.sys}/{reading.dia}
+          <div className="readingDateWrapper">
+            <div className="readingDate">
+              {getShortDate(reading.time)}
+            </div>
+            <div className="readingTime">
+              {getShortTime(reading.time)}
+            </div>
+          </div>
+          {reading.sys}/{reading.dia}
           <button onClick={(e) => {
             e.stopPropagation()
             removeReading(reading.id)
