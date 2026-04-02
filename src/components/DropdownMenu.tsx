@@ -1,12 +1,14 @@
-import {FaPlusCircle} from "react-icons/fa"
 import {useState, type ReactNode, useEffect, useRef} from "react"
 import {DropdownMenuContext} from "../context/DropdownMenuContext"
+import type {IconType} from "react-icons";
 
 interface DropdownMenuProps {
   children: ReactNode
+  classExtension: string
+  Icon: IconType
 }
 
-const DropdownMenu = ({children}: DropdownMenuProps) => {
+const DropdownMenu = ({children, classExtension, Icon}: DropdownMenuProps) => {
   const [open, setOpen] = useState<boolean>(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -35,18 +37,18 @@ const DropdownMenu = ({children}: DropdownMenuProps) => {
 
   return (
     <DropdownMenuContext.Provider value={{closeMenu: () => setOpen(false)}}>
-      <div className="dropdownMenuWrapper" ref={wrapperRef}>
+      <div className={`dropdownMenuWrapper ${classExtension}`} ref={wrapperRef}>
         <button
           type="button"
-          className="dropdownMenuButton"
+          className={`dropdownMenuButton ${classExtension}`}
           onClick={() => setOpen(prev => !prev)}
           aria-expanded={open}
           aria-haspopup="menu"
         >
-          <FaPlusCircle className={`plusIcon text-unset`}/>
+          <Icon className={`dropdownMenuIcon ${classExtension} text-unset`}/>
         </button>
         {open && (
-          <ul className="dropdownMenu" role="menu">
+          <ul className={`dropdownMenu ${classExtension}`} role="menu">
             {children}
           </ul>
         )}
