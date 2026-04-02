@@ -3,6 +3,7 @@ import {type Dispatch, type SetStateAction} from "react"
 
 import DropdownMenu from "./DropdownMenu.tsx";
 import DropdownMenuItem from "./DropdownMenuItem.tsx";
+import {FaPlusCircle} from "react-icons/fa";
 
 interface AddReadingProps {
   setBPList: Dispatch<SetStateAction<BPReading[]>>
@@ -33,7 +34,7 @@ const AddReading = ({setBPList, setSelectedReading}:AddReadingProps) => {
 
   return (
     <div className="addReadingWrapper">
-      <DropdownMenu>
+      <DropdownMenu classExtension="extAddReading" Icon={FaPlusCircle}>
         <DropdownMenuItem >Add Reading</DropdownMenuItem>
         <DropdownMenuItem onClick={() => setSelectedReading('')}>Clear Selection</DropdownMenuItem>
         <DropdownMenuItem onClick={() => addTwoWeeksReading()}>Add 2 random weeks</DropdownMenuItem>
