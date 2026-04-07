@@ -33,7 +33,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
             console.log("Selected")
           }}
           key={reading.id}
-          className={`readingListItem dot-${getGrade(reading)} ${reading.id === selectedReadingId ? 'selected' : ''}`}
+          className={`readingListItem color-${getGrade(reading)} ${reading.id === selectedReadingId ? 'selected' : ''}`}
         >
           <div className="readingListItemData">
             <div className="readingDateWrapper">
