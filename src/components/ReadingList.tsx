@@ -1,6 +1,6 @@
 import type {BPReading} from "../types.ts";
 import {type Dispatch, type SetStateAction} from "react";
-import {FaRegTrashAlt} from "react-icons/fa";
+import {FaRegEdit, FaRegTrashAlt} from "react-icons/fa";
 import DropdownMenu from "./DropdownMenu.tsx";
 import DropdownMenuItem from "./DropdownMenuItem.tsx";
 
@@ -75,7 +75,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
                 e.stopPropagation()
                 removeReading(reading.id)
               }}>
-              <FaRegTrashAlt/>
+              <FaRegEdit/>
             </button>
           </div>
         </div>
