@@ -400,6 +400,8 @@ button:focus-visible {
   padding: var(--block-padding) calc(var(--block-padding) * 2);
   cursor: pointer;
   user-select: none;
+  transition: all 0.3s ease-in-out;
+  min-height: 2.7rem;
 }
 
 .readingListItem:not(:last-child) {
@@ -409,6 +411,7 @@ button:focus-visible {
 .readingListItem.selected {
   font-weight: bold;
   background-color: #0000006b;
+  min-height: 3.5rem;
 
   .readingListItemControlButton {
     background-color: var(--main-color-light);
