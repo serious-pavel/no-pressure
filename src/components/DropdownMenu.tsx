@@ -45,7 +45,7 @@ const DropdownMenu = ({children, classExtension, Icon}: DropdownMenuProps) => {
           aria-expanded={open}
           aria-haspopup="menu"
         >
-          <Icon className={`dropdownMenuIcon ${classExtension} text-unset`}/>
+          <Icon className={`dropdownMenuIcon ${classExtension}`}/>
         </button>
         {open && (
           <ul className={`dropdownMenu ${classExtension}`} role="menu">
