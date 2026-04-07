@@ -42,7 +42,7 @@ const LastWeekDay = ({day}: LastWeekDayProps) => {
       <div className="weekDayTop">
         {maxReading ? (
           <>
-            <div className="value valueSys">{maxReading ? maxReading.sys : "unset"}</div>
+            <div className="value valueSys">{maxReading.sys}</div>
             <div className={`valueMid divider`}></div>
             <div className="value valueDia">{maxReading?.dia}</div>
           </>
