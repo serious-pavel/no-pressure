@@ -38,12 +38,12 @@ const LastWeekDay = ({day}: LastWeekDayProps) => {
   const Icon = iconMap[grade] ?? FaCircle
 
   return (
-    <div className={`weekDay text-${grade}`}>
+    <div className={`weekDay color-${grade}`}>
       <div className="weekDayTop">
         {maxReading ? (
           <>
             <div className="value valueSys">{maxReading ? maxReading.sys : "unset"}</div>
-            <div className={`valueMid divider dot-${grade}`}></div>
+            <div className={`valueMid divider`}></div>
             <div className="value valueDia">{maxReading?.dia}</div>
           </>
         ) : (
@@ -54,7 +54,7 @@ const LastWeekDay = ({day}: LastWeekDayProps) => {
 
       </div>
       <div className="weekDayBottom">
-        <Icon className={`weekDayIcon text-${grade}`}/>
+        <Icon className={`weekDayIcon color-${grade}`}/>
       </div>
     </div>
   )
