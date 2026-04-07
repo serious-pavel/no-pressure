@@ -1,8 +1,6 @@
 import type {BPReading} from "../types.ts";
 import {type Dispatch, type SetStateAction} from "react";
 import {FaRegEdit, FaRegTrashAlt} from "react-icons/fa";
-import DropdownMenu from "./DropdownMenu.tsx";
-import DropdownMenuItem from "./DropdownMenuItem.tsx";
 
 interface ReadingListProps {
   readings: BPReading[],
@@ -55,12 +53,6 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
             </div>
           </div>
           <div className="readingListItemControl">
-            {/*<DropdownMenu classExtension="extReadingListItem" Icon={FaEllipsisV}>*/}
-            {/*  <DropdownMenuItem onClick={() => {*/}
-            {/*    removeReading(reading.id)*/}
-            {/*  }}>Delete Reading</DropdownMenuItem>*/}
-            {/*  <DropdownMenuItem>Edit Reading</DropdownMenuItem>*/}
-            {/*</DropdownMenu>*/}
             <button
               className="readingListItemControlButton"
               onClick={(e) => {
