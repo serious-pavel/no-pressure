@@ -1,6 +1,7 @@
 import type {BPReading} from "../types.ts";
 import {type Dispatch, type SetStateAction} from "react";
 import {FaRegEdit, FaRegTrashAlt} from "react-icons/fa";
+import {getGrade} from "../functions/colorFunctions.ts";
 
 interface ReadingListProps {
   readings: BPReading[],
@@ -32,7 +33,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
             console.log("Selected")
           }}
           key={reading.id}
-          className={`readingListItem ${reading.id === selectedReadingId ? 'selected' : ''}`}
+          className={`readingListItem dot-${getGrade(reading)} ${reading.id === selectedReadingId ? 'selected' : ''}`}
         >
           <div className="readingListItemData">
             <div className="readingDateWrapper">
