@@ -210,7 +210,7 @@ button:focus-visible {
 
 .color-unset {
   --grade-color: var(--dot-unset-color);
-  --grade-color-bright: var(--dot-unset-color);
+  --grade-color-bright: var(--dot-unset-color-bright);
 }
 
 
