@@ -208,6 +208,11 @@ button:focus-visible {
   --grade-color-bright: var(--dot-out-color);
 }
 
+.color-unset {
+  --grade-color: var(--dot-unset-color);
+  --grade-color-bright: var(--dot-unset-color);
+}
+
 
 .dot-grade-2 {
   --bg-color: var(--dot-grade-2-color);
