@@ -396,6 +396,7 @@ button:focus-visible {
 /**/
 
 .readingListItem {
+  --bg-main-color: var(--main-color);
   display: grid;
   grid-template-columns: 1fr calc(var(--control-button-size) * 2 + var(--control-divider-width));
   grid-template-rows: 1fr;
@@ -405,6 +406,7 @@ button:focus-visible {
   user-select: none;
   transition: all 0.3s ease-in-out;
   min-height: 2.7rem;
+  background: linear-gradient(135deg, var(--bg-color), var(--bg-main-color) 3rem);
 }
 
 .readingListItem:not(:last-child) {
@@ -412,8 +414,8 @@ button:focus-visible {
 }
 
 .readingListItem.selected {
+  --bg-main-color: black;
   font-weight: bold;
-  background-color: #0000006b;
   min-height: 3.5rem;
 
   .readingListItemControlButton {
@@ -441,6 +443,7 @@ button:focus-visible {
 }
 
 .dot-grade-2 {
+  --bg-color: var(--dot-grade-2-color);
   background-color: var(--dot-grade-2-color);
   fill: var(--dot-grade-2-color-bright);
 }
@@ -450,6 +453,7 @@ button:focus-visible {
 }
 
 .dot-grade-1 {
+  --bg-color: var(--dot-grade-1-color);
   background-color: var(--dot-grade-1-color);
   fill: var(--dot-grade-1-color-bright);
 }
@@ -459,6 +463,7 @@ button:focus-visible {
 }
 
 .dot-high-normal {
+  --bg-color: var(--dot-high-normal-color);
   background-color: var(--dot-high-normal-color);
   fill: var(--dot-high-normal-color-bright);
 }
@@ -468,6 +473,7 @@ button:focus-visible {
 }
 
 .dot-normal {
+  --bg-color: var(--dot-normal-color);
   background-color: var(--dot-normal-color);
   fill: var(--dot-normal-color-bright);
 }
@@ -477,6 +483,7 @@ button:focus-visible {
 }
 
 .dot-low {
+  --bg-color: var(--dot-low-color);
   background-color: var(--dot-low-color);
   fill: var(--dot-low-color);
 }
@@ -486,6 +493,7 @@ button:focus-visible {
 }
 
 .dot-out {
+  --bg-color: var(--dot-out-color);
   background-color: var(--dot-out-color);
   fill: var(--dot-out-color);
 }
@@ -495,6 +503,7 @@ button:focus-visible {
 }
 
 .dot-unset {
+  --bg-color: var(--dot-unset-color);
   background-color: var(--dot-unset-color);
   fill: var(--dot-unset-color-bright);
 }
