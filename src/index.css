@@ -178,6 +178,107 @@ button:focus-visible {
   --dot-unset-color-bright: oklch(from var(--dot-unset-color) calc(l + 0.06) c h);
 }
 
+.color-grade-2 {
+  --grade-color: var(--dot-grade-2-color);
+  --grade-color-bright: var(--dot-grade-2-color-bright);
+}
+
+.color-grade-1 {
+  --grade-color: var(--dot-grade-1-color);
+  --grade-color-bright: var(--dot-grade-1-color-bright);
+}
+
+.color-normal {
+  --grade-color: var(--dot-normal-color);
+  --grade-color-bright: var(--dot-normal-color-bright);
+}
+
+.color-high-normal {
+  --grade-color: var(--dot-high-normal-color);
+  --grade-color-bright: var(--dot-high-normal-color-bright);
+}
+
+.color-low {
+  --grade-color: var(--dot-low-color);
+  --grade-color-bright: var(--dot-low-color);
+}
+
+.color-out {
+  --grade-color: var(--dot-out-color);
+  --grade-color-bright: var(--dot-out-color);
+}
+
+
+.dot-grade-2 {
+  --bg-color: var(--dot-grade-2-color);
+  background-color: var(--dot-grade-2-color);
+  fill: var(--dot-grade-2-color-bright);
+}
+
+.text-grade-2 {
+  color: var(--dot-grade-2-color-bright);
+}
+
+.dot-grade-1 {
+  --bg-color: var(--dot-grade-1-color);
+  background-color: var(--dot-grade-1-color);
+  fill: var(--dot-grade-1-color-bright);
+}
+
+.text-grade-1 {
+  color: var(--dot-grade-1-color-bright);
+}
+
+.dot-high-normal {
+  --bg-color: var(--dot-high-normal-color);
+  background-color: var(--dot-high-normal-color);
+  fill: var(--dot-high-normal-color-bright);
+}
+
+.text-high-normal {
+  color: var(--dot-high-normal-color-bright);
+}
+
+.dot-normal {
+  --bg-color: var(--dot-normal-color);
+  background-color: var(--dot-normal-color);
+  fill: var(--dot-normal-color-bright);
+}
+
+.text-normal {
+  color: var(--dot-normal-color-bright);
+}
+
+.dot-low {
+  --bg-color: var(--dot-low-color);
+  background-color: var(--dot-low-color);
+  fill: var(--dot-low-color);
+}
+
+.text-low {
+  color: var(--dot-low-color);
+}
+
+.dot-out {
+  --bg-color: var(--dot-out-color);
+  background-color: var(--dot-out-color);
+  fill: var(--dot-out-color);
+}
+
+.text-out {
+  color: var(--dot-out-color);
+}
+
+.dot-unset {
+  --bg-color: var(--dot-unset-color);
+  background-color: var(--dot-unset-color);
+  fill: var(--dot-unset-color-bright);
+}
+
+.text-unset {
+  color: var(--dot-unset-color-bright);
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -441,77 +542,6 @@ button:focus-visible {
   height: 1.5rem;
   border-radius: 50%;
 }
-
-.dot-grade-2 {
-  --bg-color: var(--dot-grade-2-color);
-  background-color: var(--dot-grade-2-color);
-  fill: var(--dot-grade-2-color-bright);
-}
-
-.text-grade-2 {
-  color: var(--dot-grade-2-color-bright);
-}
-
-.dot-grade-1 {
-  --bg-color: var(--dot-grade-1-color);
-  background-color: var(--dot-grade-1-color);
-  fill: var(--dot-grade-1-color-bright);
-}
-
-.text-grade-1 {
-  color: var(--dot-grade-1-color-bright);
-}
-
-.dot-high-normal {
-  --bg-color: var(--dot-high-normal-color);
-  background-color: var(--dot-high-normal-color);
-  fill: var(--dot-high-normal-color-bright);
-}
-
-.text-high-normal {
-  color: var(--dot-high-normal-color-bright);
-}
-
-.dot-normal {
-  --bg-color: var(--dot-normal-color);
-  background-color: var(--dot-normal-color);
-  fill: var(--dot-normal-color-bright);
-}
-
-.text-normal {
-  color: var(--dot-normal-color-bright);
-}
-
-.dot-low {
-  --bg-color: var(--dot-low-color);
-  background-color: var(--dot-low-color);
-  fill: var(--dot-low-color);
-}
-
-.text-low {
-  color: var(--dot-low-color);
-}
-
-.dot-out {
-  --bg-color: var(--dot-out-color);
-  background-color: var(--dot-out-color);
-  fill: var(--dot-out-color);
-}
-
-.text-out {
-  color: var(--dot-out-color);
-}
-
-.dot-unset {
-  --bg-color: var(--dot-unset-color);
-  background-color: var(--dot-unset-color);
-  fill: var(--dot-unset-color-bright);
-}
-
-.text-unset {
-  color: var(--dot-unset-color-bright);
-}
-
 
 .hidden {
   display: none;
