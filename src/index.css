@@ -155,6 +155,9 @@ button:focus-visible {
   --day-height: 6rem;
   --last-week-gap: 0.5rem;
 
+  --control-button-size: 2.1rem;
+  --control-divider-width: 2px;
+
   --last-week-min-width: calc(7 * var(--day-min-width) + 6 * var(--last-week-gap));
   --last-week-max-width: calc(7 * var(--day-width) + 6 * var(--last-week-gap));
 
@@ -394,7 +397,7 @@ button:focus-visible {
 
 .readingListItem {
   display: grid;
-  grid-template-columns: 1fr 4rem;
+  grid-template-columns: 1fr calc(var(--control-button-size) * 2 + var(--control-divider-width));
   grid-template-rows: 1fr;
   gap: calc(var(--block-gap) * 2);
   padding: var(--block-padding) calc(var(--block-padding) * 2);
@@ -428,7 +431,7 @@ button:focus-visible {
   align-self: center;
   justify-self: center;
   display: flex;
-  gap: 2px;
+  gap: var(--control-divider-width);
 }
 
 .readingDot {
@@ -613,8 +616,8 @@ body {
 }
 
 .readingListItemControlButton {
-  width: 2rem;
-  height: 2rem;
+  width: var(--control-button-size);
+  height: var(--control-button-size);
   background-color: var(--main-color-light);
   border-radius: 0;
 }
