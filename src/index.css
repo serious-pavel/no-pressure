@@ -472,10 +472,8 @@ button:focus-visible {
   gap: var(--control-divider-width);
 }
 
-.readingDot {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
+.graphDot {
+  fill: var(--grade-color-bright);
 }
 
 .hidden {
