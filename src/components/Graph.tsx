@@ -39,7 +39,7 @@ const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
   return (
     <>
       <g transform={`translate(${cx - offset}, ${cy - offset})`}>
-        <Icon size={size} className={`dot-${grade}`}/>
+        <Icon size={size} className={`color-${grade} graphDot`}/>
       </g>
       {/*<circle cx={cx} cy={cy} r={offset} className={`dot-${grade}`}/>*/}
     </>
