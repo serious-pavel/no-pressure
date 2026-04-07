@@ -616,6 +616,15 @@ body {
   width: 2rem;
   height: 2rem;
   background-color: var(--main-color-light);
+  border-radius: 0;
+}
+
+.readingListItemControlButton:first-child {
+  border-radius: var(--block-padding) 0 0 var(--block-padding);
+}
+
+.readingListItemControlButton:last-child {
+  border-radius: 0 var(--block-padding) var(--block-padding) 0;
 }
 
 .timeRangeOffset {
