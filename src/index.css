@@ -155,7 +155,7 @@ button:focus-visible {
   --day-height: 6rem;
   --last-week-gap: 0.5rem;
 
-  --control-button-size: 2.1rem;
+  --control-button-size: 2.4rem;
   --control-divider-width: 2px;
 
   --last-week-min-width: calc(7 * var(--day-min-width) + 6 * var(--last-week-gap));
@@ -417,7 +417,7 @@ button:focus-visible {
   min-height: 3.5rem;
 
   .readingListItemControlButton {
-    background-color: var(--main-color-light);
+    opacity: 1;
   }
 }
 
@@ -609,6 +609,7 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  opacity: 0.85;
 }
 
 .timeRangeOffsetButton {
@@ -618,7 +619,7 @@ body {
 .readingListItemControlButton {
   width: var(--control-button-size);
   height: var(--control-button-size);
-  background-color: var(--main-color-light);
+  background-color: var(--dot-normal-color);
   border-radius: 0;
 }
 
