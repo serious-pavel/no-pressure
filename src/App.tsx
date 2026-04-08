@@ -90,6 +90,7 @@ function App() {
 
   return (
     <>
+      <div className="modalWindow"></div>
       <header>HEADER</header>
       <main className="main">
         <AddReading setBPList={setBPList} setSelectedReading={setSelectedReadingId}/>
