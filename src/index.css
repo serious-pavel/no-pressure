@@ -442,7 +442,8 @@ button:focus-visible {
   user-select: none;
   transition: all 0.3s ease-in-out;
   min-height: 2.7rem;
-  background: linear-gradient(135deg, var(--grade-color), var(--bg-main-color) 3rem);
+  /*background: linear-gradient(135deg, var(--grade-color), var(--bg-main-color) 3rem);*/
+  background: radial-gradient(circle at 0% 50%, var(--grade-color) 0.5rem, var(--bg-main-color) 0rem);
 }
 
 .readingListItem:not(:last-child) {
