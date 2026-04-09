@@ -27,3 +27,5 @@ export interface VisibleRangeResult {
   visibleReadings: BPReading[]
   timeWindow: TimeWindow
 }
+
+export type ModalMode = 'add' | 'edit' | 'delete' | null
