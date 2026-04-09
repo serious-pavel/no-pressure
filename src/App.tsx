@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import type {BPReading, TimeRangeMode, TimeRangeScale} from "./types.ts";
+import type {BPReading, ModalMode, TimeRangeMode, TimeRangeScale} from "./types.ts";
 import ReadingList from "./components/ReadingList.tsx";
 import Graph from "./components/Graph.tsx";
 import {getBucketedReadings, readingsLastNDays} from "./functions/timeFunctions.ts";
@@ -42,6 +42,10 @@ function App() {
   const [timeRangeMode, setTimeRangeMode] = useState<TimeRangeMode>(initialTimeRangeMode)
   const [timeRangeScale, setTimeRangeScale] = useState<TimeRangeScale>(initialTimeRangeScale)
   const [timeRangeOffset, setTimeRangeOffset] = useState<number>(0)
+
+  // modal window states
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+  const [modalMode, setModalMode] = useState<ModalMode>(null)
 
   const sortedBPList = useMemo(
     () => [...bplist].sort(
