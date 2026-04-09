@@ -1,4 +1,4 @@
-import type {BPReading, ModalMode} from "../types.ts";
+import type {BPReading, ModalMode} from "../types.ts"
 
 interface ReadingModalProps {
   mode: ModalMode

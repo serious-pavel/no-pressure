@@ -1,5 +1,5 @@
-import type {BPReading, Grade} from "../types.ts";
-import {getGrade} from "../functions/colorFunctions.ts";
+import type {BPReading, Grade} from "../types.ts"
+import {getGrade} from "../functions/colorFunctions.ts"
 import {
   FaCircle,
   FaRegFlushed,
@@ -10,10 +10,10 @@ import {
   FaRegMehRollingEyes,
   FaRegDotCircle
 } from "react-icons/fa"
-import type {IconType} from "react-icons";
+import type {IconType} from "react-icons"
 
 interface LastWeekDayProps {
-  day: BPReading[],
+  day: BPReading[]
 }
 
 const getMaxReading = (dayReadings: BPReading[]) => ({

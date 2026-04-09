@@ -1,13 +1,13 @@
 export interface BPReading {
-  id: string,
-  sys: number,
-  dia: number,
-  time: Date,
+  id: string
+  sys: number
+  dia: number
+  time: Date
 }
 
 export interface WeightReading {
-  weight: number,
-  time: Date,
+  weight: number
+  time: Date
 }
 
 export type Grade = 'grade-2' | 'grade-1' | 'high-normal' | 'normal' | 'low' | 'out' | 'unset'

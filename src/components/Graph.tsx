@@ -10,8 +10,8 @@ import {
   type ScatterShapeProps
 } from 'recharts'
 import {getGrade} from "../functions/colorFunctions.ts"
-import {FaChevronCircleUp, FaChevronCircleDown, FaCircle} from "react-icons/fa";
-import type {IconType} from "react-icons";
+import {FaChevronCircleUp, FaChevronCircleDown, FaCircle} from "react-icons/fa"
+import type {IconType} from "react-icons"
 
 
 type Point = {

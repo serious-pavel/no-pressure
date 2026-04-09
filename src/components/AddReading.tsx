@@ -1,9 +1,9 @@
 import type {BPReading} from "../types.ts"
 import {type Dispatch, type SetStateAction} from "react"
 
-import DropdownMenu from "./DropdownMenu.tsx";
-import DropdownMenuItem from "./DropdownMenuItem.tsx";
-import {FaPlusCircle} from "react-icons/fa";
+import DropdownMenu from "./DropdownMenu.tsx"
+import DropdownMenuItem from "./DropdownMenuItem.tsx"
+import {FaPlusCircle} from "react-icons/fa"
 
 interface AddReadingProps {
   setBPList: Dispatch<SetStateAction<BPReading[]>>

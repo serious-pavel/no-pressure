@@ -1,14 +1,14 @@
-import {FaArrowCircleLeft, FaArrowCircleRight, FaToggleOn} from "react-icons/fa";
-import type {Dispatch, SetStateAction} from "react";
-import type {TimeRangeMode, TimeRangeScale} from "../types.ts";
+import {FaArrowCircleLeft, FaArrowCircleRight, FaToggleOn} from "react-icons/fa"
+import type {Dispatch, SetStateAction} from "react"
+import type {TimeRangeMode, TimeRangeScale} from "../types.ts"
 
 interface TimeRangeControlsProps {
-  timeRangeMode: TimeRangeMode,
-  timeRangeScale: TimeRangeScale,
-  timeRangeOffset: number,
-  setTimeRangeMode: Dispatch<SetStateAction<TimeRangeMode>>,
-  setTimeRangeScale: Dispatch<SetStateAction<TimeRangeScale>>,
-  setTimeRangeOffset: Dispatch<SetStateAction<number>>,
+  timeRangeMode: TimeRangeMode
+  timeRangeScale: TimeRangeScale
+  timeRangeOffset: number
+  setTimeRangeMode: Dispatch<SetStateAction<TimeRangeMode>>
+  setTimeRangeScale: Dispatch<SetStateAction<TimeRangeScale>>
+  setTimeRangeOffset: Dispatch<SetStateAction<number>>
 }
 
 const TimeRangeControls = ({timeRangeMode, timeRangeScale, timeRangeOffset, setTimeRangeMode, setTimeRangeScale, setTimeRangeOffset}:TimeRangeControlsProps) => {

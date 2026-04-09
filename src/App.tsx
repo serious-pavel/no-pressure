@@ -1,13 +1,13 @@
-import {useEffect, useMemo, useState} from "react";
-import type {BPReading, ModalMode, TimeRangeMode, TimeRangeScale} from "./types.ts";
-import ReadingList from "./components/ReadingList.tsx";
-import Graph from "./components/Graph.tsx";
-import {getBucketedReadings, readingsLastNDays} from "./functions/timeFunctions.ts";
-import LastWeek from "./components/LastWeek.tsx";
-import AddReading from "./components/AddReading.tsx";
-import TimeRangeControls from "./components/TimeRangeControls.tsx";
-import {getVisibleReadings} from "./functions/timeRangeHelper.tsx";
-import ReadingModal from "./components/ReadingModal.tsx";
+import {useEffect, useMemo, useState} from "react"
+import type {BPReading, ModalMode, TimeRangeMode, TimeRangeScale} from "./types.ts"
+import ReadingList from "./components/ReadingList.tsx"
+import Graph from "./components/Graph.tsx"
+import {getBucketedReadings, readingsLastNDays} from "./functions/timeFunctions.ts"
+import LastWeek from "./components/LastWeek.tsx"
+import AddReading from "./components/AddReading.tsx"
+import TimeRangeControls from "./components/TimeRangeControls.tsx"
+import {getVisibleReadings} from "./functions/timeRangeHelper.tsx"
+import ReadingModal from "./components/ReadingModal.tsx"
 
 const initialBPList: BPReading[] =
   localStorage.getItem('bplist')
@@ -91,7 +91,7 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem('timeRangeScale', JSON.stringify(timeRangeScale))
-  }, [timeRangeScale]);
+  }, [timeRangeScale])
 
   const openModal = (mode: ModalMode, reading: BPReading | null = null) => {
     setModalMode(mode)

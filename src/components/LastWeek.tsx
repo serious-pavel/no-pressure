@@ -1,5 +1,5 @@
 import type {BPReading} from "../types"
-import LastWeekDay from "./LastWeekDay.tsx";
+import LastWeekDay from "./LastWeekDay.tsx"
 
 interface LastWeekProps {
   days: BPReading[][]

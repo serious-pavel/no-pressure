@@ -1,6 +1,6 @@
 import {useState, type ReactNode, useEffect, useRef} from "react"
 import {DropdownMenuContext} from "../context/DropdownMenuContext"
-import type {IconType} from "react-icons";
+import type {IconType} from "react-icons"
 
 interface DropdownMenuProps {
   children: ReactNode

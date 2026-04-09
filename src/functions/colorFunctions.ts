@@ -1,4 +1,4 @@
-import type {Grade} from "../types.ts";
+import type {Grade} from "../types.ts"
 
 export const getGrade = ({sys, dia}: { sys: number, dia: number }): Grade => {
 

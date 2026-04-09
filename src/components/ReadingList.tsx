@@ -1,11 +1,11 @@
-import type {BPReading, ModalMode} from "../types.ts";
-import {type Dispatch, type SetStateAction} from "react";
-import {FaRegEdit, FaRegTrashAlt} from "react-icons/fa";
-import {getGrade} from "../functions/colorFunctions.ts";
+import type {BPReading, ModalMode} from "../types.ts"
+import {type Dispatch, type SetStateAction} from "react"
+import {FaRegEdit, FaRegTrashAlt} from "react-icons/fa"
+import {getGrade} from "../functions/colorFunctions.ts"
 
 interface ReadingListProps {
-  readings: BPReading[],
-  selectedReadingId: string,
+  readings: BPReading[]
+  selectedReadingId: string
   setBPList: Dispatch<SetStateAction<BPReading[]>>
   setSelectedReading: Dispatch<SetStateAction<string>>
   openModal: (mode: ModalMode, reading: BPReading | null) => void

@@ -1,4 +1,4 @@
-import type {BPReading} from "../types.ts";
+import type {BPReading} from "../types.ts"
 
 type WithTime = { time: Date }
 
