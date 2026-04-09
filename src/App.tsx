@@ -7,6 +7,7 @@ import LastWeek from "./components/LastWeek.tsx";
 import AddReading from "./components/AddReading.tsx";
 import TimeRangeControls from "./components/TimeRangeControls.tsx";
 import {getVisibleReadings} from "./functions/timeRangeHelper.tsx";
+import ReadingModal from "./components/ReadingModal.tsx";
 
 const initialBPList: BPReading[] =
   localStorage.getItem('bplist')
@@ -44,7 +45,6 @@ function App() {
   const [timeRangeOffset, setTimeRangeOffset] = useState<number>(0)
 
   // modal window states
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
   const [modalMode, setModalMode] = useState<ModalMode>(null)
 
   const sortedBPList = useMemo(
@@ -94,8 +94,10 @@ function App() {
 
   return (
     <>
-      <div className="modalWindow"></div>
-      <header>HEADER</header>
+      {modalMode &&
+        <ReadingModal mode={modalMode} setMode={setModalMode}/>
+      }
+      <header onClick={() => setModalMode('edit')}>HEADER</header>
       <main className="main">
         <AddReading setBPList={setBPList} setSelectedReading={setSelectedReadingId}/>
         <ReadingList
