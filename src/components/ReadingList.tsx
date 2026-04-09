@@ -1,4 +1,4 @@
-import type {BPReading} from "../types.ts";
+import type {BPReading, ModalMode} from "../types.ts";
 import {type Dispatch, type SetStateAction} from "react";
 import {FaRegEdit, FaRegTrashAlt} from "react-icons/fa";
 import {getGrade} from "../functions/colorFunctions.ts";
@@ -8,9 +8,10 @@ interface ReadingListProps {
   selectedReadingId: string,
   setBPList: Dispatch<SetStateAction<BPReading[]>>
   setSelectedReading: Dispatch<SetStateAction<string>>
+  openModal: (mode: ModalMode, reading: BPReading | null) => void
 }
 
-const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading}: ReadingListProps) => {
+const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading, openModal}: ReadingListProps) => {
   const removeReading = (readingId: string) => {
     const newReadings = readings.filter((reading) => reading.id !== readingId)
     setBPList(newReadings)
@@ -66,7 +67,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
               className="readingListItemControlButton"
               onClick={(e) => {
                 e.stopPropagation()
-                removeReading(reading.id)
+                openModal('add', reading)
               }}>
               <FaRegEdit/>
             </button>
