@@ -46,6 +46,7 @@ function App() {
 
   // modal window states
   const [modalMode, setModalMode] = useState<ModalMode>(null)
+  const [activeReading, setActiveReading] = useState<BPReading | null>(null)
 
   const sortedBPList = useMemo(
     () => [...bplist].sort(
@@ -92,12 +93,22 @@ function App() {
     localStorage.setItem('timeRangeScale', JSON.stringify(timeRangeScale))
   }, [timeRangeScale]);
 
+  const openModal = (mode: ModalMode, reading: BPReading | null = null) => {
+    setModalMode(mode)
+    setActiveReading(reading)
+  }
+
+  const closeModal = () => {
+    setModalMode(null)
+    setActiveReading(null)
+  }
+
   return (
     <>
       {modalMode &&
-        <ReadingModal mode={modalMode} setMode={setModalMode}/>
+        <ReadingModal mode={modalMode} reading={activeReading} onClose={closeModal}/>
       }
-      <header onClick={() => setModalMode('edit')}>HEADER</header>
+      <header>HEADER</header>
       <main className="main">
         <AddReading setBPList={setBPList} setSelectedReading={setSelectedReadingId}/>
         <ReadingList
@@ -105,6 +116,7 @@ function App() {
           selectedReadingId={effectiveSelectedId}
           setBPList={setBPList}
           setSelectedReading={setSelectedReadingId}
+          openModal={openModal}
         />
         <Graph {...visibleReadings}/>
         <LastWeek days={bucketedWeek}/>
