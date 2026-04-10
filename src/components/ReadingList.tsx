@@ -59,7 +59,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
               className="readingListItemControlButton"
               onClick={(e) => {
                 e.stopPropagation()
-                removeReading(reading.id)
+                openModal('delete', reading)
               }}>
               <FaRegTrashAlt/>
             </button>
