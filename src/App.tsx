@@ -103,6 +103,13 @@ function App() {
     setActiveReading(null)
   }
 
+  const handleDeleteReading = () => {
+    if (!activeReading) return
+    const newReadings = bplist.filter((bpListItem) => bpListItem.id !== activeReading.id)
+    setBPList(newReadings)
+    closeModal()
+  }
+
   return (
     <>
       {modalMode &&
