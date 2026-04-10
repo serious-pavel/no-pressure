@@ -67,7 +67,7 @@ const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading
               className="readingListItemControlButton"
               onClick={(e) => {
                 e.stopPropagation()
-                openModal('add', reading)
+                openModal('edit', reading)
               }}>
               <FaRegEdit/>
             </button>
