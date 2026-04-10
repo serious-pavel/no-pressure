@@ -6,17 +6,11 @@ import {getGrade} from "../functions/colorFunctions.ts"
 interface ReadingListProps {
   readings: BPReading[]
   selectedReadingId: string
-  setBPList: Dispatch<SetStateAction<BPReading[]>>
   setSelectedReading: Dispatch<SetStateAction<string>>
   openModal: (mode: ModalMode, reading?: BPReading) => void
 }
 
-const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading, openModal}: ReadingListProps) => {
-  const removeReading = (readingId: string) => {
-    const newReadings = readings.filter((reading) => reading.id !== readingId)
-    setBPList(newReadings)
-  }
-
+const ReadingList = ({readings, selectedReadingId, setSelectedReading, openModal}: ReadingListProps) => {
   const getShortDate = (date: Date) => {
     return date.toLocaleDateString(undefined, {day: "2-digit", month: "short", year: "2-digit"})
   }
