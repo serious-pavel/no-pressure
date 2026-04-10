@@ -118,7 +118,6 @@ function App() {
         <ReadingList
           readings={sortedBPList}
           selectedReadingId={effectiveSelectedId}
-          setBPList={setBPList}
           setSelectedReading={setSelectedReadingId}
           openModal={openModal}
         />
