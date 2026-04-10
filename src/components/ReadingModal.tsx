@@ -2,9 +2,15 @@ import type {BPReading, ModalMode} from "../types.ts"
 import {useEffect, type MouseEvent} from "react"
 
 interface ReadingModalProps {
-  mode: ModalMode
+  mode: Exclude<ModalMode, null>
   reading: BPReading | null
   onClose: () => void
+}
+
+interface modalConfig {
+  title: string
+  confirmText: string
+  confirmAction: () => void
 }
 
 
@@ -29,14 +35,42 @@ const ReadingModal = ({mode, reading, onClose}: ReadingModalProps) => {
     }
   }
 
+  const modalConfig: Record<Exclude<ModalMode, null>, modalConfig> = {
+    'edit': {
+      title: "Edit the reading",
+      confirmText: "Save",
+      confirmAction: () => {
+      }
+    },
+    'add': {
+      title: "Add new reading",
+      confirmText: "Add",
+      confirmAction: () => {
+      }
+    },
+    'delete': {
+      title: "Delete this reading",
+      confirmText: "Delete",
+      confirmAction: () => {
+      }
+    },
+  }
+
+  const config = modalConfig[mode]
+
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
       <div className="modalWindow" role="dialog" aria-modal="true">
+
+        <div>{config.title}</div>
         <div>
           {reading && reading.time.toLocaleString() + " " + reading.sys + "/" + reading.dia}
         </div>
-        <div>{mode}</div>
-        <button onClick={onClose}>Close</button>
+
+        <div className="modalWindowControls">
+          <button onClick={onClose}>Close</button>
+          <button>{config.confirmText}</button>
+        </div>
       </div>
     </div>
   )
