@@ -5,6 +5,7 @@ interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
   reading: BPReading | null
   onClose: () => void
+  onDelete: () => void
 }
 
 interface modalConfig {
@@ -14,7 +15,7 @@ interface modalConfig {
 }
 
 
-const ReadingModal = ({mode, reading, onClose}: ReadingModalProps) => {
+const ReadingModal = ({mode, reading, onClose, onDelete}: ReadingModalProps) => {
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -51,8 +52,7 @@ const ReadingModal = ({mode, reading, onClose}: ReadingModalProps) => {
     'delete': {
       title: "Delete this reading",
       confirmText: "Delete",
-      confirmAction: () => {
-      }
+      confirmAction: onDelete
     },
   }
 
@@ -69,7 +69,7 @@ const ReadingModal = ({mode, reading, onClose}: ReadingModalProps) => {
 
         <div className="modalWindowControls">
           <button onClick={onClose}>Close</button>
-          <button>{config.confirmText}</button>
+          <button onClick={config.confirmAction}>{config.confirmText}</button>
         </div>
       </div>
     </div>

@@ -113,7 +113,12 @@ function App() {
   return (
     <>
       {modalMode &&
-        <ReadingModal mode={modalMode} reading={activeReading} onClose={closeModal}/>
+        <ReadingModal
+          mode={modalMode}
+          reading={activeReading}
+          onClose={closeModal}
+          onDelete={handleDeleteReading}
+        />
       }
       <header>HEADER</header>
       <main className="main">
