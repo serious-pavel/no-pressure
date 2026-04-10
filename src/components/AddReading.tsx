@@ -1,4 +1,4 @@
-import type {BPReading} from "../types.ts"
+import type {BPReading, ModalMode} from "../types.ts"
 import {type Dispatch, type SetStateAction} from "react"
 
 import DropdownMenu from "./DropdownMenu.tsx"
@@ -8,9 +8,10 @@ import {FaPlusCircle} from "react-icons/fa"
 interface AddReadingProps {
   setBPList: Dispatch<SetStateAction<BPReading[]>>
   setSelectedReading: Dispatch<SetStateAction<string>>
+  openModal: (mode: ModalMode, reading: BPReading | null) => void
 }
 
-const AddReading = ({setBPList, setSelectedReading}:AddReadingProps) => {
+const AddReading = ({setBPList, setSelectedReading, openModal}:AddReadingProps) => {
   const createReading = (time = new Date()) => {
     const reading: BPReading = {
       id: crypto.randomUUID(),
@@ -35,7 +36,7 @@ const AddReading = ({setBPList, setSelectedReading}:AddReadingProps) => {
   return (
     <div className="addReadingWrapper">
       <DropdownMenu classExtension="extAddReading" Icon={FaPlusCircle}>
-        <DropdownMenuItem >Add Reading</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => openModal('add', null)} >Add Reading</DropdownMenuItem>
         <DropdownMenuItem onClick={() => setSelectedReading('')}>Clear Selection</DropdownMenuItem>
         <DropdownMenuItem onClick={() => addTwoWeeksReading()}>Add 2 random weeks</DropdownMenuItem>
         <DropdownMenuItem onClick={() => setBPList(prev => [...prev, createReading()])}>Add an arbitrary reading</DropdownMenuItem>
