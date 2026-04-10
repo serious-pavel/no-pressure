@@ -8,7 +8,7 @@ import {FaPlusCircle} from "react-icons/fa"
 interface AddReadingProps {
   setBPList: Dispatch<SetStateAction<BPReading[]>>
   setSelectedReading: Dispatch<SetStateAction<string>>
-  openModal: (mode: ModalMode, reading: BPReading | null) => void
+  openModal: (mode: ModalMode, reading?: BPReading) => void
 }
 
 const AddReading = ({setBPList, setSelectedReading, openModal}:AddReadingProps) => {
@@ -36,7 +36,7 @@ const AddReading = ({setBPList, setSelectedReading, openModal}:AddReadingProps) 
   return (
     <div className="addReadingWrapper">
       <DropdownMenu classExtension="extAddReading" Icon={FaPlusCircle}>
-        <DropdownMenuItem onClick={() => openModal('add', null)} >Add Reading</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => openModal('add')} >Add Reading</DropdownMenuItem>
         <DropdownMenuItem onClick={() => setSelectedReading('')}>Clear Selection</DropdownMenuItem>
         <DropdownMenuItem onClick={() => addTwoWeeksReading()}>Add 2 random weeks</DropdownMenuItem>
         <DropdownMenuItem onClick={() => setBPList(prev => [...prev, createReading()])}>Add an arbitrary reading</DropdownMenuItem>

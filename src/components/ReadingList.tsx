@@ -8,7 +8,7 @@ interface ReadingListProps {
   selectedReadingId: string
   setBPList: Dispatch<SetStateAction<BPReading[]>>
   setSelectedReading: Dispatch<SetStateAction<string>>
-  openModal: (mode: ModalMode, reading: BPReading | null) => void
+  openModal: (mode: ModalMode, reading?: BPReading) => void
 }
 
 const ReadingList = ({readings, selectedReadingId, setBPList, setSelectedReading, openModal}: ReadingListProps) => {

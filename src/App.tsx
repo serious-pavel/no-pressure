@@ -93,9 +93,9 @@ function App() {
     localStorage.setItem('timeRangeScale', JSON.stringify(timeRangeScale))
   }, [timeRangeScale])
 
-  const openModal = (mode: ModalMode, reading: BPReading | null = null) => {
+  const openModal = (mode: ModalMode, reading?: BPReading) => {
     setModalMode(mode)
-    setActiveReading(reading)
+    if (reading) setActiveReading(reading)
   }
 
   const closeModal = () => {
