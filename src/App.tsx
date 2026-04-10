@@ -110,7 +110,11 @@ function App() {
       }
       <header>HEADER</header>
       <main className="main">
-        <AddReading setBPList={setBPList} setSelectedReading={setSelectedReadingId}/>
+        <AddReading
+          setBPList={setBPList}
+          setSelectedReading={setSelectedReadingId}
+          openModal={openModal}
+        />
         <ReadingList
           readings={sortedBPList}
           selectedReadingId={effectiveSelectedId}
