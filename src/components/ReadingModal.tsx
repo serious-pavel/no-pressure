@@ -6,6 +6,7 @@ interface ReadingModalProps {
   reading: BPReading | null
   onClose: () => void
   onDelete: () => void
+  onSave: (reading: BPReading) => void
 }
 
 interface modalConfig {
