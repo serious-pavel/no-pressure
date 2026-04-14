@@ -1,7 +1,8 @@
 const Header = () => {
   return (
     <header>
-      <i>NO PRESSURE</i>
+      <img src="/pulse-line-svgrepo-com.svg" alt="pulse"/>
+      <div>O PRESSURE</div>
     </header>
   )
 }
