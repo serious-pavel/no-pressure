@@ -638,3 +638,44 @@ body {
   flex-direction: column;
   gap: 1rem;
 }
+
+header img {
+  --header-img-size: calc(var(--header-height) * 0.7);
+  height: var(--header-img-size);
+  width: var(--header-img-size);
+  border-radius: 50%;
+  z-index: 1;
+  transform: scaleX(-1) rotate(0deg);
+  transition: transform 0.3s ease-in-out;
+  animation: wobble 2s ease-in-out;
+}
+
+header div {
+  margin: -0.1rem;
+  z-index: 2;
+}
+
+header {
+  color: #c80909;
+  font-weight: 600;
+  user-select: none;
+}
+
+@keyframes wobble {
+  0% {
+    transform: scaleX(-1) rotate(0deg);
+  }
+  45% {
+    transform: scaleX(-1) rotate(23deg);
+  }
+  55% {
+    transform: scaleX(-1) rotate(23deg);
+  }
+  100% {
+    transform: scaleX(-1) rotate(0deg);
+  }
+}
+
+header:hover img {
+  transform: scaleX(-1) rotate(23deg);
+}
