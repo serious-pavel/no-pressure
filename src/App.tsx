@@ -8,6 +8,7 @@ import AddReading from "./components/AddReading.tsx"
 import TimeRangeControls from "./components/TimeRangeControls.tsx"
 import {getVisibleReadings} from "./functions/timeRangeHelper.tsx"
 import ReadingModal from "./components/ReadingModal.tsx"
+import Header from "./components/Header.tsx";
 
 const initialBPList: BPReading[] =
   localStorage.getItem('bplist')
@@ -120,7 +121,7 @@ function App() {
           onDelete={handleDeleteReading}
         />
       }
-      <header>HEADER</header>
+      <Header/>
       <main className="main">
         <AddReading
           setBPList={setBPList}
