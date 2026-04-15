@@ -47,7 +47,6 @@ function App() {
 
   // modal window states
   const [modalMode, setModalMode] = useState<ModalMode>(null)
-  const [activeReading, setActiveReading] = useState<BPReading | null>(null)
 
   const sortedBPList = useMemo(
     () => [...bplist].sort(
@@ -75,6 +74,11 @@ function App() {
     }, [selectedReadingId, sortedBPList]
   )
 
+  const selectedReading = useMemo(
+    () => sortedBPList.find(reading => reading.id === effectiveSelectedId) ?? null,
+    [sortedBPList, effectiveSelectedId]
+  )
+
   console.log("sel: ", selectedReadingId)
 
   useEffect(() => {
@@ -95,31 +99,28 @@ function App() {
   }, [timeRangeScale])
 
   const openModal = (mode: ModalMode, reading?: BPReading) => {
+    if (mode !== 'add' && reading) {
+      setSelectedReadingId(reading.id)
+    }
     setModalMode(mode)
-    if (reading) setActiveReading(reading)
-  }
-
-  const closeModal = () => {
-    setModalMode(null)
-    setActiveReading(null)
   }
 
   const handleDeleteReading = () => {
-    if (!activeReading) return
-    const newReadings = bplist.filter((bpListItem) => bpListItem.id !== activeReading.id)
+    const newReadings = bplist.filter((bpListItem) => bpListItem.id !== selectedReadingId)
     setBPList(newReadings)
-    closeModal()
+    setModalMode(null)
   }
 
-  const handleSaveReading = (reading: BPReading) => {
+  const handleSaveReading = () => {
+    if (!selectedReading) return
     setBPList(prev => {
-      const exists = prev.some(bpListItem => bpListItem.id === reading.id)
+      const exists = prev.some(bpListItem => bpListItem.id === selectedReading.id)
       return exists ?
-        prev.map(bpListItem => bpListItem.id === reading.id ? reading : bpListItem) :
-        [...prev, reading]
+        prev.map(bpListItem => bpListItem.id === selectedReading.id ? selectedReading : bpListItem) :
+        [...prev, selectedReading]
     })
-    setSelectedReadingId(reading.id)
-    closeModal()
+    setSelectedReadingId(selectedReading.id)
+    setModalMode(null)
   }
 
   return (
@@ -127,8 +128,8 @@ function App() {
       {modalMode &&
         <ReadingModal
           mode={modalMode}
-          reading={activeReading}
-          onClose={closeModal}
+          selectedReading={selectedReading}
+          onClose={() => setModalMode(null)}
           onDelete={handleDeleteReading}
           onSave={handleSaveReading}
         />

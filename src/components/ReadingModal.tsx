@@ -1,22 +1,21 @@
 import type {BPReading, ModalMode} from "../types.ts"
-import {useEffect, type MouseEvent} from "react"
+import {useEffect, type MouseEvent, type SubmitEvent} from "react"
 
 interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
-  reading: BPReading | null
+  selectedReading: BPReading | null
   onClose: () => void
   onDelete: () => void
-  onSave: (reading: BPReading) => void
+  onSave: () => void
 }
 
 interface modalConfig {
   title: string
   confirmText: string
-  confirmAction: () => void
 }
 
 
-const ReadingModal = ({mode, reading, onClose, onDelete}: ReadingModalProps) => {
+const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: ReadingModalProps) => {
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -41,20 +40,32 @@ const ReadingModal = ({mode, reading, onClose, onDelete}: ReadingModalProps) => 
     'edit': {
       title: "Edit the reading",
       confirmText: "Save",
-      confirmAction: () => {
-      }
     },
     'add': {
       title: "Add new reading",
       confirmText: "Add",
-      confirmAction: () => {
-      }
     },
     'delete': {
       title: "Delete this reading",
       confirmText: "Delete",
-      confirmAction: onDelete
     },
+  }
+
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (mode === 'delete') {
+      console.log("Delete")
+      if (selectedReading) {
+        console.log("Delete reading", selectedReading.id)
+        onDelete()
+        return
+      }
+    }
+
+    if (!selectedReading && mode === 'edit') return
+
+    onSave()
+
   }
 
   const config = modalConfig[mode]
@@ -62,15 +73,18 @@ const ReadingModal = ({mode, reading, onClose, onDelete}: ReadingModalProps) => 
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
       <div className="modalWindow" role="dialog" aria-modal="true">
-
         <div>{config.title}</div>
-        <div>
-          {reading && reading.time.toLocaleString() + " " + reading.sys + "/" + reading.dia}
-        </div>
+
+        <form onSubmit={handleSubmit} id="readingForm">
+          <label htmlFor="sys">Systolic</label>
+          <input type="number" id="sys" name="sys" defaultValue={selectedReading?.sys} disabled={mode === 'delete'}/>
+          <label htmlFor="dia">Diastolic</label>
+          <input type="number" id="dia" name="dia" defaultValue={selectedReading?.dia} disabled={mode === 'delete'}/>
+        </form>
 
         <div className="modalWindowControls">
           <button onClick={onClose}>Close</button>
-          <button onClick={config.confirmAction}>{config.confirmText}</button>
+          <button type="submit" form="readingForm">{config.confirmText}</button>
         </div>
       </div>
     </div>
