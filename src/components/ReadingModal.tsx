@@ -113,6 +113,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 type="number"
                 value={formData.sys}
                 onChange={handleChange}
+                disabled={mode === 'delete'}
               />
             </label>
           </div>
@@ -125,6 +126,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 type="number"
                 value={formData.dia}
                 onChange={handleChange}
+                disabled={mode === 'delete'}
               />
             </label>
           </div>
@@ -137,6 +139,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 type="datetime-local"
                 value={formData.time}
                 onChange={handleChange}
+                disabled={mode === 'delete'}
               />
             </label>
           </div>
