@@ -53,6 +53,7 @@ const ReadingList = ({readings, selectedReadingId, setSelectedReading, openModal
               className="readingListItemControlButton"
               onClick={(e) => {
                 e.stopPropagation()
+                setSelectedReading(reading.id)
                 openModal('delete', reading)
               }}>
               <FaRegTrashAlt/>
@@ -61,6 +62,7 @@ const ReadingList = ({readings, selectedReadingId, setSelectedReading, openModal
               className="readingListItemControlButton"
               onClick={(e) => {
                 e.stopPropagation()
+                setSelectedReading(reading.id)
                 openModal('edit', reading)
               }}>
               <FaRegEdit/>

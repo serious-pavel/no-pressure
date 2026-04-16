@@ -98,10 +98,7 @@ function App() {
     localStorage.setItem('timeRangeScale', JSON.stringify(timeRangeScale))
   }, [timeRangeScale])
 
-  const openModal = (mode: ModalMode, reading?: BPReading) => {
-    if (mode !== 'add' && reading) {
-      setSelectedReadingId(reading.id)
-    }
+  const openModal = (mode: ModalMode) => {
     setModalMode(mode)
   }
 
