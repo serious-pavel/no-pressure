@@ -106,8 +106,7 @@ function App() {
   }
 
   const handleDeleteReading = () => {
-    const newReadings = bplist.filter((bpListItem) => bpListItem.id !== selectedReadingId)
-    setBPList(newReadings)
+    setBPList(prev => prev.filter(bpListItem => bpListItem.id !== selectedReadingId))
     setModalMode(null)
   }
 
