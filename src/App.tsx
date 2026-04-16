@@ -111,15 +111,15 @@ function App() {
     setModalMode(null)
   }
 
-  const handleSaveReading = () => {
-    if (!selectedReading) return
+  const handleSaveReading = (reading: BPReading) => {
+    if (!reading) return
     setBPList(prev => {
-      const exists = prev.some(bpListItem => bpListItem.id === selectedReading.id)
+      const exists = prev.some(bpListItem => bpListItem.id === reading.id)
       return exists ?
-        prev.map(bpListItem => bpListItem.id === selectedReading.id ? selectedReading : bpListItem) :
-        [...prev, selectedReading]
+        prev.map(bpListItem => bpListItem.id === reading.id ? reading : bpListItem) :
+        [...prev, reading]
     })
-    setSelectedReadingId(selectedReading.id)
+    setSelectedReadingId(reading.id)
     setModalMode(null)
   }
 

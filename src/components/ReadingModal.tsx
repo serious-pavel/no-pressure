@@ -6,7 +6,7 @@ interface ReadingModalProps {
   selectedReading: BPReading | null
   onClose: () => void
   onDelete: () => void
-  onSave: () => void
+  onSave: (reading: BPReading) => void
 }
 
 interface modalConfig {
@@ -93,7 +93,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
       time: new Date(formData.time),
     }
 
-    onSave()
+    onSave(readingToSave)
 
   }
 
