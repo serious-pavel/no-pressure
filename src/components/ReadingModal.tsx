@@ -1,5 +1,5 @@
 import type {BPReading, ModalMode} from "../types.ts"
-import {useEffect, type MouseEvent, type SubmitEvent} from "react"
+import {useEffect, type MouseEvent, type SubmitEvent, useState, type ChangeEvent} from "react"
 
 interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
@@ -14,8 +14,21 @@ interface modalConfig {
   confirmText: string
 }
 
+interface ReadingFormState {
+  sys: string
+  dia: string
+  time: string
+}
+
 
 const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: ReadingModalProps) => {
+
+  const [formData, setFormData] = useState<ReadingFormState>({
+    sys: mode === 'add' ? "120" : selectedReading?.sys.toString() || "",
+    dia: mode === 'add' ? "80" : selectedReading?.dia.toString() || "",
+    time: mode === 'add' ? new Date().toISOString().slice(0, 16) : selectedReading?.time.toISOString().slice(0, 16) || ""
+  })
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -51,8 +64,17 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     },
   }
 
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = event.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
+
     if (mode === 'delete') {
       console.log("Delete")
       if (selectedReading) {
@@ -63,6 +85,13 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     }
 
     if (!selectedReading && mode === 'edit') return
+
+    const readingToSave: BPReading = {
+      id: mode === 'edit' ? selectedReading?.id || crypto.randomUUID() : crypto.randomUUID(),
+      sys: Number(formData.sys),
+      dia: Number(formData.dia),
+      time: new Date(formData.time),
+    }
 
     onSave()
 
@@ -76,10 +105,41 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
         <div>{config.title}</div>
 
         <form onSubmit={handleSubmit} id="readingForm">
-          <label htmlFor="sys">Systolic</label>
-          <input type="number" id="sys" name="sys" defaultValue={selectedReading?.sys} disabled={mode === 'delete'}/>
-          <label htmlFor="dia">Diastolic</label>
-          <input type="number" id="dia" name="dia" defaultValue={selectedReading?.dia} disabled={mode === 'delete'}/>
+          <div>
+            <label>
+              Sys
+              <input
+                name="sys"
+                type="number"
+                value={formData.sys}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+
+          <div>
+            <label>
+              Dia
+              <input
+                name="dia"
+                type="number"
+                value={formData.dia}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+
+          <div>
+            <label>
+              Time
+              <input
+                name="time"
+                type="datetime-local"
+                value={formData.time}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
         </form>
 
         <div className="modalWindowControls">
