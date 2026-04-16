@@ -20,14 +20,31 @@ interface ReadingFormState {
   time: string
 }
 
+const getInitialFormData = (mode: Exclude<ModalMode, null>, selectedReading: BPReading | null) => {
+  if (mode === 'add') {
+    return {
+      sys: "120",
+      dia: "80",
+      time: new Date().toISOString().slice(0, 16),
+    }
+  }
+
+  return {
+    sys: selectedReading?.sys.toString() ?? "",
+    dia: selectedReading?.dia.toString() ?? "",
+    time: selectedReading?.time.toISOString().slice(0, 16) || "",
+  }
+}
 
 const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: ReadingModalProps) => {
 
-  const [formData, setFormData] = useState<ReadingFormState>({
-    sys: mode === 'add' ? "120" : selectedReading?.sys.toString() || "",
-    dia: mode === 'add' ? "80" : selectedReading?.dia.toString() || "",
-    time: mode === 'add' ? new Date().toISOString().slice(0, 16) : selectedReading?.time.toISOString().slice(0, 16) || ""
-  })
+  const [formData, setFormData] = useState<ReadingFormState>(
+    () => getInitialFormData(mode, selectedReading)
+  )
+
+  useEffect(() => {
+    setFormData(getInitialFormData(mode, selectedReading))
+  }, [mode, selectedReading]);
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
