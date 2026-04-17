@@ -93,9 +93,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     event.preventDefault()
 
     if (mode === 'delete') {
-      console.log("Delete")
       if (selectedReading) {
-        console.log("Delete reading", selectedReading.id)
         onDelete()
         return
       }

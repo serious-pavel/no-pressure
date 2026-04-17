@@ -79,15 +79,12 @@ function App() {
     [sortedBPList, effectiveSelectedId]
   )
 
-  console.log("sel: ", selectedReadingId)
-
   useEffect(() => {
     localStorage.setItem('bplist', JSON.stringify(bplist))
   }, [bplist])
 
   useEffect(() => {
     localStorage.setItem('selectedReading', JSON.stringify(selectedReadingId))
-    console.log("ef", selectedReadingId)
   }, [selectedReadingId])
 
   useEffect(() => {

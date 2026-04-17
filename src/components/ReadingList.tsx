@@ -25,7 +25,6 @@ const ReadingList = ({readings, selectedReadingId, setSelectedReading, openModal
         <div
           onClick={() => {
             setSelectedReading(reading.id)
-            console.log("Selected")
           }}
           key={reading.id}
           className={`readingListItem color-${getGrade(reading)} ${reading.id === selectedReadingId ? 'selected' : ''}`}
