@@ -119,6 +119,10 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
 
   const config = modalConfig[mode]
 
+  const getInputClass = (value: string) => {
+    return !value ? "inputError" : ""
+  }
+
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
       <div className="modalWindow" role="dialog" aria-modal="true">
@@ -129,6 +133,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
             <label>
               Sys
               <input
+                className={getInputClass(formData.sys)}
                 name="sys"
                 type="number"
                 value={formData.sys}
@@ -143,6 +148,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
             <label>
               Dia
               <input
+                className={getInputClass(formData.dia)}
                 name="dia"
                 type="number"
                 value={formData.dia}
@@ -157,6 +163,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
             <label>
               Time
               <input
+                className={getInputClass(formData.time)}
                 name="time"
                 type="datetime-local"
                 value={formData.time}

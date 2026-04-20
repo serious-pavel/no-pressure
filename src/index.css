@@ -679,3 +679,7 @@ header {
 header:hover img {
   transform: scaleX(-1) rotate(23deg);
 }
+
+.inputError {
+  background-color: var(--dot-grade-1-color);
+}
