@@ -17,7 +17,8 @@ interface modalConfig {
 interface ReadingFormState {
   sys: string
   dia: string
-  time: string
+  dtDate: string
+  dtTime: string
 }
 
 const getInitialFormData = (mode: Exclude<ModalMode, null>, selectedReading: BPReading | null) => {
@@ -25,14 +26,16 @@ const getInitialFormData = (mode: Exclude<ModalMode, null>, selectedReading: BPR
     return {
       sys: "120",
       dia: "80",
-      time: new Date().toISOString().slice(0, 16),
+      dtDate: new Date().toISOString().slice(0, 10),
+      dtTime: new Date().toISOString().slice(11, 16),
     }
   }
 
   return {
     sys: selectedReading?.sys.toString() ?? "",
     dia: selectedReading?.dia.toString() ?? "",
-    time: selectedReading?.time.toISOString().slice(0, 16) || "",
+    dtDate: selectedReading?.time.toISOString().slice(0, 10) || "",
+    dtTime: selectedReading?.time.toISOString().slice(11, 16) || "",
   }
 }
 
@@ -101,7 +104,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     }
 
     if (!selectedReading && mode === 'edit') return
-    if (!formData.sys || !formData.dia || !formData.time) {
+    if (!formData.sys || !formData.dia || !formData.dtDate || !formData.dtTime) {
       setModalError("Please fill in all fields")
       return
     }
@@ -110,7 +113,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
       id: mode === 'edit' ? selectedReading?.id || crypto.randomUUID() : crypto.randomUUID(),
       sys: Number(formData.sys),
       dia: Number(formData.dia),
-      time: new Date(formData.time),
+      time: new Date(`${formData.dtDate}T${formData.dtTime}`),
     }
 
     onSave(readingToSave)
@@ -163,10 +166,25 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
             <label>
               Time
               <input
-                className={getInputClass(formData.time)}
-                name="time"
-                type="datetime-local"
-                value={formData.time}
+                className={getInputClass(formData.dtDate)}
+                name="dtDate"
+                type="date"
+                value={formData.dtDate}
+                onChange={handleChange}
+                disabled={mode === 'delete'}
+                required
+              />
+            </label>
+          </div>
+
+          <div>
+            <label>
+              Time
+              <input
+                className={getInputClass(formData.dtTime)}
+                name="dtTime"
+                type="time"
+                value={formData.dtTime}
                 onChange={handleChange}
                 disabled={mode === 'delete'}
                 required
