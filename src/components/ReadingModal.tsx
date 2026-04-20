@@ -100,6 +100,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     }
 
     if (!selectedReading && mode === 'edit') return
+    if (!formData.sys || !formData.dia || !formData.time) return
 
     const readingToSave: BPReading = {
       id: mode === 'edit' ? selectedReading?.id || crypto.randomUUID() : crypto.randomUUID(),
@@ -129,6 +130,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 value={formData.sys}
                 onChange={handleChange}
                 disabled={mode === 'delete'}
+                required
               />
             </label>
           </div>
@@ -142,6 +144,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 value={formData.dia}
                 onChange={handleChange}
                 disabled={mode === 'delete'}
+                required
               />
             </label>
           </div>
@@ -155,6 +158,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 value={formData.time}
                 onChange={handleChange}
                 disabled={mode === 'delete'}
+                required
               />
             </label>
           </div>
