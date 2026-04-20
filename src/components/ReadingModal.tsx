@@ -41,6 +41,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   const [formData, setFormData] = useState<ReadingFormState>(
     () => getInitialFormData(mode, selectedReading)
   )
+  const [modalError, setModalError] = useState<string | null>(null)
 
   useEffect(() => {
     setFormData(getInitialFormData(mode, selectedReading))
@@ -100,7 +101,10 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     }
 
     if (!selectedReading && mode === 'edit') return
-    if (!formData.sys || !formData.dia || !formData.time) return
+    if (!formData.sys || !formData.dia || !formData.time) {
+      setModalError("Please fill in all fields")
+      return
+    }
 
     const readingToSave: BPReading = {
       id: mode === 'edit' ? selectedReading?.id || crypto.randomUUID() : crypto.randomUUID(),
@@ -162,6 +166,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
               />
             </label>
           </div>
+          {modalError && <div className="modalError">{modalError}</div>}
         </form>
 
         <div className="modalWindowControls">
