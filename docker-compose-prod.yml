@@ -20,6 +20,7 @@ services:
       - "traefik.http.routers.no-pressure-secure.rule=Host(`nopressure.${DOMAIN}`)"
       - "traefik.http.routers.no-pressure-secure.entrypoints=websecure"
       - "traefik.http.routers.no-pressure-secure.tls.certresolver=le"
+      - "traefik.http.routers.no-pressure-secure.middlewares=restricted-ips@file"
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
       interval: 1m
