@@ -5,8 +5,8 @@ interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
   selectedReading: BPReading | null
   onClose: () => void
-  onDelete: () => void
-  onSave: (reading: BPReading) => void
+  onDelete: () => Promise<void> | void
+  onSave: (reading: BPReading) => Promise<void> | void
 }
 
 interface modalConfig {
@@ -45,9 +45,11 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     () => getInitialFormData(mode, selectedReading)
   )
   const [modalError, setModalError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     setFormData(getInitialFormData(mode, selectedReading))
+    setModalError(null)
   }, [mode, selectedReading]);
 
   useEffect(() => {
@@ -93,30 +95,38 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     }))
   }
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setModalError(null)
+    setIsSubmitting(true)
 
-    if (mode === 'delete') {
-      if (selectedReading) {
-        onDelete()
+    try {
+      if (mode === 'delete') {
+        if (selectedReading) {
+          await onDelete()
+          return
+        }
+      }
+
+      if (!selectedReading && mode === 'edit') return
+      if (!formData.sys || !formData.dia || !formData.dtDate || !formData.dtTime) {
+        setModalError("Please fill in all fields")
         return
       }
-    }
 
-    if (!selectedReading && mode === 'edit') return
-    if (!formData.sys || !formData.dia || !formData.dtDate || !formData.dtTime) {
-      setModalError("Please fill in all fields")
-      return
-    }
+      const readingToSave: BPReading = {
+        id: mode === 'edit' ? selectedReading?.id || crypto.randomUUID() : crypto.randomUUID(),
+        sys: Number(formData.sys),
+        dia: Number(formData.dia),
+        time: new Date(`${formData.dtDate}T${formData.dtTime}`),
+      }
 
-    const readingToSave: BPReading = {
-      id: mode === 'edit' ? selectedReading?.id || crypto.randomUUID() : crypto.randomUUID(),
-      sys: Number(formData.sys),
-      dia: Number(formData.dia),
-      time: new Date(`${formData.dtDate}T${formData.dtTime}`),
+      await onSave(readingToSave)
+    } catch (error) {
+      setModalError(error instanceof Error ? error.message : "Something went wrong")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    onSave(readingToSave)
 
   }
 
@@ -195,8 +205,8 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
         </form>
 
         <div className="modalWindowControls">
-          <button onClick={onClose}>Close</button>
-          <button type="submit" form="readingForm">{config.confirmText}</button>
+          <button onClick={onClose} disabled={isSubmitting}>Close</button>
+          <button type="submit" form="readingForm" disabled={isSubmitting}>{config.confirmText}</button>
         </div>
       </div>
     </div>
