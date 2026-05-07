@@ -390,6 +390,7 @@ button:focus-visible {
   .main {
     flex-direction: row;
     min-width: 340px;
+    min-height: calc(100vh - var(--footer-height) - var(--header-height));
     height: 100%;
   }
 
