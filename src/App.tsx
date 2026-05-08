@@ -88,6 +88,7 @@ function App() {
     () => sortedBPList.find(reading => reading.id === effectiveSelectedId) ?? null,
     [sortedBPList, effectiveSelectedId]
   )
+  const canShowApp = !hasApiBaseUrl || (Boolean(user) && !authError)
 
   useEffect(() => {
     if (hasApiBaseUrl) {
@@ -256,7 +257,7 @@ function App() {
             </section>
           </div>
         ) : null}
-        {hasApiBaseUrl && user && authError ? (
+        {hasApiBaseUrl && authError ? (
           <div className="authPromptSlot">
             <section className="authPrompt">
               <div className="authPromptTitle">Could not load readings</div>
@@ -264,7 +265,7 @@ function App() {
             </section>
           </div>
         ) : null}
-        {(!hasApiBaseUrl || user) && (
+        {canShowApp && (
           <>
             <AddReading
               onCreateRandomReading={() => { void handleCreateRandomReading() }}
