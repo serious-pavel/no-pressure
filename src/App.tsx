@@ -261,7 +261,7 @@ function App() {
             </section>
           </div>
         ) : null}
-        {hasApiBaseUrl && authError ? (
+        {hasApiBaseUrl && user && authError ? (
           <div className="authPromptSlot">
             <section className="authPrompt">
               <div className="authPromptTitle">Could not load readings</div>
