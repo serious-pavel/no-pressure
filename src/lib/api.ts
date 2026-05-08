@@ -1,6 +1,6 @@
 import type {AuthSession, BPReading, BPReadingPayload, BPReadingRequestPayload} from "../types.ts"
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() || "/api"
+const apiBaseUrl = "/api"
 
 type ReadingListResponse = {
   readings: BPReadingPayload[]
@@ -14,18 +14,10 @@ const buildUrl = (path: string) => {
   const base = apiBaseUrl.replace(/\/$/, "")
   const suffix = path.startsWith("/") ? path : `/${path}`
 
-  if (!base) {
-    return suffix
-  }
-
   return `${base}${suffix}`
 }
 
 const request = async <T>(path: string, init?: RequestInit) => {
-  if (!apiBaseUrl) {
-    throw new Error("API base URL is not configured")
-  }
-
   const hasBody = init?.body !== undefined && init.body !== null
   const headers = new Headers(init?.headers ?? {})
   if (hasBody && !headers.has("Content-Type")) {
@@ -67,8 +59,6 @@ const unwrapReadings = (payload: ReadingListResponse | BPReadingPayload[]) =>
 
 const unwrapReading = (payload: ReadingItemResponse | BPReadingPayload) =>
   "reading" in payload ? payload.reading : payload
-
-export const hasApiBaseUrl = Boolean(apiBaseUrl)
 
 export const loadSession = async (): Promise<AuthSession> => {
   return request<AuthSession>("/auth/session")

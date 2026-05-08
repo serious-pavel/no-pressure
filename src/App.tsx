@@ -15,7 +15,6 @@ import {
   createReadingDraft,
   deleteReading,
   getAuthStartUrl,
-  hasApiBaseUrl,
   loadReadings,
   loadSession,
   signOut,
@@ -35,17 +34,11 @@ const readJson = <T,>(key: string, fallback: T) => {
   }
 }
 
-const loadLocalReadings = () =>
-  readJson<BPReading[]>(storageKey("local", "bplist"), []).map((reading) => ({
-    ...reading,
-    time: new Date(reading.time),
-  }))
-
 function App() {
   const [user, setUser] = useState<AppUser | null>(null)
-  const [authLoading, setAuthLoading] = useState<boolean>(hasApiBaseUrl)
+  const [authLoading, setAuthLoading] = useState<boolean>(true)
   const [authError, setAuthError] = useState<string | null>(null)
-  const [bplist, setBPList] = useState<BPReading[]>(() => hasApiBaseUrl ? [] : loadLocalReadings())
+  const [bplist, setBPList] = useState<BPReading[]>([])
   const [selectedReadingId, setSelectedReadingId] = useState<string>("")
 
   // time range controls states
@@ -88,51 +81,43 @@ function App() {
     () => sortedBPList.find(reading => reading.id === effectiveSelectedId) ?? null,
     [sortedBPList, effectiveSelectedId]
   )
-  const canShowApp = !hasApiBaseUrl || (Boolean(user) && !authError)
+  const canShowApp = Boolean(user) && !authError
 
   useEffect(() => {
-    if (hasApiBaseUrl) {
-      void (async () => {
-        try {
-          setAuthError(null)
-          const currentSession = await loadSession()
-          setUser(currentSession.user)
+    void (async () => {
+      try {
+        setAuthError(null)
+        const currentSession = await loadSession()
+        setUser(currentSession.user)
 
-          const scope = currentSession.user?.id ?? "local"
-          setSelectedReadingId(readJson<string>(storageKey(scope, "selectedReading"), ""))
-          setTimeRangeMode(readJson<TimeRangeMode>(storageKey(scope, "timeRangeMode"), "relative"))
-          setTimeRangeScale(readJson<TimeRangeScale>(storageKey(scope, "timeRangeScale"), "week"))
+        const scope = currentSession.user?.id ?? "local"
+        setSelectedReadingId(readJson<string>(storageKey(scope, "selectedReading"), ""))
+        setTimeRangeMode(readJson<TimeRangeMode>(storageKey(scope, "timeRangeMode"), "relative"))
+        setTimeRangeScale(readJson<TimeRangeScale>(storageKey(scope, "timeRangeScale"), "week"))
 
-          if (currentSession.user) {
-            try {
-              const readings = await loadReadings()
-              setBPList(readings)
-            } catch (error) {
-              const message = error instanceof Error ? error.message : "Failed to load readings"
-              setAuthError(message)
-              setBPList([])
-              if (/unauthorized/i.test(message)) {
-                setUser(null)
-              }
-            }
-          } else {
+        if (currentSession.user) {
+          try {
+            const readings = await loadReadings()
+            setBPList(readings)
+          } catch (error) {
+            const message = error instanceof Error ? error.message : "Failed to load readings"
+            setAuthError(message)
             setBPList([])
+            if (/unauthorized/i.test(message)) {
+              setUser(null)
+            }
           }
-        } catch (error) {
-          setAuthError(error instanceof Error ? error.message : "Failed to connect to the API")
+        } else {
           setBPList([])
-          setUser(null)
-        } finally {
-          setAuthLoading(false)
         }
-      })()
-      return
-    }
-
-    setSelectedReadingId(readJson<string>(storageKey("local", "selectedReading"), ""))
-    setTimeRangeMode(readJson<TimeRangeMode>(storageKey("local", "timeRangeMode"), "relative"))
-    setTimeRangeScale(readJson<TimeRangeScale>(storageKey("local", "timeRangeScale"), "week"))
-    setAuthLoading(false)
+      } catch (error) {
+        setAuthError(error instanceof Error ? error.message : "Failed to connect to the API")
+        setBPList([])
+        setUser(null)
+      } finally {
+        setAuthLoading(false)
+      }
+    })()
   }, [])
 
   useEffect(() => {
@@ -147,17 +132,12 @@ function App() {
     localStorage.setItem(storageKey(storageScope, "timeRangeScale"), JSON.stringify(timeRangeScale))
   }, [timeRangeScale, storageScope])
 
-  useEffect(() => {
-    if (hasApiBaseUrl) return
-    localStorage.setItem(storageKey("local", "bplist"), JSON.stringify(bplist))
-  }, [bplist])
-
   const openModal = (mode: ModalMode) => {
     setModalMode(mode)
   }
 
   const handleDeleteReading = async () => {
-    if (hasApiBaseUrl && selectedReadingId) {
+    if (selectedReadingId) {
       await deleteReading(selectedReadingId)
     }
 
@@ -168,9 +148,9 @@ function App() {
   const handleSaveReading = async (reading: BPReading) => {
     if (!reading) return
 
-    const savedReading = hasApiBaseUrl
-      ? (bplist.some(bpListItem => bpListItem.id === reading.id) ? await updateReading(reading) : await createReading(reading))
-      : reading
+    const savedReading = bplist.some(bpListItem => bpListItem.id === reading.id)
+      ? await updateReading(reading)
+      : await createReading(reading)
 
     setBPList(prev => {
       const exists = prev.some(bpListItem => bpListItem.id === savedReading.id)
@@ -189,22 +169,15 @@ function App() {
   const handleCreateRandomWeek = async () => {
     const drafts = createRandomWeekDrafts()
 
-    if (hasApiBaseUrl) {
-      const saved = await Promise.all(drafts.map((reading) => createReading(reading)))
-      setBPList(prev => [...prev, ...saved])
-      if (saved.length > 0) {
-        setSelectedReadingId(saved[0].id)
-      }
-      return
+    const saved = await Promise.all(drafts.map((reading) => createReading(reading)))
+    setBPList(prev => [...prev, ...saved])
+    if (saved.length > 0) {
+      setSelectedReadingId(saved[0].id)
     }
-
-    setBPList(prev => [...prev, ...drafts])
   }
 
   const handleClearAll = async () => {
-    if (hasApiBaseUrl) {
-      await Promise.all(bplist.map((reading) => deleteReading(reading.id)))
-    }
+    await Promise.all(bplist.map((reading) => deleteReading(reading.id)))
 
     setBPList([])
     setSelectedReadingId("")
@@ -242,26 +215,24 @@ function App() {
       <Header
         user={user}
         isLoading={authLoading}
-        hasApiBaseUrl={hasApiBaseUrl}
         onSignIn={handleSignIn}
         onSignOut={handleSignOut}
       />
       <main className="main">
-        {hasApiBaseUrl && !authLoading && !user ? (
+        {!authLoading && !user ? (
           <div className="authPromptSlot">
             <section className="authPrompt">
               <div className="authPromptTitle">Sign in to manage your readings</div>
               <div className="authPromptBody">
                 Readings are scoped to your account in the backend. Google login uses the server session flow.
               </div>
-              {authError && <div className="authPromptError">{authError}</div>}
               <button type="button" className="authPromptButton" onClick={handleSignIn}>
                 Continue with Google
               </button>
             </section>
           </div>
         ) : null}
-        {hasApiBaseUrl && user && authError ? (
+        {user && authError ? (
           <div className="authPromptSlot">
             <section className="authPrompt">
               <div className="authPromptTitle">Could not load readings</div>
