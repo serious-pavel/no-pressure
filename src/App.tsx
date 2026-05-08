@@ -108,8 +108,12 @@ function App() {
               const readings = await loadReadings()
               setBPList(readings)
             } catch (error) {
-              setAuthError(error instanceof Error ? error.message : "Failed to load readings")
+              const message = error instanceof Error ? error.message : "Failed to load readings"
+              setAuthError(message)
               setBPList([])
+              if (/unauthorized/i.test(message)) {
+                setUser(null)
+              }
             }
           } else {
             setBPList([])
