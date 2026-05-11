@@ -31,19 +31,18 @@ jobs:
         uses: appleboy/ssh-action@v1
         env:
           DEPLOY_TARGET: ${{ env.DEPLOY_TARGET }}
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
           DOMAIN: ${{ vars.DOMAIN }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
-          envs: DEPLOY_TARGET,VITE_API_BASE_URL,DOMAIN
+          envs: DEPLOY_TARGET,DOMAIN
           script: |
             cd "$DEPLOY_TARGET"
             envsubst < .env.prod.template > .env.prod
 
-      - name: Pull, Build and Run service
+      - name: Build and Run service
         uses: appleboy/ssh-action@v1
         env:
           DEPLOY_TARGET: ${{ env.DEPLOY_TARGET }}

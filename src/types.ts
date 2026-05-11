@@ -5,6 +5,30 @@ export interface BPReading {
   time: Date
 }
 
+export interface BPReadingPayload {
+  id: number
+  sys: number
+  dia: number
+  time: string
+}
+
+export interface BPReadingRequestPayload {
+  sys: number
+  dia: number
+  time?: string
+}
+
+export interface AppUser {
+  id: string
+  name: string
+  email: string
+  avatarUrl?: string | null
+}
+
+export interface AuthSession {
+  user: AppUser | null
+}
+
 export interface WeightReading {
   weight: number
   time: Date
