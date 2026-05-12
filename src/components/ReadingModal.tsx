@@ -1,5 +1,6 @@
 import type {BPReading, ModalMode} from "../types.ts"
 import {useEffect, type MouseEvent, type SubmitEvent, useState, type ChangeEvent} from "react"
+import {getLocalDateInputValue, getLocalTimeInputValue} from "../functions/dateTime.ts"
 
 interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
@@ -22,20 +23,22 @@ interface ReadingFormState {
 }
 
 const getInitialFormData = (mode: Exclude<ModalMode, null>, selectedReading: BPReading | null) => {
+  const now = new Date()
+
   if (mode === 'add') {
     return {
       sys: "120",
       dia: "80",
-      dtDate: new Date().toISOString().slice(0, 10),
-      dtTime: new Date().toISOString().slice(11, 16),
+      dtDate: getLocalDateInputValue(now),
+      dtTime: getLocalTimeInputValue(now),
     }
   }
 
   return {
     sys: selectedReading?.sys.toString() ?? "",
     dia: selectedReading?.dia.toString() ?? "",
-    dtDate: selectedReading?.time.toISOString().slice(0, 10) || "",
-    dtTime: selectedReading?.time.toISOString().slice(11, 16) || "",
+    dtDate: selectedReading ? getLocalDateInputValue(selectedReading.time) : "",
+    dtTime: selectedReading ? getLocalTimeInputValue(selectedReading.time) : "",
   }
 }
 
