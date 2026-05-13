@@ -20,6 +20,13 @@
   --main-color: #232323;
   --main-color-light: oklch(from var(--main-color) calc(l + 0.06) c h);
   --button-color: #1a1a1a;
+  --viewport-height: 100vh;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --viewport-height: 100dvh;
+  }
 }
 
 .recharts-cartesian-axis-tick-value {
@@ -48,7 +55,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 350px;
-  min-height: 100vh;
+  min-height: var(--viewport-height);
 }
 
 #root {
@@ -93,7 +100,7 @@ main {
   padding: var(--main-padding);
   box-sizing: border-box;
   background-color: var(--main-color-light);
-  height: calc(100vh - var(--header-height) - var(--footer-height));
+  height: calc(var(--viewport-height) - var(--header-height) - var(--footer-height));
   overflow: auto;
 }
 
@@ -390,7 +397,7 @@ button:focus-visible {
   .main {
     flex-direction: row;
     min-width: 340px;
-    min-height: calc(100vh - var(--footer-height) - var(--header-height));
+    min-height: calc(var(--viewport-height) - var(--footer-height) - var(--header-height));
     height: 100%;
   }
 
@@ -418,7 +425,7 @@ button:focus-visible {
   .readingListWrapper {
     order: 4;
     flex-basis: 100%;
-    min-height: calc(100vh - var(--graph-height) - var(--header-height) - var(--footer-height) - 2 * var(--main-padding) - var(--day-height) - 2 * var(--block-gap) - 2 * var(--block-padding));
+    min-height: calc(var(--viewport-height) - var(--graph-height) - var(--header-height) - var(--footer-height) - 2 * var(--main-padding) - var(--day-height) - 2 * var(--block-gap) - 2 * var(--block-padding));
   }
 
   .weekDay {
@@ -430,6 +437,8 @@ button:focus-visible {
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
+    max-height: calc(var(--viewport-height) - var(--header-height) - var(--footer-height) - 1rem);
+    overflow-y: auto;
   }
 }
 
