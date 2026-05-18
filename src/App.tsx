@@ -20,6 +20,7 @@ import {
   signOut,
   updateReading,
 } from "./lib/api.ts"
+import Footer from "./components/Footer.tsx";
 
 const storageKey = (scope: string, key: string) => `no-pressure:${scope}:${key}`
 
@@ -268,7 +269,7 @@ function App() {
           </>
         )}
       </main>
-      <footer>FOOTER</footer>
+      <Footer/>
     </>
   )
 }
