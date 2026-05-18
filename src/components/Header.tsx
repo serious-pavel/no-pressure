@@ -1,3 +1,4 @@
+import { FaHeartPulse } from "react-icons/fa6"
 import type {AppUser} from "../types.ts"
 import {FaGoogle, FaSignOutAlt} from "react-icons/fa"
 
@@ -11,8 +12,8 @@ interface HeaderProps {
 const Header = ({user, isLoading, onSignIn, onSignOut}: HeaderProps) => {
   return (
     <header>
-      <img src="/pulse-line-svgrepo-com.svg" alt="pulse"/>
-      <div>O PRESSURE</div>
+      <FaHeartPulse />
+      <div>NO PRESSURE</div>
       <div className="headerAuth">
         {isLoading && <span className="headerStatus">loading session</span>}
         {!isLoading && !user && (
