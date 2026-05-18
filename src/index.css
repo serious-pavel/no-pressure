@@ -21,6 +21,7 @@
   --main-color-light: oklch(from var(--main-color) calc(l + 0.06) c h);
   --button-color: #1a1a1a;
   --viewport-height: 100vh;
+  --dimmed-text-color: rgba(255, 255, 255, 0.62);
 }
 
 @supports (height: 100dvh) {
@@ -80,20 +81,21 @@ main {
 footer,
 header {
   background-color: var(--button-color);
+  padding: 0 0.9rem;
+  box-sizing: border-box;
+  justify-content: space-between;
 }
 
 header {
   height: var(--header-height);
   flex: 0 0 var(--header-height);
-  justify-content: space-between;
-  padding: 0 0.75rem;
-  box-sizing: border-box;
 }
 
 footer {
   height: var(--footer-height);
   flex: 0 0 var(--footer-height);
-
+  color: var(--dimmed-text-color);
+  font-size: 0.77rem;
 }
 
 main {
@@ -652,26 +654,21 @@ body {
   gap: 1rem;
 }
 
-header img {
-  --header-img-size: calc(var(--header-height) * 0.7);
-  height: var(--header-img-size);
-  width: var(--header-img-size);
-  border-radius: 50%;
-  z-index: 1;
-  transform: scaleX(-1) rotate(0deg);
-  transition: transform 0.3s ease-in-out;
-  animation: wobble 2s ease-in-out;
-}
-
-header div {
-  margin: -0.1rem;
-  z-index: 2;
-}
-
 header {
-  color: #c80909;
+  color: var(--dot-normal-color-bright);
   font-weight: 600;
   user-select: none;
+}
+
+.headerLogo {
+  display: inline-flex;
+  gap: var(--block-gap);
+}
+
+.headerLogoIcon {
+  --logo-size: 1.6rem;
+  width: var(--logo-size);
+  height: var(--logo-size);
 }
 
 .headerAuth {
@@ -731,24 +728,111 @@ header {
   color: #ef9090;
 }
 
-@keyframes wobble {
-  0% {
-    transform: scaleX(-1) rotate(0deg);
-  }
-  45% {
-    transform: scaleX(-1) rotate(23deg);
-  }
-  55% {
-    transform: scaleX(-1) rotate(23deg);
-  }
-  100% {
-    transform: scaleX(-1) rotate(0deg);
-  }
+.footerAttribution {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-header:hover img {
-  transform: scaleX(-1) rotate(23deg);
+.footerAttributionLabel {
+  flex-shrink: 0;
 }
+
+.footerAttributionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  padding-top: 1px; /* the element inside seems placed higher than neighbor element */
+}
+
+.footerAttributionLink:hover {
+  color: #ffffff;
+}
+
+.footerAttributionIcon {
+  flex: 0 0 auto;
+}
+
+.footerAttributionLink span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.footerIconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.footerIconButton:hover {
+  border-color: transparent;
+  color: #ffffff;
+}
+
+.footerIconButton svg {
+  --footer-icon-button-size: 1.2rem;
+  width: var(--footer-icon-button-size);
+  height: var(--footer-icon-button-size);
+}
+
+.footerDetails {
+  position: relative;
+  display: flex;
+  padding-top: 1px; /* svg inside looks smaller than neighbour, this aligns its position */
+}
+
+.footerDetails > summary {
+  list-style: none;
+}
+
+.footerLicensePanel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.5rem);
+  width: min(22rem, calc(100vw - 1.5rem));
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.65rem 0.75rem;
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  background: #1a1a1a;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  text-align: left;
+  z-index: 20;
+}
+
+.footerLicensePanel a {
+  color: #b8bbff;
+}
+
+.footerLicensePanel a:hover {
+  color: #ffffff;
+}
+
 
 .inputError {
   background-color: var(--dot-grade-1-color);
