@@ -34,11 +34,12 @@ const Footer = () => {
           </summary>
           <div className="footerLicensePanel" role="note">
             <div>
-              Font Awesome 5 icons are used through <a href="https://react-icons.github.io/react-icons/icons/fa/" target="_blank" rel="noopener noreferrer">react-icons</a>
-              {" "}under the CC BY 4.0 license.
+              Font Awesome 5 icons are used through <a href="https://react-icons.github.io/react-icons/icons/fa/" target="_blank" rel="noopener noreferrer">react-icons </a>
+              under the CC BY 4.0 license.
             </div>
             <div>
-              The site icon comes from SVG Repo and is licensed under CC0.
+              Font Awesome 6 icons are used through <a href="https://react-icons.github.io/react-icons/icons/fa6/" target="_blank" rel="noopener noreferrer">react-icons </a>
+              under the CC BY 4.0 license.
             </div>
           </div>
         </details>
