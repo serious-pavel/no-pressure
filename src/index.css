@@ -664,6 +664,7 @@ header {
   color: var(--dot-normal-color-bright);
   font-weight: 600;
   user-select: none;
+  text-wrap: nowrap;
 }
 
 .headerLogo {
