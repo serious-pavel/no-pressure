@@ -662,7 +662,7 @@ header {
 
 .headerLogo {
   display: inline-flex;
-  gap: var(--block-gap);
+  gap: 0.5rem;
 }
 
 .headerLogoIcon {
