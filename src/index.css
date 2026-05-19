@@ -191,19 +191,19 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.25s, transform 0.08s ease;
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: var(--dimmed-text-color);
 }
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 2px solid currentColor;
 }
 
-button:active {
+button:active:not(:disabled) {
   transform: scale(0.98);
 }
 
@@ -346,11 +346,24 @@ button:focus-visible {
 }
 
 .dropdownMenuButton {
-  display: contents;
+  display: flex;
   background-color: transparent;
   border: none;
   cursor: pointer;
   user-select: none;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+
+.dropdownMenuButton.extMainMenu {
+  border-radius: 1px;
+  outline-offset: 2px;
+}
+
+.dropdownMenuButton.extAddReading {
+  border-radius: 50%;
+  outline-offset: 3px;
 }
 
 .dropdownMenuOverlay {
