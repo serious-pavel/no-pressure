@@ -1,6 +1,8 @@
 import {FaHeartPulse} from "react-icons/fa6"
 import type {AppUser} from "../types.ts"
-import {FaGoogle, FaSignOutAlt} from "react-icons/fa"
+import {FaGoogle, FaBars} from "react-icons/fa"
+import DropdownMenu from "./DropdownMenu.tsx";
+import DropdownMenuItem from "./DropdownMenuItem.tsx";
 
 interface HeaderProps {
   user: AppUser | null
@@ -27,10 +29,9 @@ const Header = ({user, isLoading, onSignIn, onSignOut}: HeaderProps) => {
         {user && (
           <>
             <span className="headerUser">{user.name}</span>
-            <button type="button" className="headerAction" onClick={onSignOut}>
-              <FaSignOutAlt/>
-              <span>Sign out</span>
-            </button>
+            <DropdownMenu classExtension="extMainMenu" Icon={FaBars}>
+              <DropdownMenuItem onClick={onSignOut}>Sign out</DropdownMenuItem>
+            </DropdownMenu>
           </>
         )}
       </div>
