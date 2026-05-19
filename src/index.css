@@ -672,6 +672,11 @@ header {
   gap: 0.5rem;
 }
 
+.headerLogo span {
+  display: flex;
+  align-items: center;
+}
+
 .headerLogoIcon {
   --logo-size: 1.6rem;
   width: var(--logo-size);
