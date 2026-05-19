@@ -314,6 +314,12 @@ button:focus-visible {
   height: 100%;
 }
 
+.dropdownMenuWrapper.extMainMenu {
+  --wrapper-size: 1.4rem;
+  width: var(--wrapper-size);
+  height: var(--wrapper-size);
+}
+
 .dropdownMenu {
   position: absolute;
   top: 70%;
