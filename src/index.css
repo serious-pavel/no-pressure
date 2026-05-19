@@ -4,7 +4,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
   font-synthesis: none;
@@ -22,6 +21,78 @@
   --button-color: #1a1a1a;
   --viewport-height: 100vh;
   --dimmed-text-color: rgba(255, 255, 255, 0.62);
+  --bright-text-color: rgba(255, 255, 255, 0.87);
+
+  color: var(--bright-text-color);
+
+  --add-reading-height: 6rem;
+  --reading-list-width: 18rem;
+  /*--last-week-height: 7rem;*/
+  --last-week-height: 10rem;
+  --block-gap: 1rem;
+  --block-padding: 0.5rem;
+
+  /*--day-width: 5rem;*/
+  --day-width: 7rem;
+  --day-min-width: 3rem;
+  --day-height: 6rem;
+  --last-week-gap: 0.5rem;
+
+  --control-button-size: 2.4rem;
+  --control-divider-width: 2px;
+
+  --last-week-min-width: calc(7 * var(--day-min-width) + 6 * var(--last-week-gap));
+  --last-week-max-width: calc(7 * var(--day-width) + 6 * var(--last-week-gap));
+
+  --dot-normal-color: #064920;
+  --dot-normal-color-bright: #108e3e;
+  --dot-high-normal-color: #4e5a2c;
+  /*--dot-high-normal-color-bright: #f39634;*/
+  --dot-high-normal-color-bright: #838f34;
+  --dot-low-color: #35357c;
+  --dot-out-color: #955c79;
+  --dot-grade-1-color: #71320a;
+  --dot-grade-1-color-bright: #dc6514;
+  --dot-grade-2-color: #7b3636;
+  --dot-grade-2-color-bright: #ce585a;
+
+  --dot-unset-color: gray;
+  --dot-unset-color-bright: oklch(from var(--dot-unset-color) calc(l + 0.06) c h);
+}
+
+.color-grade-2 {
+  --grade-color: var(--dot-grade-2-color);
+  --grade-color-bright: var(--dot-grade-2-color-bright);
+}
+
+.color-grade-1 {
+  --grade-color: var(--dot-grade-1-color);
+  --grade-color-bright: var(--dot-grade-1-color-bright);
+}
+
+.color-normal {
+  --grade-color: var(--dot-normal-color);
+  --grade-color-bright: var(--dot-normal-color-bright);
+}
+
+.color-high-normal {
+  --grade-color: var(--dot-high-normal-color);
+  --grade-color-bright: var(--dot-high-normal-color-bright);
+}
+
+.color-low {
+  --grade-color: var(--dot-low-color);
+  --grade-color-bright: var(--dot-low-color);
+}
+
+.color-out {
+  --grade-color: var(--dot-out-color);
+  --grade-color-bright: var(--dot-out-color);
+}
+
+.color-unset {
+  --grade-color: var(--dot-unset-color);
+  --grade-color-bright: var(--dot-unset-color-bright);
 }
 
 @supports (height: 100dvh) {
@@ -132,6 +203,10 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+button:active {
+  transform: scale(0.98);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -151,78 +226,6 @@ button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.6);
   border-radius: 8px;
-}
-
-:root {
-  --add-reading-height: 8rem;
-  --reading-list-width: 18rem;
-  /*--last-week-height: 7rem;*/
-  --last-week-height: 10rem;
-  --block-gap: 1rem;
-  --block-padding: 0.5rem;
-
-  /*--day-width: 5rem;*/
-  --day-width: 7rem;
-  --day-min-width: 3rem;
-  --day-height: 6rem;
-  --last-week-gap: 0.5rem;
-
-  --control-button-size: 2.4rem;
-  --control-divider-width: 2px;
-
-  --last-week-min-width: calc(7 * var(--day-min-width) + 6 * var(--last-week-gap));
-  --last-week-max-width: calc(7 * var(--day-width) + 6 * var(--last-week-gap));
-
-  --dot-normal-color: #064920;
-  --dot-normal-color-bright: #108e3e;
-  /*--dot-high-normal-color: #4b5a2c;*/
-  --dot-high-normal-color: #4e5a2c;
-  /*--dot-high-normal-color-bright: #f39634;*/
-  --dot-high-normal-color-bright: #838f34;
-  --dot-low-color: #35357c;
-  --dot-out-color: #955c79;
-  --dot-grade-1-color: #71320a;
-  --dot-grade-1-color-bright: #dc6514;
-  --dot-grade-2-color: #7b3636;
-  --dot-grade-2-color-bright: #ce585a;
-
-  --dot-unset-color: gray;
-  --dot-unset-color-bright: oklch(from var(--dot-unset-color) calc(l + 0.06) c h);
-}
-
-.color-grade-2 {
-  --grade-color: var(--dot-grade-2-color);
-  --grade-color-bright: var(--dot-grade-2-color-bright);
-}
-
-.color-grade-1 {
-  --grade-color: var(--dot-grade-1-color);
-  --grade-color-bright: var(--dot-grade-1-color-bright);
-}
-
-.color-normal {
-  --grade-color: var(--dot-normal-color);
-  --grade-color-bright: var(--dot-normal-color-bright);
-}
-
-.color-high-normal {
-  --grade-color: var(--dot-high-normal-color);
-  --grade-color-bright: var(--dot-high-normal-color-bright);
-}
-
-.color-low {
-  --grade-color: var(--dot-low-color);
-  --grade-color-bright: var(--dot-low-color);
-}
-
-.color-out {
-  --grade-color: var(--dot-out-color);
-  --grade-color-bright: var(--dot-out-color);
-}
-
-.color-unset {
-  --grade-color: var(--dot-unset-color);
-  --grade-color-bright: var(--dot-unset-color-bright);
 }
 
 .main {
@@ -372,6 +375,14 @@ button:focus-visible {
   fill: var(--dot-unset-color);
   height: 100%;
   width: 100%;
+}
+
+header .dropdownMenuIcon {
+  fill: var(--dimmed-text-color);
+}
+
+.dropdownMenuIcon:hover {
+  fill: var(--bright-text-color);
 }
 
 .weekDay {
@@ -772,7 +783,7 @@ header {
 }
 
 .footerAttributionLink:hover {
-  color: #ffffff;
+  color: var(--bright-text-color);
 }
 
 .footerAttributionIcon {
@@ -805,7 +816,7 @@ header {
 
 .footerIconButton:hover {
   border-color: transparent;
-  color: #ffffff;
+  color: var(--bright-text-color);
 }
 
 .footerIconButton svg {
