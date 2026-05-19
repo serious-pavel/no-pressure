@@ -322,8 +322,6 @@ button:focus-visible {
 
 .dropdownMenu {
   position: absolute;
-  top: 70%;
-  left: 70%;
   width: 17rem;
   background: gray;
   display: flex;
@@ -332,6 +330,16 @@ button:focus-visible {
   padding: 0.2rem;
   border-radius: 0.6rem;
   z-index: 10;
+}
+
+.dropdownMenu.extAddReading {
+  top: 70%;
+  left: 70%;
+}
+
+.dropdownMenu.extMainMenu {
+  top: 120%;
+  right: -30%;
 }
 
 .dropdownMenuButton {
@@ -440,7 +448,7 @@ button:focus-visible {
     height: var(--day-height);
   }
 
-  .dropdownMenu {
+  .dropdownMenu.extAddReading {
     position: fixed;
     top: 60%;
     left: 50%;
