@@ -198,19 +198,31 @@ button:hover {
   border-color: var(--dimmed-text-color);
 }
 
-button:focus {
+*:focus {
   outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* set default border radius for focusable elements */
+:where(a, input, select, textarea, summary, [tabindex]) {
+  border-radius: 2px;
 }
 
 /* Only if browser supports :focus-visible */
 @supports selector(:focus-visible) {
-  button:focus {
+  *:focus {
     outline: none;
   }
 
-  button:focus-visible {
+  *:focus-visible {
     outline: 2px solid currentColor;
+    outline-offset: 2px;
   }
+}
+
+button.readingListItemControlButton,
+button.dropdownMenuItemButton {
+  outline-offset: 0;
 }
 
 button:active:not(:disabled) {
@@ -783,7 +795,7 @@ header {
   align-items: center;
   gap: 0.4rem;
   min-width: 0;
-  overflow: hidden;
+  /*overflow: hidden;*/
   white-space: nowrap;
 }
 
