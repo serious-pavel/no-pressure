@@ -198,9 +198,19 @@ button:hover {
   border-color: var(--dimmed-text-color);
 }
 
-button:focus,
-button:focus-visible {
+button:focus {
   outline: 2px solid currentColor;
+}
+
+/* Only if browser supports :focus-visible */
+@supports selector(:focus-visible) {
+  button:focus {
+    outline: none;
+  }
+
+  button:focus-visible {
+    outline: 2px solid currentColor;
+  }
 }
 
 button:active:not(:disabled) {
@@ -220,12 +230,6 @@ button:active:not(:disabled) {
   button {
     background-color: #f9f9f9;
   }
-}
-
-button:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.6);
-  border-radius: 8px;
 }
 
 .main {
@@ -354,16 +358,15 @@ button:focus-visible {
   height: 100%;
   width: 100%;
   padding: 0;
+  outline-offset: 2px;
 }
 
 .dropdownMenuButton.extMainMenu {
   border-radius: 1px;
-  outline-offset: 2px;
 }
 
 .dropdownMenuButton.extAddReading {
   border-radius: 50%;
-  outline-offset: 3px;
 }
 
 .dropdownMenuOverlay {
@@ -483,10 +486,6 @@ header .dropdownMenuIcon {
     transform: translate(-50%, -50%);
     max-height: calc(var(--viewport-height) - var(--header-height) - var(--footer-height) - 1rem);
     overflow-y: auto;
-  }
-
-  .dropdownMenuButton.extAddReading {
-    outline-offset: 2px;
   }
 }
 
