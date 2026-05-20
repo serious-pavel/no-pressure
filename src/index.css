@@ -432,6 +432,11 @@ header .dropdownMenuIcon {
     --block-gap: 0.5rem;
     --graph-height: 45vh;
     --block-padding: 0.3rem;
+
+    --add-reading-btn-min-width: 3rem;
+    --add-reading-btn-max-width: 5rem;
+    --add-reading-blok-width: 15%;
+    --add-reading-flex-basis: min(var(--add-reading-blok-width), var(--add-reading-btn-max-width));
   }
 
   .main {
@@ -449,16 +454,15 @@ header .dropdownMenuIcon {
 
   .addReadingWrapper {
     order: 2;
-    flex-basis: 15%;
-    min-width: 3rem;
+    flex-basis: var(--add-reading-flex-basis);
+    min-width: var(--add-reading-btn-min-width);
     flex-shrink: 1;
-    height: calc(var(--day-height) + 2 * var(--block-padding));
-
+    padding-right: 0;
   }
 
   .lastWeekWrapper {
     order: 3;
-    flex-basis: calc(100% - 15% - var(--block-gap));
+    flex-basis: calc(100% - var(--add-reading-flex-basis) - var(--block-gap));
     flex-shrink: 1;
   }
 
@@ -479,6 +483,10 @@ header .dropdownMenuIcon {
     transform: translate(-50%, -50%);
     max-height: calc(var(--viewport-height) - var(--header-height) - var(--footer-height) - 1rem);
     overflow-y: auto;
+  }
+
+  .dropdownMenuButton.extAddReading {
+    outline-offset: 2px;
   }
 }
 
