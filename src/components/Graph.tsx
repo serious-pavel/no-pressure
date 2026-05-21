@@ -1,3 +1,4 @@
+import {memo, useMemo} from "react"
 import type {PressureType, VisibleRangeResult} from "../types.ts"
 
 import {
@@ -48,21 +49,21 @@ const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
 
 const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
   const {start, end} = timeWindow
-  const rangePadding = (end.getTime() - start.getTime()) * 0.01
+  const rangePadding = useMemo(() => (end.getTime() - start.getTime()) * 0.01, [end, start])
 
-  const systolicData: Point[] = visibleReadings.map((reading) => ({
+  const systolicData = useMemo<Point[]>(() => visibleReadings.map((reading) => ({
     id: reading.id,
     x: reading.time.getTime(),
     y: reading.sys,
     kind: "sys",
-  }))
+  })), [visibleReadings])
 
-  const diastolicData: Point[] = visibleReadings.map((reading) => ({
+  const diastolicData = useMemo<Point[]>(() => visibleReadings.map((reading) => ({
     id: reading.id,
     x: reading.time.getTime(),
     y: reading.dia,
     kind: "dia",
-  }))
+  })), [visibleReadings])
 
   return (
     <div className="graphWrapper">
@@ -92,4 +93,4 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
   )
 }
 
-export default Graph
+export default memo(Graph)
