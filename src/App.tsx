@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from "react"
+import {useCallback, useEffect, useMemo, useState} from "react"
 import type {AppUser, BPReading, ModalMode, TimeRangeMode, TimeRangeScale} from "./types.ts"
 import ReadingList from "./components/ReadingList.tsx"
 import Graph from "./components/Graph.tsx"
@@ -9,6 +9,7 @@ import TimeRangeControls from "./components/TimeRangeControls.tsx"
 import {getVisibleReadings} from "./functions/timeRangeHelper.tsx"
 import ReadingModal from "./components/ReadingModal.tsx"
 import Header from "./components/Header.tsx"
+import ImportReadingsModal from "./components/ImportReadingsModal.tsx"
 import {
   createRandomWeekDrafts,
   createReading,
@@ -41,6 +42,7 @@ function App() {
   const [authError, setAuthError] = useState<string | null>(null)
   const [bplist, setBPList] = useState<BPReading[]>([])
   const [selectedReadingId, setSelectedReadingId] = useState<string>("")
+  const [importModalOpen, setImportModalOpen] = useState<boolean>(false)
 
   // time range controls states
   const [timeRangeMode, setTimeRangeMode] = useState<TimeRangeMode>("relative")
@@ -133,20 +135,24 @@ function App() {
     localStorage.setItem(storageKey(storageScope, "timeRangeScale"), JSON.stringify(timeRangeScale))
   }, [timeRangeScale, storageScope])
 
-  const openModal = (mode: ModalMode) => {
+  const openModal = useCallback((mode: ModalMode) => {
     setModalMode(mode)
-  }
+  }, [])
 
-  const handleDeleteReading = async () => {
+  const openImportModal = useCallback(() => {
+    setImportModalOpen(true)
+  }, [])
+
+  const handleDeleteReading = useCallback(async () => {
     if (selectedReadingId) {
       await deleteReading(selectedReadingId)
     }
 
     setBPList(prev => prev.filter(bpListItem => bpListItem.id !== selectedReadingId))
     setModalMode(null)
-  }
+  }, [selectedReadingId])
 
-  const handleSaveReading = async (reading: BPReading) => {
+  const handleSaveReading = useCallback(async (reading: BPReading) => {
     if (!reading) return
 
     const savedReading = bplist.some(bpListItem => bpListItem.id === reading.id)
@@ -161,13 +167,13 @@ function App() {
     })
     setSelectedReadingId(savedReading.id)
     setModalMode(null)
-  }
+  }, [bplist])
 
-  const handleCreateRandomReading = async () => {
+  const handleCreateRandomReading = useCallback(async () => {
     await handleSaveReading(createReadingDraft())
-  }
+  }, [handleSaveReading])
 
-  const handleCreateRandomWeek = async () => {
+  const handleCreateRandomWeek = useCallback(async () => {
     const drafts = createRandomWeekDrafts()
 
     const saved = await Promise.all(drafts.map((reading) => createReading(reading)))
@@ -175,20 +181,43 @@ function App() {
     if (saved.length > 0) {
       setSelectedReadingId(saved[0].id)
     }
-  }
+  }, [])
 
-  const handleClearAll = async () => {
+  const handleClearAll = useCallback(async () => {
     await Promise.all(bplist.map((reading) => deleteReading(reading.id)))
 
     setBPList([])
     setSelectedReadingId("")
-  }
+  }, [bplist])
 
-  const handleSignIn = () => {
+  const handleImportReadings = useCallback(async (readings: BPReading[]) => {
+    const importedReadings: BPReading[] = []
+    const failedImports: string[] = []
+
+    for (const reading of readings) {
+      try {
+        const savedReading = await createReading(reading)
+        importedReadings.push(savedReading)
+      } catch (error) {
+        failedImports.push(error instanceof Error ? error.message : "Failed to import a reading")
+      }
+    }
+
+    if (importedReadings.length > 0) {
+      setBPList(prev => [...prev, ...importedReadings])
+      setSelectedReadingId(importedReadings[0].id)
+    }
+
+    if (failedImports.length > 0) {
+      throw new Error(`Imported ${importedReadings.length} readings, ${failedImports.length} failed`)
+    }
+  }, [])
+
+  const handleSignIn = useCallback(() => {
     window.location.href = getAuthStartUrl()
-  }
+  }, [])
 
-  const handleSignOut = async () => {
+  const handleSignOut = useCallback(async () => {
     setUser(null)
     setAuthError(null)
     setBPList([])
@@ -200,10 +229,17 @@ function App() {
     } catch (error) {
       setAuthError(error instanceof Error ? error.message : "Failed to sign out")
     }
-  }
+  }, [])
 
   return (
     <>
+      {importModalOpen && (
+        <ImportReadingsModal
+          existingReadings={bplist}
+          onClose={() => setImportModalOpen(false)}
+          onImport={handleImportReadings}
+        />
+      )}
       {modalMode &&
         <ReadingModal
           mode={modalMode}
@@ -218,6 +254,7 @@ function App() {
         isLoading={authLoading}
         onSignIn={handleSignIn}
         onSignOut={handleSignOut}
+        onImportReadings={openImportModal}
       />
       <main className="main">
         {!authLoading && !user ? (
