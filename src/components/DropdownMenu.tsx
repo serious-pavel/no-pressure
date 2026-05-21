@@ -44,6 +44,8 @@ const DropdownMenu = ({children, classExtension, Icon}: DropdownMenuProps) => {
           onClick={() => setOpen(prev => !prev)}
           aria-expanded={open}
           aria-haspopup="menu"
+          aria-label="Open menu"
+          title="Open menu"
         >
           <Icon className={`dropdownMenuIcon ${classExtension}`}/>
         </button>
