@@ -1,6 +1,7 @@
 import type {BPReading, ModalMode} from "../types.ts"
-import {useEffect, type MouseEvent, type SubmitEvent, useState, type ChangeEvent} from "react"
+import {type SubmitEvent, useEffect, useState, type ChangeEvent} from "react"
 import {getLocalDateInputValue, getLocalTimeInputValue} from "../functions/dateTime.ts"
+import {useModalDismiss} from "../hooks/useModalDismiss.ts"
 
 interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
@@ -49,31 +50,12 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   )
   const [modalError, setModalError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const {handleOverlayClick} = useModalDismiss<HTMLDivElement>(onClose)
 
   useEffect(() => {
     setFormData(getInitialFormData(mode, selectedReading))
     setModalError(null)
-  }, [mode, selectedReading]);
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose()
-      }
-    }
-
-    document.addEventListener("keydown", handleEscape)
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape)
-    }
-  }, [onClose])
-
-  const handleOverlayClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-      onClose()
-    }
-  }
+  }, [mode, selectedReading])
 
   const modalConfig: Record<Exclude<ModalMode, null>, modalConfig> = {
     'edit': {

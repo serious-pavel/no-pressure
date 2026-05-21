@@ -1,6 +1,7 @@
-import {useEffect, useMemo, useState, type ChangeEvent, type MouseEvent} from "react"
+import {useMemo, useState, type ChangeEvent} from "react"
 import type {BPReading} from "../types.ts"
 import {parseBloodPressureCsv, type CsvImportResult} from "../functions/csvImport.ts"
+import {useModalDismiss} from "../hooks/useModalDismiss.ts"
 
 interface ImportReadingsModalProps {
   existingReadings: BPReading[]
@@ -16,23 +17,7 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
   const [isParsing, setIsParsing] = useState(false)
   const [isImporting, setIsImporting] = useState(false)
   const [modalError, setModalError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose()
-      }
-    }
-
-    document.addEventListener("keydown", handleEscape)
-    return () => document.removeEventListener("keydown", handleEscape)
-  }, [onClose])
-
-  const handleOverlayClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-      onClose()
-    }
-  }
+  const {handleOverlayClick} = useModalDismiss<HTMLDivElement>(onClose)
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
