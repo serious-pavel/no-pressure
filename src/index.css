@@ -722,6 +722,96 @@ body {
   gap: 1rem;
 }
 
+.modalWindow.importModal {
+  width: min(56rem, calc(100% - 2rem));
+  height: min(80vh, 44rem);
+}
+
+.importModalTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.importModalBody {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.importFilePicker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.importFilePicker input {
+  padding: 0.4rem 0;
+}
+
+.importSummaryFile,
+.importSummary,
+.importPreviewTitle {
+  text-align: left;
+}
+
+.importSummary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.importPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.importPreviewTable {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  overflow: auto;
+  min-height: 0;
+}
+
+.importPreviewRow {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1.8fr) minmax(6rem, 0.8fr);
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.35rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.importPreviewRow-ready {
+  box-shadow: inset 0 0 0 1px var(--dot-normal-color);
+}
+
+.importPreviewRow-duplicate,
+.importPreviewRow-conflict,
+.importPreviewRow-invalid {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.importPreviewLine,
+.importPreviewValue {
+  white-space: nowrap;
+}
+
+.importPreviewCell {
+  min-width: 0;
+}
+
+.importPreviewDate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
 header {
   color: var(--dot-normal-color-bright);
   font-weight: 600;
