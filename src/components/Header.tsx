@@ -1,6 +1,7 @@
 import {FaHeartPulse} from "react-icons/fa6"
 import type {AppUser} from "../types.ts"
 import {FaGoogle, FaBars} from "react-icons/fa"
+import {FaFileArrowUp} from "react-icons/fa6"
 import DropdownMenu from "./DropdownMenu.tsx";
 import DropdownMenuItem from "./DropdownMenuItem.tsx";
 
@@ -9,9 +10,10 @@ interface HeaderProps {
   isLoading: boolean
   onSignIn: () => void
   onSignOut: () => void
+  onImportReadings: () => void
 }
 
-const Header = ({user, isLoading, onSignIn, onSignOut}: HeaderProps) => {
+const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings}: HeaderProps) => {
   return (
     <header>
       <div className="headerLogo">
@@ -30,6 +32,12 @@ const Header = ({user, isLoading, onSignIn, onSignOut}: HeaderProps) => {
           <>
             <span className="headerUser">{user.name}</span>
             <DropdownMenu classExtension="extMainMenu" Icon={FaBars}>
+              <DropdownMenuItem onClick={onImportReadings}>
+                <span className="dropdownMenuItemIconLabel">
+                  <FaFileArrowUp />
+                  <span>Import CSV</span>
+                </span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={onSignOut}>Sign out</DropdownMenuItem>
             </DropdownMenu>
           </>
