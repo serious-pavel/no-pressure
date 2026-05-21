@@ -1,6 +1,6 @@
 import {FaHeartPulse} from "react-icons/fa6"
 import type {AppUser} from "../types.ts"
-import {FaGoogle, FaBars} from "react-icons/fa"
+import {FaGoogle, FaBars, FaSignOutAlt} from "react-icons/fa"
 import {FaFileArrowUp} from "react-icons/fa6"
 import DropdownMenu from "./DropdownMenu.tsx";
 import DropdownMenuItem from "./DropdownMenuItem.tsx";
@@ -38,7 +38,12 @@ const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings}: Header
                   <span>Import CSV</span>
                 </span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={onSignOut}>Sign out</DropdownMenuItem>
+              <DropdownMenuItem onClick={onSignOut}>
+                <span className="dropdownMenuItemIconLabel">
+                  <FaSignOutAlt />
+                  <span>Sign out</span>
+                </span>
+              </DropdownMenuItem>
             </DropdownMenu>
           </>
         )}
