@@ -1,3 +1,4 @@
+import {memo} from "react"
 import type {BPReading, Grade} from "../types.ts"
 import {getGrade} from "../functions/colorFunctions.ts"
 import {
@@ -60,4 +61,4 @@ const LastWeekDay = ({day}: LastWeekDayProps) => {
   )
 }
 
-export default LastWeekDay
+export default memo(LastWeekDay)
