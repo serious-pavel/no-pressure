@@ -11,9 +11,13 @@ interface HeaderProps {
   onSignIn: () => void
   onSignOut: () => void
   onImportReadings: () => void
+  onCreateRandomReading: () => void
+  onCreateRandomWeek: () => void
+  onClearAll: () => void
+  onClearSelection: () => void
 }
 
-const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings}: HeaderProps) => {
+const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings, onCreateRandomReading, onCreateRandomWeek, onClearAll, onClearSelection}: HeaderProps) => {
   return (
     <header>
       <div className="headerLogo">
@@ -34,16 +38,20 @@ const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings}: Header
             <DropdownMenu classExtension="extMainMenu" Icon={FaBars}>
               <DropdownMenuItem onClick={onImportReadings}>
                 <span className="dropdownMenuItemIconLabel">
-                  <FaFileArrowUp />
+                  <FaFileArrowUp/>
                   <span>Import CSV</span>
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onSignOut}>
                 <span className="dropdownMenuItemIconLabel">
-                  <FaSignOutAlt />
+                  <FaSignOutAlt/>
                   <span>Sign out</span>
                 </span>
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={onClearSelection}>Clear Selection</DropdownMenuItem>
+              <DropdownMenuItem onClick={onCreateRandomWeek}>Add 2 random weeks</DropdownMenuItem>
+              <DropdownMenuItem onClick={onCreateRandomReading}>Add an arbitrary reading</DropdownMenuItem>
+              <DropdownMenuItem onClick={onClearAll}>Clear all readings</DropdownMenuItem>
             </DropdownMenu>
           </>
         )}

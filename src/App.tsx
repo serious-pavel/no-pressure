@@ -255,6 +255,10 @@ function App() {
         onSignIn={handleSignIn}
         onSignOut={handleSignOut}
         onImportReadings={openImportModal}
+        onCreateRandomReading={() => { void handleCreateRandomReading() }}
+        onCreateRandomWeek={() => { void handleCreateRandomWeek() }}
+        onClearAll={() => { void handleClearAll() }}
+        onClearSelection={() => { setSelectedReadingId("") }}
       />
       <main className="main">
         {!authLoading && !user ? (
@@ -281,10 +285,6 @@ function App() {
         {canShowApp && (
           <>
             <AddReading
-              onCreateRandomReading={() => { void handleCreateRandomReading() }}
-              onCreateRandomWeek={() => { void handleCreateRandomWeek() }}
-              onClearAll={() => { void handleClearAll() }}
-              onClearSelection={() => { setSelectedReadingId("") }}
               openModal={openModal}
             />
             <ReadingList
