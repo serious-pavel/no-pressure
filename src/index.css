@@ -361,6 +361,11 @@ button:active:not(:disabled) {
   right: -30%;
 }
 
+.addReadingButton {
+  border-radius: 50%;
+}
+
+.addReadingButton,
 .dropdownMenuButton {
   display: flex;
   background-color: transparent;
@@ -404,16 +409,21 @@ button:active:not(:disabled) {
   padding: 0 0.75rem;
 }
 
+.addReadingIcon,
 .dropdownMenuIcon {
-  fill: var(--dot-unset-color);
   height: 100%;
   width: 100%;
 }
 
-header .dropdownMenuIcon {
+.addReadingIcon {
+  fill: var(--dot-unset-color);
+}
+
+.dropdownMenuIcon {
   fill: var(--dimmed-text-color);
 }
 
+.addReadingIcon:hover,
 .dropdownMenuIcon:hover {
   fill: var(--bright-text-color);
 }
