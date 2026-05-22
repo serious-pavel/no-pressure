@@ -351,11 +351,6 @@ button:active:not(:disabled) {
   z-index: 10;
 }
 
-.dropdownMenu.extAddReading {
-  top: 70%;
-  left: 70%;
-}
-
 .dropdownMenu.extMainMenu {
   top: 120%;
   right: -30%;
@@ -380,10 +375,6 @@ button:active:not(:disabled) {
 
 .dropdownMenuButton.extMainMenu {
   border-radius: 1px;
-}
-
-.dropdownMenuButton.extAddReading {
-  border-radius: 50%;
 }
 
 .dropdownMenuOverlay {
@@ -510,15 +501,6 @@ button:active:not(:disabled) {
 
   .weekDay {
     height: var(--day-height);
-  }
-
-  .dropdownMenu.extAddReading {
-    position: fixed;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-height: calc(var(--viewport-height) - var(--header-height) - var(--footer-height) - 1rem);
-    overflow-y: auto;
   }
 }
 
