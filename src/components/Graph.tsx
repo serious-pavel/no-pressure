@@ -20,6 +20,14 @@ const MAX_DOT_SIZE = 10
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
+const getXAxisTickFormatter = (spanMs: number) => {
+  if (spanMs >= 240 * DAY_MS) {
+    return (value: number) => new Date(value).toLocaleDateString(undefined, {month: "short"})
+  }
+
+  return (value: number) => new Date(value).toLocaleDateString(undefined, {month: "short", day: "numeric"})
+}
+
 const getXAxisTickCount = (spanMs: number) => {
   if (spanMs >= 240 * DAY_MS) return 6
   if (spanMs >= 60 * DAY_MS) return 5
@@ -121,6 +129,11 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
     return clamp(Math.min(widthBasedSize, densityBasedSize), MIN_DOT_SIZE, MAX_DOT_SIZE)
   }, [visibleReadings.length, wrapperWidth])
 
+  const xAxisTickFormatter = useMemo(
+    () => getXAxisTickFormatter(end.getTime() - start.getTime()),
+    [end, start],
+  )
+
   const xAxisTickCount = useMemo(
     () => getXAxisTickCount(end.getTime() - start.getTime()),
     [end, start],
@@ -140,7 +153,7 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
             interval="preserveStartEnd"
             tickCount={xAxisTickCount}
             tickMargin={4}
-            tickFormatter={(value) => new Date(value).toLocaleDateString()}
+            tickFormatter={xAxisTickFormatter}
           />
           <YAxis
             type="number"
