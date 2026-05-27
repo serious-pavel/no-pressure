@@ -14,6 +14,17 @@ import {getGrade} from "../functions/colorFunctions.ts"
 import {FaChevronCircleUp, FaChevronCircleDown, FaCircle} from "react-icons/fa"
 import type {IconType} from "react-icons"
 
+const DAY_MS = 24 * 60 * 60 * 1000
+const MIN_DOT_SIZE = 6
+const MAX_DOT_SIZE = 10
+
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
+
+const getXAxisTickCount = (spanMs: number) => {
+  if (spanMs >= 240 * DAY_MS) return 6
+  if (spanMs >= 60 * DAY_MS) return 5
+  return 4
+}
 
 type Point = {
   x: number
@@ -22,13 +33,12 @@ type Point = {
   id: string
 }
 
-const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
+const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapeProps) => {
   if (cx == null || cy == null) return null
   const point = payload as Point
 
   const grade = point.kind === "sys" ? getGrade({sys: point.y, dia: 0}) : getGrade({dia: point.y, sys: 0})
-  const size = 10
-  const offset = size / 2
+  const offset = dotSize / 2
 
   const iconSet: Record<PressureType, IconType> = {
     'sys': FaChevronCircleUp,
@@ -40,7 +50,7 @@ const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
   return (
     <>
       <g transform={`translate(${cx - offset}, ${cy - offset})`}>
-        <Icon size={size} className={`color-${grade} graphDot`}/>
+        <Icon size={dotSize} className={`color-${grade} graphDot`}/>
       </g>
       {/*<circle cx={cx} cy={cy} r={offset} className={`dot-${grade}`}/>*/}
     </>
@@ -99,6 +109,23 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
     return Math.round(28 + scale * 10)
   }, [wrapperWidth])
 
+  const dotSize = useMemo(() => {
+    const pointCount = Math.max(1, visibleReadings.length * 2)
+    const widthBasedSize = wrapperWidth > 0
+      ? Math.round(wrapperWidth / 96)
+      : MAX_DOT_SIZE
+    const densityBasedSize = wrapperWidth > 0
+      ? Math.round((wrapperWidth / pointCount) * 0.9)
+      : MAX_DOT_SIZE
+
+    return clamp(Math.min(widthBasedSize, densityBasedSize), MIN_DOT_SIZE, MAX_DOT_SIZE)
+  }, [visibleReadings.length, wrapperWidth])
+
+  const xAxisTickCount = useMemo(
+    () => getXAxisTickCount(end.getTime() - start.getTime()),
+    [end, start],
+  )
+
   return (
     <div className="graphWrapper" ref={wrapperRef}>
       <ResponsiveContainer width="100%" height="100%">
@@ -111,6 +138,7 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
             padding={{left: 6, right: 6}}
             minTickGap={8}
             interval="preserveStartEnd"
+            tickCount={xAxisTickCount}
             tickMargin={4}
             tickFormatter={(value) => new Date(value).toLocaleDateString()}
           />
@@ -125,8 +153,8 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
           <Tooltip
             labelFormatter={(value) => new Date(value).toLocaleString()}
           />
-          <Scatter data={systolicData} shape={renderCustomDot}/>
-          <Scatter data={diastolicData} shape={renderCustomDot}/>
+          <Scatter data={systolicData} shape={renderCustomDot(dotSize)}/>
+          <Scatter data={diastolicData} shape={renderCustomDot(dotSize)}/>
         </ScatterChart>
       </ResponsiveContainer>
     </div>
