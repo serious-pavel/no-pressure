@@ -22,7 +22,7 @@ const clamp = (value: number, min: number, max: number) => Math.min(max, Math.ma
 
 const getXAxisTickFormatter = (spanMs: number) => {
   if (spanMs >= 240 * DAY_MS) {
-    return (value: number) => new Date(value).toLocaleDateString(undefined, {month: "short"})
+    return (value: number) => new Date(value).toLocaleDateString(undefined, {year: "2-digit", month: "short"})
   }
 
   return (value: number) => new Date(value).toLocaleDateString(undefined, {month: "short", day: "numeric"})
