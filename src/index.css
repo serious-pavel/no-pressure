@@ -103,7 +103,8 @@
 
 .recharts-cartesian-axis-tick-value {
   font-weight: 400;
-  font-size: 0.9rem;
+  fill: var(--dimmed-text-color);
+  font-size: clamp(0.5rem, 2.6cqi, 0.9rem);
 }
 
 ul, li {
@@ -309,6 +310,7 @@ button:active:not(:disabled) {
   width: calc(100% - var(--reading-list-width) - var(--block-gap));
   flex-basis: calc(100% - var(--last-week-height) - var(--block-gap));
   min-width: var(--last-week-min-width);
+  container-type: inline-size;
 
 }
 
