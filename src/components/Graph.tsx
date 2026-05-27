@@ -1,4 +1,4 @@
-import {memo, useMemo} from "react"
+import {memo, useEffect, useMemo, useRef, useState} from "react"
 import type {PressureType, VisibleRangeResult} from "../types.ts"
 
 import {
@@ -49,6 +49,8 @@ const renderCustomDot = ({cx, cy, payload}: ScatterShapeProps) => {
 
 const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
   const {start, end} = timeWindow
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const [wrapperWidth, setWrapperWidth] = useState(0)
   const rangePadding = useMemo(() => (end.getTime() - start.getTime()) * 0.01, [end, start])
 
   const systolicData = useMemo<Point[]>(() => visibleReadings.map((reading) => ({
@@ -65,15 +67,51 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
     kind: "dia",
   })), [visibleReadings])
 
+  useEffect(() => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+
+    const updateWidth = () => {
+      setWrapperWidth(wrapper.getBoundingClientRect().width)
+    }
+
+    updateWidth()
+
+    const observer = new ResizeObserver(updateWidth)
+    observer.observe(wrapper)
+
+    return () => observer.disconnect()
+  }, [])
+
+  const chartMargin = useMemo(() => {
+    const scale = Math.min(1, Math.max(0, (wrapperWidth - 320) / 500))
+
+    return {
+      top: Math.round(6 + scale * 4),
+      right: Math.round(8 + scale * 10),
+      bottom: Math.round(6 + scale * 4),
+      left: 0,
+    }
+  }, [wrapperWidth])
+
+  const yAxisWidth = useMemo(() => {
+    const scale = Math.min(1, Math.max(0, (wrapperWidth - 320) / 500))
+    return Math.round(28 + scale * 10)
+  }, [wrapperWidth])
+
   return (
-    <div className="graphWrapper">
+    <div className="graphWrapper" ref={wrapperRef}>
       <ResponsiveContainer width="100%" height="100%">
-        <ScatterChart margin={{top: 15, right: 30, bottom: 15, left: 0}}>
+        <ScatterChart margin={chartMargin}>
           <XAxis
             type="number"
             name="date"
             dataKey="x"
             domain={[start.getTime() - rangePadding, end.getTime() + rangePadding]}
+            padding={{left: 6, right: 6}}
+            minTickGap={8}
+            interval="preserveStartEnd"
+            tickMargin={4}
             tickFormatter={(value) => new Date(value).toLocaleDateString()}
           />
           <YAxis
@@ -81,6 +119,8 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
             name="pressure"
             domain={["dataMin - 10", "dataMax + 10"]}
             dataKey="y"
+            width={yAxisWidth}
+            tickMargin={2}
           />
           <Tooltip
             labelFormatter={(value) => new Date(value).toLocaleString()}
