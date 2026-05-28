@@ -8,7 +8,8 @@ import {
   YAxis,
   ResponsiveContainer,
   Tooltip,
-  type ScatterShapeProps
+  type ScatterShapeProps,
+  type TooltipContentProps
 } from 'recharts'
 import {getGrade} from "../functions/colorFunctions.ts"
 import {FaChevronCircleUp, FaChevronCircleDown, FaCircle} from "react-icons/fa"
@@ -85,6 +86,10 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
     kind: "dia",
   })), [visibleReadings])
 
+  const readingByTime = useMemo(() => {
+    return new Map(visibleReadings.map((reading) => [reading.time.getTime(), reading]))
+  }, [visibleReadings])
+
   useEffect(() => {
     const wrapper = wrapperRef.current
     if (!wrapper) return
@@ -139,6 +144,38 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
     [end, start],
   )
 
+  const renderTooltip = ({active, payload}: TooltipContentProps<number, string>) => {
+    if (!active || !payload?.length) return null
+
+    const firstPoint = payload[0]?.payload as Point | undefined
+    const timestamp = firstPoint?.x
+    const reading = timestamp != null
+      ? readingByTime.get(timestamp) ?? visibleReadings.find((item) => item.id === firstPoint?.id)
+      : undefined
+
+    if (!reading) return null
+
+    return (
+      <div className="recharts-default-tooltip" style={{margin: 0, padding: "8px 12px"}}>
+        <p className="recharts-tooltip-label" style={{margin: 0}}>
+          {new Date(timestamp ?? reading.time.getTime()).toLocaleString(undefined, {
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
+        <div className="recharts-tooltip-item-list" style={{margin: "4px 0 0"}}>
+          <span>Systolic: {reading.sys}</span>
+          <br />
+          <span>Diastolic: {reading.dia}</span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="graphWrapper" ref={wrapperRef}>
       <ResponsiveContainer width="100%" height="100%">
@@ -164,7 +201,9 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
             tickMargin={2}
           />
           <Tooltip
-            labelFormatter={(value) => new Date(value).toLocaleString()}
+            content={renderTooltip}
+            isAnimationActive={false}
+            useTranslate3d={false}
           />
           <Scatter data={systolicData} shape={renderCustomDot(dotSize)}/>
           <Scatter data={diastolicData} shape={renderCustomDot(dotSize)}/>
