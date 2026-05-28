@@ -156,7 +156,7 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
     [end, start],
   )
 
-  const renderTooltip = ({active, payload}: TooltipContentProps<number, string>) => {
+  const renderTooltip = ({active, payload}: TooltipContentProps) => {
     if (!active || !payload?.length) return null
 
     const firstPoint = payload[0]?.payload as Point | undefined
