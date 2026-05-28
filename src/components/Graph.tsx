@@ -18,6 +18,7 @@ import type {IconType} from "react-icons"
 const DAY_MS = 24 * 60 * 60 * 1000
 const MIN_DOT_SIZE = 6
 const MAX_DOT_SIZE = 10
+const MIN_HIT_SIZE = 22
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
@@ -48,6 +49,8 @@ const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapePro
 
   const grade = point.kind === "sys" ? getGrade({sys: point.y, dia: 0}) : getGrade({dia: point.y, sys: 0})
   const offset = dotSize / 2
+  const hitSize = Math.max(dotSize * 3, MIN_HIT_SIZE)
+  const hitOffset = hitSize / 2
 
   const iconSet: Record<PressureType, IconType> = {
     'sys': FaChevronCircleUp,
@@ -58,8 +61,17 @@ const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapePro
 
   return (
     <>
-      <g transform={`translate(${cx - offset}, ${cy - offset})`}>
-        <Icon size={dotSize} className={`color-${grade} graphDot`}/>
+      <g transform={`translate(${cx - hitOffset}, ${cy - hitOffset})`}>
+        <circle
+          cx={hitOffset}
+          cy={hitOffset}
+          r={hitOffset}
+          fill="transparent"
+          pointerEvents="all"
+        />
+        <g transform={`translate(${hitOffset - offset}, ${hitOffset - offset})`} pointerEvents="none">
+          <Icon size={dotSize} className={`color-${grade} graphDot`}/>
+        </g>
       </g>
       {/*<circle cx={cx} cy={cy} r={offset} className={`dot-${grade}`}/>*/}
     </>
