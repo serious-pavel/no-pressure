@@ -627,30 +627,85 @@ body {
   position: absolute;
   top: var(--position-offset);
   right: var(--position-offset);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  max-width: min(calc(100vw - 2 * var(--position-offset)), 22rem);
   box-shadow: 0 0 1px 1px oklch(from currentColor calc(l - 0.25) c h);
-  padding: var(--block-padding) calc(var(--block-padding) * 2);
+  padding: var(--block-padding)  var(--block-padding) calc(var(--block-padding) * 2) var(--block-padding)  ;
   border-radius: calc(var(--block-padding) * 1.5);
+  background-color: var(--main-color);
+  z-index: 10;
 }
 
+.timeRangeControlsToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.15rem 0.35rem;
+  border: none;
+  background: none;
+}
+
+.timeRangeControlsToggleLabel {
+  white-space: nowrap;
+}
+
+.timeRangeControlsToggleIcon {
+  transition: transform 0.18s ease;
+}
+
+.timeRangeControlsWrapper.expanded .timeRangeControlsToggleIcon {
+  transform: rotate(180deg);
+}
+
+.timeRangeControlsPanel,
 .timeRangeModeSwitcher,
 .timeRangeScaleSwitcher,
 .timeRangeOffsetSwitcher {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  cursor: pointer;
+}
+
+.timeRangeControlsPanel {
+  display: none;
+  flex-direction: column;
+  gap: 0.55rem;
   user-select: none;
 }
 
-.timeRangeMode,
-.timeRangeScale {
-  color: oklch(from currentColor calc(l - 0.25) c h);
+.timeRangeControlsWrapper.expanded .timeRangeControlsPanel {
+  display: flex;
 }
 
-.timeRangeMode.active,
-.timeRangeScale.active {
+.timeRangeControlsWrapper {
+  min-width: 17ch;
+}
+
+.timeRangeModeSwitcher,
+.timeRangeScaleSwitcher,
+.timeRangeOffsetSwitcher {
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.timeRangeModeButton,
+.timeRangeScaleButton {
+  border: none;
+  background: none;
+  padding: 0.15rem 0.35rem;
+  margin: 0;
+  color: oklch(from currentColor calc(l - 0.25) c h);
+  border-radius: 0.35rem;
+}
+
+.timeRangeModeButton.active,
+.timeRangeScaleButton.active {
   color: oklch(from currentColor calc(l - 0.04) c h);
+  background-color: oklch(from currentColor calc(l - 0.18) c h / 0.18);
 }
 
 .timeRangeOffsetButton,
@@ -671,6 +726,18 @@ body {
   background: none;
 }
 
+.timeRangeOffsetButton svg {
+  --time-range-offset-button-size: 1.22rem;
+  width: var(--time-range-offset-button-size);
+  height: var(--time-range-offset-button-size);
+}
+
+.timeRangeOffset {
+  min-width: 10ch;
+  text-align: center;
+  white-space: nowrap;
+}
+
 .readingListItemControlButton {
   width: var(--control-button-size);
   height: var(--control-button-size);
@@ -686,8 +753,36 @@ body {
   border-radius: 0 var(--block-padding) var(--block-padding) 0;
 }
 
-.timeRangeOffset {
-  width: 3ch;
+@media (min-width: 700px) {
+  .timeRangeControlsWrapper {
+    max-width: min(calc(100vw - 2 * var(--position-offset)), 100%);
+    padding: var(--block-padding);
+  }
+
+  .timeRangeControlsToggle {
+    display: none;
+  }
+
+  .timeRangeControlsPanel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.35rem 0.75rem;
+    width: max-content;
+  }
+
+  .timeRangeModeSwitcher,
+  .timeRangeScaleSwitcher,
+  .timeRangeOffsetSwitcher {
+    justify-content: center;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .timeRangeOffsetSwitcher {
+    min-width: 17ch;
+  }
 }
 
 .modalWindowOverlay {
