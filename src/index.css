@@ -633,7 +633,6 @@ body {
   align-items: stretch;
   gap: 0.4rem;
   box-shadow: 0 0 1px 1px oklch(from currentColor calc(l - 0.25) c h);
-  padding: var(--block-padding) var(--block-padding) calc(var(--block-padding) * 2) var(--block-padding);
   border-radius: calc(var(--block-padding) * 1.5);
   background-color: var(--main-color);
   z-index: 10;
@@ -683,6 +682,11 @@ body {
 
 .timeRangeControlsWrapper {
   min-width: 17ch;
+  padding: var(--block-padding)
+}
+
+.timeRangeControlsWrapper.expanded {
+  padding: var(--block-padding) var(--block-padding) calc(var(--block-padding) * 1.5);
 }
 
 .timeRangeModeSwitcher,
