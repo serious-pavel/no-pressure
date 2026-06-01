@@ -36,7 +36,7 @@ function addYears(date: Date, years: number) {
   return result
 }
 
-function getWindowBounds(
+export function getWindowBounds(
   scale: TimeRangeScale,
   mode: TimeRangeMode,
   offset: number,
