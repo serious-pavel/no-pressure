@@ -624,15 +624,14 @@ body {
 }
 
 .timeRangeControlsWrapper {
-  --position-offset: calc(var(--main-padding) + var(--block-padding));
+  --position-offset: var(--main-padding);
   position: absolute;
-  top: var(--position-offset);
+  top: var(--main-padding);
   right: var(--position-offset);
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 0.4rem;
-  max-width: min(calc(100vw - 2 * var(--position-offset)), 22rem);
   box-shadow: 0 0 1px 1px oklch(from currentColor calc(l - 0.25) c h);
   padding: var(--block-padding) var(--block-padding) calc(var(--block-padding) * 2) var(--block-padding);
   border-radius: calc(var(--block-padding) * 1.5);
