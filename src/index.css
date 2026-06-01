@@ -311,7 +311,8 @@ button:active:not(:disabled) {
   flex-basis: calc(100% - var(--last-week-height) - var(--block-gap));
   min-width: var(--last-week-min-width);
   container-type: inline-size;
-
+  container-name: graphWrapper;
+  position: relative;
 }
 
 .lastWeekWrapper {
@@ -633,7 +634,7 @@ body {
   gap: 0.4rem;
   max-width: min(calc(100vw - 2 * var(--position-offset)), 22rem);
   box-shadow: 0 0 1px 1px oklch(from currentColor calc(l - 0.25) c h);
-  padding: var(--block-padding)  var(--block-padding) calc(var(--block-padding) * 2) var(--block-padding)  ;
+  padding: var(--block-padding) var(--block-padding) calc(var(--block-padding) * 2) var(--block-padding);
   border-radius: calc(var(--block-padding) * 1.5);
   background-color: var(--main-color);
   z-index: 10;
@@ -753,9 +754,18 @@ body {
   border-radius: 0 var(--block-padding) var(--block-padding) 0;
 }
 
-@media (min-width: 700px) {
+@container graphWrapper (max-width: 699px) {
+  .timeRangeControlsToggle {
+    display: flex;
+  }
+
+  .timeRangeControlsPanel {
+    display: none;
+  }
+}
+
+@container graphWrapper (min-width: 700px) {
   .timeRangeControlsWrapper {
-    max-width: min(calc(100vw - 2 * var(--position-offset)), 100%);
     padding: var(--block-padding);
   }
 
@@ -770,6 +780,7 @@ body {
     flex-wrap: nowrap;
     gap: 0.35rem 0.75rem;
     width: max-content;
+    user-select: none;
   }
 
   .timeRangeModeSwitcher,

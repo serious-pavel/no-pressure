@@ -1,4 +1,4 @@
-import {memo, useEffect, useMemo, useRef, useState} from "react"
+import {memo, useEffect, useMemo, useRef, useState, type ReactNode} from "react"
 import type {PressureType, VisibleRangeResult} from "../types.ts"
 
 import {
@@ -78,7 +78,7 @@ const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapePro
   )
 }
 
-const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
+const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {children: ReactNode}) => {
   const {start, end} = timeWindow
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [wrapperWidth, setWrapperWidth] = useState(0)
@@ -221,6 +221,7 @@ const Graph = ({visibleReadings, timeWindow}: VisibleRangeResult) => {
           <Scatter data={diastolicData} shape={renderCustomDot(dotSize)}/>
         </ScatterChart>
       </ResponsiveContainer>
+      {children}
     </div>
   )
 }
