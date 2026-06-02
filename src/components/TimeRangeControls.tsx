@@ -1,7 +1,7 @@
 import {useMemo, useState, type Dispatch, type SetStateAction} from "react"
 import {FaArrowCircleLeft, FaArrowCircleRight, FaChevronDown} from "react-icons/fa"
 import type {TimeRangeMode, TimeRangeScale} from "../types.ts"
-import {getWindowBounds} from "../functions/timeRangeHelper.tsx"
+import {getAlignedTimeRangeOffset, getWindowBounds} from "../functions/timeRangeHelper.tsx"
 
 interface TimeRangeControlsProps {
   timeRangeMode: TimeRangeMode
@@ -74,6 +74,11 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, timeRangeOffset, setT
     ? getCalendarModeLabel(timeRangeScale, timeWindow.start)
     : getRelativeModeLabel(timeRangeScale, timeRangeOffset)
 
+  const handleScaleChange = (nextScale: TimeRangeScale) => {
+    setTimeRangeOffset(prevOffset => getAlignedTimeRangeOffset(timeRangeScale, timeRangeMode, prevOffset, nextScale))
+    setTimeRangeScale(nextScale)
+  }
+
   return (
     <div className={`timeRangeControlsWrapper ${isExpanded ? "expanded" : ""}`}>
       <button
@@ -133,7 +138,7 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, timeRangeOffset, setT
           <button
             className={`timeRangeScaleButton ${timeRangeScale === "week" ? "active" : ""}`}
             type="button"
-            onClick={() => setTimeRangeScale("week")}
+            onClick={() => handleScaleChange("week")}
             aria-pressed={timeRangeScale === "week"}
           >
             week
@@ -141,7 +146,7 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, timeRangeOffset, setT
           <button
             className={`timeRangeScaleButton ${timeRangeScale === "month" ? "active" : ""}`}
             type="button"
-            onClick={() => setTimeRangeScale("month")}
+            onClick={() => handleScaleChange("month")}
             aria-pressed={timeRangeScale === "month"}
           >
             month
@@ -149,7 +154,7 @@ const TimeRangeControls = ({timeRangeMode, timeRangeScale, timeRangeOffset, setT
           <button
             className={`timeRangeScaleButton ${timeRangeScale === "year" ? "active" : ""}`}
             type="button"
-            onClick={() => setTimeRangeScale("year")}
+            onClick={() => handleScaleChange("year")}
             aria-pressed={timeRangeScale === "year"}
           >
             year
