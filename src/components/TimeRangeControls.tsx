@@ -28,13 +28,15 @@ const getWeekNumber = (date: Date) => {
   return Math.ceil((((utcDate.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
 }
 
+const getShortYear = (date: Date) => `'${String(date.getFullYear()).slice(-2)}`
+
 const getCalendarModeLabel = (timeRangeScale: TimeRangeScale, periodStart: Date) => {
   if (timeRangeScale === "week") {
-    return `Week ${getWeekNumber(periodStart)}`
+    return `Week ${getWeekNumber(periodStart)} ${getShortYear(periodStart)}`
   }
 
   if (timeRangeScale === "month") {
-    return periodStart.toLocaleDateString(undefined, {month: "long"})
+    return `${periodStart.toLocaleDateString(undefined, {month: "long"})} ${getShortYear(periodStart)}`
   }
 
   return periodStart.toLocaleDateString(undefined, {year: "numeric"})
