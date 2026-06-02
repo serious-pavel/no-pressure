@@ -19,6 +19,9 @@ const DAY_MS = 24 * 60 * 60 * 1000
 const MIN_DOT_SIZE = 6
 const MAX_DOT_SIZE = 10
 const MIN_HIT_SIZE = 22
+const DEFAULT_Y_AXIS_MIN = 55
+const DEFAULT_Y_AXIS_MAX = 165
+const Y_AXIS_EXPAND_PADDING = 5
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
@@ -30,10 +33,28 @@ const getXAxisTickFormatter = (spanMs: number) => {
   return (value: number) => new Date(value).toLocaleDateString(undefined, {month: "short", day: "numeric"})
 }
 
-const getXAxisTickCount = (spanMs: number) => {
-  if (spanMs >= 240 * DAY_MS) return 6
-  if (spanMs >= 60 * DAY_MS) return 5
-  return 4
+const getXAxisTicks = (startMs: number, endMs: number) => {
+  const spanMs = endMs - startMs
+  const tickCount = spanMs >= 240 * DAY_MS ? 6 : spanMs >= 60 * DAY_MS ? 5 : 4
+  if (tickCount <= 1) return [startMs, endMs]
+
+  const step = (endMs - startMs) / (tickCount - 1)
+  return Array.from({length: tickCount}, (_, index) => startMs + index * step)
+}
+
+const getYAxisDomain = (points: Point[]) => {
+  if (!points.length) {
+    return [DEFAULT_Y_AXIS_MIN, DEFAULT_Y_AXIS_MAX] as const
+  }
+
+  const values = points.map((point) => point.y)
+  const minValue = Math.min(...values)
+  const maxValue = Math.max(...values)
+
+  return [
+    minValue < DEFAULT_Y_AXIS_MIN ? Math.floor(minValue - Y_AXIS_EXPAND_PADDING) : DEFAULT_Y_AXIS_MIN,
+    maxValue > DEFAULT_Y_AXIS_MAX ? Math.ceil(maxValue + Y_AXIS_EXPAND_PADDING) : DEFAULT_Y_AXIS_MAX,
+  ] as const
 }
 
 type Point = {
@@ -82,7 +103,6 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
   const {start, end} = timeWindow
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [wrapperWidth, setWrapperWidth] = useState(0)
-  const rangePadding = useMemo(() => (end.getTime() - start.getTime()) * 0.01, [end, start])
 
   const systolicData = useMemo<Point[]>(() => visibleReadings.map((reading) => ({
     id: reading.id,
@@ -101,6 +121,12 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
   const readingByTime = useMemo(() => {
     return new Map(visibleReadings.map((reading) => [reading.time.getTime(), reading]))
   }, [visibleReadings])
+
+  const chartAnchorData = useMemo<Point[]>(() => {
+    return [
+      {id: "__chart-anchor__", x: start.getTime(), y: DEFAULT_Y_AXIS_MIN, kind: "sys"},
+    ]
+  }, [start])
 
   useEffect(() => {
     const wrapper = wrapperRef.current
@@ -151,9 +177,14 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
     [end, start],
   )
 
-  const xAxisTickCount = useMemo(
-    () => getXAxisTickCount(end.getTime() - start.getTime()),
+  const xAxisTicks = useMemo(
+    () => getXAxisTicks(start.getTime(), end.getTime()),
     [end, start],
+  )
+
+  const yAxisDomain = useMemo(
+    () => getYAxisDomain([...systolicData, ...diastolicData]),
+    [diastolicData, systolicData],
   )
 
   const renderTooltip = ({active, payload}: TooltipContentProps) => {
@@ -196,18 +227,17 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
             type="number"
             name="date"
             dataKey="x"
-            domain={[start.getTime() - rangePadding, end.getTime() + rangePadding]}
+            domain={[start.getTime(), end.getTime()]}
             padding={{left: 6, right: 6}}
             minTickGap={8}
-            interval="preserveStartEnd"
-            tickCount={xAxisTickCount}
+            ticks={xAxisTicks}
             tickMargin={4}
             tickFormatter={xAxisTickFormatter}
           />
           <YAxis
             type="number"
             name="pressure"
-            domain={["dataMin - 10", "dataMax + 10"]}
+            domain={yAxisDomain}
             dataKey="y"
             width={yAxisWidth}
             tickMargin={2}
@@ -217,6 +247,7 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
             isAnimationActive={false}
             useTranslate3d={false}
           />
+          <Scatter data={chartAnchorData} shape={() => null}/>
           <Scatter data={systolicData} shape={renderCustomDot(dotSize)}/>
           <Scatter data={diastolicData} shape={renderCustomDot(dotSize)}/>
         </ScatterChart>
