@@ -18,8 +18,10 @@ interface ReadingListItemProps {
   onEdit: (reading: BPReading) => void
 }
 
+const getShortYear = (date: Date) => `'${String(date.getFullYear()).slice(-2)}`
+
 const ReadingListItem = memo(({reading, isSelected, onSelect, onDelete, onEdit}: ReadingListItemProps) => {
-  const shortDate = reading.time.toLocaleDateString(undefined, {day: "2-digit", month: "short", year: "2-digit"})
+  const shortDate = `${reading.time.toLocaleDateString(undefined, {day: "2-digit", month: "short"})} ${getShortYear(reading.time)}`
   const shortTime = reading.time.toLocaleTimeString(undefined, {hour: "2-digit", minute: "2-digit"})
 
   return (
