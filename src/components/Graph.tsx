@@ -150,7 +150,7 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
     return {
       top: Math.round(6 + scale * 4),
       right: Math.round(8 + scale * 10),
-      bottom: Math.round(6 + scale * 4),
+      bottom: Math.round(-4 + scale * 8),
       left: 0,
     }
   }, [wrapperWidth])
@@ -231,7 +231,7 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
             padding={{left: 6, right: 6}}
             minTickGap={8}
             ticks={xAxisTicks}
-            tickMargin={4}
+            tickMargin={6}
             tickFormatter={xAxisTickFormatter}
           />
           <YAxis
@@ -240,7 +240,7 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
             domain={yAxisDomain}
             dataKey="y"
             width={yAxisWidth}
-            tickMargin={2}
+            tickMargin={4}
           />
           <Tooltip
             content={renderTooltip}
