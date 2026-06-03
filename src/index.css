@@ -768,7 +768,8 @@ body {
 }
 
 @container graphWrapper (min-width: 700px) {
-  .timeRangeControlsWrapper {
+  .timeRangeControlsWrapper,
+  .timeRangeControlsWrapper.expanded {
     padding: var(--block-padding);
   }
 
