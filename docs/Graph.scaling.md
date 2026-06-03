@@ -16,9 +16,6 @@ Current knobs:
 - `MAX_DOT_SIZE`: ceiling for large screens with low point density.
 - `wrapperWidth / 96`: how quickly dots grow with available width.
 - `0.75` in the density term: how aggressively dot size shrinks as point count rises.
-- `chartMargin.top` and `chartMargin.bottom`: `6 + scale * 4`
-- `chartMargin.right`: `8 + scale * 10`
-- `chartMargin.left`: keep at `0`
 - `yAxisWidth`: `28 + scale * 10`
 - `XAxis.padding`: `6` on each side
 - `XAxis.tickMargin`: `4`
@@ -34,4 +31,26 @@ How to tune it:
 - More left room for Y-axis labels on large screens: raise `yAxisWidth`.
 - More room for date labels at the edges: raise `XAxis.padding` and `tickMargin`.
 
+
+### Control the outer chart margins.
+
+`chartMargin.top` and `chartMargin.bottom`: `6 + scale * 4`
+
+`chartMargin.right`: `8 + scale * 10`
+
+`chartMargin.left`: keep at `0`
+
+- Increase the first number for more padding on small screens.
+- Increase the second number for more padding on big screens.
+- Decrease either one to tighten it.
+
 Avoid negative `chartMargin.left`. It pushes the plot outside the chart viewport and causes overflow.
+
+### Control scale.
+
+```const scale = Math.min(1, Math.max(0, (wrapperWidth - 320) / 500))```
+- This is the master switch for when scaling starts and how fast it grows.
+- 320 is the width where scaling begins.
+- 500 is how much width it takes to reach the max size.
+
+If you want the chart to start scaling earlier, lower 320. If you want it to scale more slowly, raise 500.
