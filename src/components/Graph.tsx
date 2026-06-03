@@ -12,7 +12,7 @@ import {
   type TooltipContentProps
 } from 'recharts'
 import {getGrade} from "../functions/colorFunctions.ts"
-import {FaChevronCircleUp, FaChevronCircleDown, FaCircle} from "react-icons/fa"
+import {FaCircle} from "react-icons/fa"
 import type {IconType} from "react-icons"
 
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -74,8 +74,8 @@ const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapePro
   const hitOffset = hitSize / 2
 
   const iconSet: Record<PressureType, IconType> = {
-    'sys': FaChevronCircleUp,
-    'dia': FaChevronCircleDown,
+    'sys': FaCircle,
+    'dia': FaCircle,
   }
 
   const Icon = iconSet[point.kind] ?? FaCircle
@@ -94,7 +94,6 @@ const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapePro
           <Icon size={dotSize} className={`color-${grade} graphDot`}/>
         </g>
       </g>
-      {/*<circle cx={cx} cy={cy} r={offset} className={`dot-${grade}`}/>*/}
     </>
   )
 }
