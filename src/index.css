@@ -45,16 +45,16 @@
   --last-week-max-width: calc(7 * var(--day-width) + 6 * var(--last-week-gap));
 
   --dot-normal-color: #064920;
-  --dot-normal-color-bright: #108e3e;
-  --dot-high-normal-color: #4e5a2c;
-  /*--dot-high-normal-color-bright: #f39634;*/
-  --dot-high-normal-color-bright: #838f34;
-  --dot-low-color: #35357c;
+  --dot-normal-color-bright: #0c7e3c;
+
+  --dot-high-normal-color: #4d601f;
+  --dot-high-normal-color-bright: #789a0d;
+  --dot-low-color: #18631a;
   --dot-out-color: #955c79;
-  --dot-grade-1-color: #71320a;
-  --dot-grade-1-color-bright: #dc6514;
-  --dot-grade-2-color: #7b3636;
-  --dot-grade-2-color-bright: #ce585a;
+  --dot-grade-1-color: #8e3e08;
+  --dot-grade-1-color-bright: #da6212;
+  --dot-grade-2-color: #7c1515;
+  --dot-grade-2-color-bright: #f90408;
 
   --dot-unset-color: gray;
   --dot-unset-color-bright: oklch(from var(--dot-unset-color) calc(l + 0.06) c h);
