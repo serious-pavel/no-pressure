@@ -1104,3 +1104,8 @@ header {
 .inputError {
   background-color: var(--dot-grade-1-color);
 }
+
+.recharts-default-tooltip {
+  border-radius: var(--block-gap);
+  backdrop-filter: blur(2px);
+}
