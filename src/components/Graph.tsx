@@ -14,6 +14,7 @@ import {
 import {getGrade} from "../functions/colorFunctions.ts"
 import {FaCircle} from "react-icons/fa"
 import type {IconType} from "react-icons"
+import type {BPReading} from "../types.ts"
 
 const DAY_MS = 24 * 60 * 60 * 1000
 const MIN_DOT_SIZE = 6
@@ -62,6 +63,61 @@ type Point = {
   y: number
   kind: PressureType
   id: string
+}
+
+type CursorProps = {
+  x?: number
+  top?: number
+  width?: number
+  height?: number
+  className?: string
+  payload?: TooltipContentProps["payload"]
+}
+
+type ReadingCursorProps = CursorProps & {
+  yAxisDomain: readonly [number, number]
+  readingByTime: Map<number, BPReading>
+}
+
+const ReadingCursor = ({x, top, width, height, className, payload, yAxisDomain, readingByTime}: ReadingCursorProps) => {
+  if (x == null || top == null || width == null || height == null) return null
+
+  const firstPoint = payload?.[0]?.payload as Point | undefined
+  const reading = firstPoint?.x != null
+    ? readingByTime.get(firstPoint.x)
+    : undefined
+
+  if (!reading) return null
+
+  const [minDomain, maxDomain] = yAxisDomain
+  const domainSpan = Math.max(1, maxDomain - minDomain)
+  const toY = (value: number) => {
+    const clampedValue = clamp(value, minDomain, maxDomain)
+    return top + height * (1 - ((clampedValue - minDomain) / domainSpan))
+  }
+
+  const y1 = toY(reading.sys)
+  const y2 = toY(reading.dia)
+  const topY = Math.min(y1, y2)
+  const bottomY = Math.max(y1, y2)
+
+  return (
+    <g className={className} pointerEvents="none">
+      <line
+        x1={x}
+        x2={x}
+        y1={topY}
+        y2={bottomY}
+        stroke="var(--dimmed-text-color)"
+        strokeWidth={2}
+        strokeDasharray="3 10"
+        strokeLinecap="round"
+        opacity={0.75}
+      />
+      <circle cx={x} cy={y1} r={2.4} fill="var(--dimmed-text-color)" opacity={0.65}/>
+      <circle cx={x} cy={y2} r={2.4} fill="var(--dimmed-text-color)" opacity={0.65}/>
+    </g>
+  )
 }
 
 const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapeProps) => {
@@ -243,6 +299,7 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
           />
           <Tooltip
             content={renderTooltip}
+            cursor={<ReadingCursor yAxisDomain={yAxisDomain} readingByTime={readingByTime} />}
             isAnimationActive={false}
             useTranslate3d={false}
           />
