@@ -20,6 +20,7 @@ Current knobs:
 - `XAxis.padding`: `6` on each side
 - `XAxis.tickMargin`: `4`
 - tick label size: `clamp(0.5rem, 2.6cqi, 0.9rem)`
+- `Scatter.isAnimationActive`: `false` for systolic and diastolic series
 
 How to tune it:
 
