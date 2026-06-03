@@ -247,8 +247,8 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
             useTranslate3d={false}
           />
           <Scatter data={chartAnchorData} shape={() => null}/>
-          <Scatter data={systolicData} shape={renderCustomDot(dotSize)}/>
-          <Scatter data={diastolicData} shape={renderCustomDot(dotSize)}/>
+          <Scatter data={systolicData} shape={renderCustomDot(dotSize)} isAnimationActive={false}/>
+          <Scatter data={diastolicData} shape={renderCustomDot(dotSize)} isAnimationActive={false}/>
         </ScatterChart>
       </ResponsiveContainer>
       {children}
