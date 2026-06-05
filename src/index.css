@@ -49,7 +49,8 @@
 
   --dot-high-normal-color: #4d601f;
   --dot-high-normal-color-bright: #789a0d;
-  --dot-low-color: #18631a;
+  --dot-low-color: #0b3e1e;
+  --dot-low-color-bright: #185a2f;
   --dot-out-color: #955c79;
   --dot-grade-1-color: #8e3e08;
   --dot-grade-1-color-bright: #da6212;
@@ -82,7 +83,7 @@
 
 .color-low {
   --grade-color: var(--dot-low-color);
-  --grade-color-bright: var(--dot-low-color);
+  --grade-color-bright: var(--dot-low-color-bright);
 }
 
 .color-out {
