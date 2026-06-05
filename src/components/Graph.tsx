@@ -13,7 +13,6 @@ import {
 } from 'recharts'
 import {getGrade} from "../functions/colorFunctions.ts"
 import {FaCircle} from "react-icons/fa"
-import type {IconType} from "react-icons"
 import type {BPReading} from "../types.ts"
 
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -138,13 +137,6 @@ const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapePro
   const hitSize = Math.max(dotSize * 3, MIN_HIT_SIZE)
   const hitOffset = hitSize / 2
 
-  const iconSet: Record<PressureType, IconType> = {
-    'sys': FaCircle,
-    'dia': FaCircle,
-  }
-
-  const Icon = iconSet[point.kind] ?? FaCircle
-
   return (
     <>
       <g transform={`translate(${cx - hitOffset}, ${cy - hitOffset})`}>
@@ -156,7 +148,7 @@ const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapePro
           pointerEvents="all"
         />
         <g transform={`translate(${hitOffset - offset}, ${hitOffset - offset})`} pointerEvents="none">
-          <Icon size={dotSize} className={`color-${grade} graphDot`}/>
+          <FaCircle size={dotSize} className={`color-${grade} graphDot`}/>
         </g>
       </g>
     </>
