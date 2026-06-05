@@ -1,5 +1,7 @@
 import type {BPReading, TimeRangeMode, TimeRangeScale, TimeWindow, VisibleRangeResult} from "../types.ts"
 
+const DAY_MS = 24 * 60 * 60 * 1000
+
 function startOfDay(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate())
 }
@@ -36,7 +38,48 @@ function addYears(date: Date, years: number) {
   return result
 }
 
-function getWindowBounds(
+function diffInCalendarWeeks(from: Date, to: Date) {
+  return Math.round((to.getTime() - from.getTime()) / (7 * DAY_MS))
+}
+
+function diffInCalendarMonths(from: Date, to: Date) {
+  return (to.getFullYear() - from.getFullYear()) * 12 + (to.getMonth() - from.getMonth())
+}
+
+function diffInCalendarYears(from: Date, to: Date) {
+  return to.getFullYear() - from.getFullYear()
+}
+
+function getRelativePeriodDays(scale: TimeRangeScale) {
+  if (scale === "week") return 7
+  if (scale === "month") return 30
+  return 365
+}
+
+function getCalendarPeriodStart(scale: TimeRangeScale, date: Date) {
+  if (scale === "week") return startOfWeek(date)
+  if (scale === "month") return startOfMonth(date)
+  return startOfYear(date)
+}
+
+function getSelectionAnchor(
+  scale: TimeRangeScale,
+  mode: TimeRangeMode,
+  offset: number,
+  now: Date,
+) {
+  if (mode === "calendar") {
+    if (scale === "week") return addDays(now, offset * 7)
+    if (scale === "month") return addMonths(now, offset)
+    return addYears(now, offset)
+  }
+
+  if (scale === "week") return addDays(now, offset * 7)
+  if (scale === "month") return addDays(now, offset * 30)
+  return addDays(now, offset * 365)
+}
+
+export function getWindowBounds(
   scale: TimeRangeScale,
   mode: TimeRangeMode,
   offset: number,
@@ -69,6 +112,34 @@ function getWindowBounds(
     start = addDays(startOfDay(anchor), -364 + offset * 365)
   }
   return {start, end: addYears(start, 1)}
+}
+
+export function getAlignedTimeRangeOffset(
+  currentScale: TimeRangeScale,
+  currentMode: TimeRangeMode,
+  currentOffset: number,
+  nextScale: TimeRangeScale,
+  now = new Date(),
+): number {
+  const anchor = getSelectionAnchor(currentScale, currentMode, currentOffset, now)
+
+  if (currentMode === "calendar") {
+    const from = getCalendarPeriodStart(nextScale, now)
+    const to = getCalendarPeriodStart(nextScale, anchor)
+
+    if (nextScale === "week") {
+      return diffInCalendarWeeks(from, to)
+    }
+
+    if (nextScale === "month") {
+      return diffInCalendarMonths(from, to)
+    }
+
+    return diffInCalendarYears(from, to)
+  }
+
+  const dayDiff = Math.round((anchor.getTime() - startOfDay(now).getTime()) / DAY_MS)
+  return Math.round(dayDiff / getRelativePeriodDays(nextScale))
 }
 
 export function getVisibleReadings(

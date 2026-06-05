@@ -293,16 +293,17 @@ function App() {
               setSelectedReading={setSelectedReadingId}
               openModal={openModal}
             />
-            <Graph {...visibleReadings}/>
+            <Graph {...visibleReadings}>
+              <TimeRangeControls
+                timeRangeMode={timeRangeMode}
+                timeRangeScale={timeRangeScale}
+                timeRangeOffset={timeRangeOffset}
+                setTimeRangeMode={setTimeRangeMode}
+                setTimeRangeScale={setTimeRangeScale}
+                setTimeRangeOffset={setTimeRangeOffset}
+              />
+            </Graph>
             <LastWeek days={bucketedWeek}/>
-            <TimeRangeControls
-              timeRangeMode={timeRangeMode}
-              timeRangeScale={timeRangeScale}
-              timeRangeOffset={timeRangeOffset}
-              setTimeRangeMode={setTimeRangeMode}
-              setTimeRangeScale={setTimeRangeScale}
-              setTimeRangeOffset={setTimeRangeOffset}
-            />
           </>
         )}
       </main>

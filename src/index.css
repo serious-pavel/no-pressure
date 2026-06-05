@@ -45,16 +45,17 @@
   --last-week-max-width: calc(7 * var(--day-width) + 6 * var(--last-week-gap));
 
   --dot-normal-color: #064920;
-  --dot-normal-color-bright: #108e3e;
-  --dot-high-normal-color: #4e5a2c;
-  /*--dot-high-normal-color-bright: #f39634;*/
-  --dot-high-normal-color-bright: #838f34;
-  --dot-low-color: #35357c;
+  --dot-normal-color-bright: #0c7e3c;
+
+  --dot-high-normal-color: #4d601f;
+  --dot-high-normal-color-bright: #789a0d;
+  --dot-low-color: #0b3e1e;
+  --dot-low-color-bright: #185a2f;
   --dot-out-color: #955c79;
-  --dot-grade-1-color: #71320a;
-  --dot-grade-1-color-bright: #dc6514;
-  --dot-grade-2-color: #7b3636;
-  --dot-grade-2-color-bright: #ce585a;
+  --dot-grade-1-color: #8e3e08;
+  --dot-grade-1-color-bright: #da6212;
+  --dot-grade-2-color: #7c1515;
+  --dot-grade-2-color-bright: #f90408;
 
   --dot-unset-color: gray;
   --dot-unset-color-bright: oklch(from var(--dot-unset-color) calc(l + 0.06) c h);
@@ -82,7 +83,7 @@
 
 .color-low {
   --grade-color: var(--dot-low-color);
-  --grade-color-bright: var(--dot-low-color);
+  --grade-color-bright: var(--dot-low-color-bright);
 }
 
 .color-out {
@@ -103,7 +104,8 @@
 
 .recharts-cartesian-axis-tick-value {
   font-weight: 400;
-  font-size: 0.9rem;
+  fill: var(--dimmed-text-color);
+  font-size: clamp(0.5rem, 2.6cqi, 0.9rem);
 }
 
 ul, li {
@@ -309,7 +311,9 @@ button:active:not(:disabled) {
   width: calc(100% - var(--reading-list-width) - var(--block-gap));
   flex-basis: calc(100% - var(--last-week-height) - var(--block-gap));
   min-width: var(--last-week-min-width);
-
+  container-type: inline-size;
+  container-name: graphWrapper;
+  position: relative;
 }
 
 .lastWeekWrapper {
@@ -348,7 +352,7 @@ button:active:not(:disabled) {
   gap: 0.2rem;
   padding: 0.2rem;
   border-radius: 0.6rem;
-  z-index: 10;
+  z-index: 100;
 }
 
 .dropdownMenu.extMainMenu {
@@ -621,34 +625,92 @@ body {
 }
 
 .timeRangeControlsWrapper {
-  --position-offset: calc(var(--main-padding) + var(--block-padding));
+  --position-offset: var(--main-padding);
   position: absolute;
-  top: var(--position-offset);
+  top: var(--main-padding);
   right: var(--position-offset);
-  box-shadow: 0 0 1px 1px oklch(from currentColor calc(l - 0.25) c h);
-  padding: var(--block-padding) calc(var(--block-padding) * 2);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  box-shadow: 0 0 1px 1px var(--dot-unset-color);
   border-radius: calc(var(--block-padding) * 1.5);
+  z-index: 10;
+  backdrop-filter: blur(2px);
 }
 
+.timeRangeControlsToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.15rem 0.35rem;
+  border: none;
+  background: none;
+}
+
+.timeRangeControlsToggleLabel {
+  white-space: nowrap;
+}
+
+.timeRangeControlsToggleIcon {
+  transition: transform 0.18s ease;
+}
+
+.timeRangeControlsWrapper.expanded .timeRangeControlsToggleIcon {
+  transform: rotate(180deg);
+}
+
+.timeRangeControlsPanel,
 .timeRangeModeSwitcher,
 .timeRangeScaleSwitcher,
 .timeRangeOffsetSwitcher {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  cursor: pointer;
+}
+
+.timeRangeControlsPanel {
+  display: none;
+  flex-direction: column;
+  gap: 0.55rem;
   user-select: none;
 }
 
-.timeRangeMode,
-.timeRangeScale {
-  color: oklch(from currentColor calc(l - 0.25) c h);
+.timeRangeControlsWrapper.expanded .timeRangeControlsPanel {
+  display: flex;
 }
 
-.timeRangeMode.active,
-.timeRangeScale.active {
+.timeRangeControlsWrapper {
+  min-width: 17ch;
+  padding: var(--block-padding)
+}
+
+.timeRangeControlsWrapper.expanded {
+  padding: var(--block-padding) var(--block-padding) calc(var(--block-padding) * 1.5);
+}
+
+.timeRangeModeSwitcher,
+.timeRangeScaleSwitcher,
+.timeRangeOffsetSwitcher {
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.timeRangeModeButton,
+.timeRangeScaleButton {
+  border: none;
+  background: none;
+  padding: 0.15rem 0.35rem;
+  margin: 0;
+  color: oklch(from currentColor calc(l - 0.25) c h);
+  border-radius: 0.35rem;
+}
+
+.timeRangeModeButton.active,
+.timeRangeScaleButton.active {
   color: oklch(from currentColor calc(l - 0.04) c h);
+  background-color: oklch(from currentColor calc(l - 0.18) c h / 0.18);
 }
 
 .timeRangeOffsetButton,
@@ -669,6 +731,18 @@ body {
   background: none;
 }
 
+.timeRangeOffsetButton svg {
+  --time-range-offset-button-size: 1.22rem;
+  width: var(--time-range-offset-button-size);
+  height: var(--time-range-offset-button-size);
+}
+
+.timeRangeOffset {
+  min-width: 10ch;
+  text-align: center;
+  white-space: nowrap;
+}
+
 .readingListItemControlButton {
   width: var(--control-button-size);
   height: var(--control-button-size);
@@ -684,8 +758,47 @@ body {
   border-radius: 0 var(--block-padding) var(--block-padding) 0;
 }
 
-.timeRangeOffset {
-  width: 3ch;
+@container graphWrapper (max-width: 699px) {
+  .timeRangeControlsToggle {
+    display: flex;
+  }
+
+  .timeRangeControlsPanel {
+    display: none;
+  }
+}
+
+@container graphWrapper (min-width: 700px) {
+  .timeRangeControlsWrapper,
+  .timeRangeControlsWrapper.expanded {
+    padding: var(--block-padding);
+  }
+
+  .timeRangeControlsToggle {
+    display: none;
+  }
+
+  .timeRangeControlsPanel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.35rem 0.75rem;
+    width: max-content;
+    user-select: none;
+  }
+
+  .timeRangeModeSwitcher,
+  .timeRangeScaleSwitcher,
+  .timeRangeOffsetSwitcher {
+    justify-content: center;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .timeRangeOffsetSwitcher {
+    min-width: 17ch;
+  }
 }
 
 .modalWindowOverlay {
@@ -991,4 +1104,9 @@ header {
 
 .inputError {
   background-color: var(--dot-grade-1-color);
+}
+
+.recharts-default-tooltip {
+  border-radius: var(--block-gap);
+  backdrop-filter: blur(2px);
 }
