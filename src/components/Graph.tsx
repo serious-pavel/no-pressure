@@ -77,9 +77,10 @@ type CursorProps = {
 type ReadingCursorProps = CursorProps & {
   yAxisDomain: readonly [number, number]
   readingByTime: Map<number, BPReading>
+  dotSize: number
 }
 
-const ReadingCursor = ({x, top, width, height, className, payload, yAxisDomain, readingByTime}: ReadingCursorProps) => {
+const ReadingCursor = ({x, top, width, height, className, payload, yAxisDomain, readingByTime, dotSize}: ReadingCursorProps) => {
   if (x == null || top == null || width == null || height == null) return null
 
   const firstPoint = payload?.[0]?.payload as Point | undefined
@@ -101,21 +102,29 @@ const ReadingCursor = ({x, top, width, height, className, payload, yAxisDomain, 
   const topY = Math.min(y1, y2)
   const bottomY = Math.max(y1, y2)
 
+  const dotScale = (dotSize / 2) * 1.3 /* divide by 2 because it is a radius */
+
   return (
     <g className={className} pointerEvents="none">
+      <defs>
+        <linearGradient id="dynamicBlend" x1={x} y1={topY} x2={x} y2={bottomY} gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color={`var(--dot-${getGrade({sys: reading.sys, dia: 0})}-color-bright)`}/>
+          <stop offset="100%" stop-color={`var(--dot-${getGrade({sys: 0, dia: reading.dia})}-color-bright)`}/>
+        </linearGradient>
+      </defs>
       <line
         x1={x}
         x2={x}
         y1={topY}
         y2={bottomY}
-        stroke="var(--dimmed-text-color)"
-        strokeWidth={2}
-        strokeDasharray="3 10"
+        stroke="url(#dynamicBlend)"
+        strokeWidth={4}
+        strokeDasharray="4 12"
         strokeLinecap="round"
-        opacity={0.75}
+        opacity={0.5}
       />
-      <circle cx={x} cy={y1} r={2.4} fill="var(--dimmed-text-color)" opacity={0.65}/>
-      <circle cx={x} cy={y2} r={2.4} fill="var(--dimmed-text-color)" opacity={0.65}/>
+      <circle cx={x} cy={y1} r={dotScale} fill={`var(--dot-${getGrade({sys: reading.sys, dia: 0})}-color-bright)`}/>
+      <circle cx={x} cy={y2} r={dotScale} fill={`var(--dot-${getGrade({sys: 0, dia: reading.dia})}-color-bright)`}/>
     </g>
   )
 }
@@ -154,7 +163,7 @@ const renderCustomDot = (dotSize: number) => ({cx, cy, payload}: ScatterShapePro
   )
 }
 
-const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {children: ReactNode}) => {
+const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & { children: ReactNode }) => {
   const {start, end} = timeWindow
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [wrapperWidth, setWrapperWidth] = useState(0)
@@ -267,7 +276,7 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
         </p>
         <div className="recharts-tooltip-item-list" style={{margin: "4px 0 0"}}>
           <span>Systolic: {reading.sys}</span>
-          <br />
+          <br/>
           <span>Diastolic: {reading.dia}</span>
         </div>
       </div>
@@ -299,7 +308,7 @@ const Graph = ({visibleReadings, timeWindow, children}: VisibleRangeResult & {ch
           />
           <Tooltip
             content={renderTooltip}
-            cursor={<ReadingCursor yAxisDomain={yAxisDomain} readingByTime={readingByTime} />}
+            cursor={<ReadingCursor yAxisDomain={yAxisDomain} readingByTime={readingByTime} dotSize={dotSize}/>}
             isAnimationActive={false}
             useTranslate3d={false}
           />
