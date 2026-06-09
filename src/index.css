@@ -815,9 +815,10 @@ body {
   align-items: center;
 }
 
+
 .modalWindow {
-  width: 70%;
-  height: 70%;
+  width: min(66rem, calc(100% - 2 * var(--block-gap)));
+  height: min(83vh, 54rem);
   background-color: black;
   z-index: 1001;
   border-radius: 1rem;
@@ -825,11 +826,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-.modalWindow.importModal {
-  width: min(56rem, calc(100% - 2rem));
-  height: min(80vh, 44rem);
+  box-sizing: border-box;
 }
 
 .importModalTitle {
