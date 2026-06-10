@@ -126,7 +126,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
       <div className="modalWindow" role="dialog" aria-modal="true">
 
         <div className="modalWindowContent">
-          <div>{config.title}</div>
+          <div className="modalWindowTitle">{config.title}</div>
 
           <form onSubmit={handleSubmit} id="readingForm">
             <div>
