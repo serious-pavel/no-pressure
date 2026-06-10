@@ -124,70 +124,73 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
       <div className="modalWindow" role="dialog" aria-modal="true">
-        <div>{config.title}</div>
 
-        <form onSubmit={handleSubmit} id="readingForm">
-          <div>
-            <label>
-              Sys
-              <input
-                className={getInputClass(formData.sys)}
-                name="sys"
-                type="number"
-                value={formData.sys}
-                onChange={handleChange}
-                disabled={mode === 'delete'}
-                required
-              />
-            </label>
-          </div>
+        <div className="modalWindowContent">
+          <div>{config.title}</div>
 
-          <div>
-            <label>
-              Dia
-              <input
-                className={getInputClass(formData.dia)}
-                name="dia"
-                type="number"
-                value={formData.dia}
-                onChange={handleChange}
-                disabled={mode === 'delete'}
-                required
-              />
-            </label>
-          </div>
+          <form onSubmit={handleSubmit} id="readingForm">
+            <div>
+              <label>
+                Sys
+                <input
+                  className={getInputClass(formData.sys)}
+                  name="sys"
+                  type="number"
+                  value={formData.sys}
+                  onChange={handleChange}
+                  disabled={mode === 'delete'}
+                  required
+                />
+              </label>
+            </div>
 
-          <div>
-            <label>
-              Time
-              <input
-                className={getInputClass(formData.dtDate)}
-                name="dtDate"
-                type="date"
-                value={formData.dtDate}
-                onChange={handleChange}
-                disabled={mode === 'delete'}
-                required
-              />
-            </label>
-          </div>
+            <div>
+              <label>
+                Dia
+                <input
+                  className={getInputClass(formData.dia)}
+                  name="dia"
+                  type="number"
+                  value={formData.dia}
+                  onChange={handleChange}
+                  disabled={mode === 'delete'}
+                  required
+                />
+              </label>
+            </div>
 
-          <div>
-            <label>
-              Time
-              <input
-                className={getInputClass(formData.dtTime)}
-                name="dtTime"
-                type="time"
-                value={formData.dtTime}
-                onChange={handleChange}
-                disabled={mode === 'delete'}
-                required
-              />
-            </label>
-          </div>
-          {modalError && <div className="modalError">{modalError}</div>}
-        </form>
+            <div>
+              <label>
+                Time
+                <input
+                  className={getInputClass(formData.dtDate)}
+                  name="dtDate"
+                  type="date"
+                  value={formData.dtDate}
+                  onChange={handleChange}
+                  disabled={mode === 'delete'}
+                  required
+                />
+              </label>
+            </div>
+
+            <div>
+              <label>
+                Time
+                <input
+                  className={getInputClass(formData.dtTime)}
+                  name="dtTime"
+                  type="time"
+                  value={formData.dtTime}
+                  onChange={handleChange}
+                  disabled={mode === 'delete'}
+                  required
+                />
+              </label>
+            </div>
+            {modalError && <div className="modalError">{modalError}</div>}
+          </form>
+        </div>
 
         <div className="modalWindowControls">
           <button onClick={onClose} disabled={isSubmitting}>Close</button>
