@@ -72,64 +72,65 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
       <div className="modalWindow importModal" role="dialog" aria-modal="true">
-        <div className="importModalTitle">Import blood pressure readings</div>
-        <div className="importModalBody">
-          Select a CSV file in format: <span><b>datetime, systolic, diastolic, comment</b></span>.
-          <br/> The importer skips exact duplicates and
-          rows that collide with an existing reading in the same minute.
-        </div>
-
-        <div className="importFilePicker">
-          <input
-            ref={fileInputRef}
-            className="importFilePickerInput"
-            type="file"
-            accept=".csv,text/csv"
-            onChange={handleFileChange}
-            disabled={isParsing || isImporting}
-          />
-
-          <button
-            type="button"
-            className={`importFilePseudoPicker${selectedFileName ? " active" : ""}`}
-            onClick={openFilePicker}
-            disabled={isParsing || isImporting}
-          >
-            {selectedFileName || "Choose CSV File"}
-          </button>
-        </div>
-
-        {parseResult && (
-          <div className="importSummary">
-            <div>Rows: {parseResult.totalRows}</div>
-            <div>Ready: {parseResult.importableRows.length}</div>
-            <div>Duplicates: {parseResult.duplicateRows}</div>
-            <div>Conflicts: {parseResult.conflictRows}</div>
-            <div>Invalid: {parseResult.invalidRows}</div>
-            <div>Delimiter: {JSON.stringify(parseResult.delimiter)}</div>
+        <div className="modalWindowContent">
+          <div className="importModalTitle">Import blood pressure readings</div>
+          <div className="importModalBody">
+            Select a CSV file in format: <span><b>datetime, systolic, diastolic, comment</b></span>.
+            <br/> The importer skips exact duplicates and
+            rows that collide with an existing reading in the same minute.
           </div>
-        )}
 
-        {previewRows.length > 0 && (
-          <div className="importPreview">
-            <div className="importPreviewTitle">Preview</div>
-            <div className="importPreviewTable">
-              {previewRows.map(row => (
-                <div key={`${row.lineNumber}-${row.status}`} className={`importPreviewRow importPreviewRow-${row.status}`}>
-                  <div className="importPreviewCell importPreviewLine">Line {row.lineNumber}</div>
-                  <div className="importPreviewCell importPreviewDate">
-                    {row.reading ? row.reading.time.toLocaleString() : row.message}
-                  </div>
-                  <div className="importPreviewCell importPreviewValue">
-                    {row.reading ? `${row.reading.sys} / ${row.reading.dia}` : row.status}
-                  </div>
-                </div>
-              ))}
+          <div className="importFilePicker">
+            <input
+              ref={fileInputRef}
+              className="importFilePickerInput"
+              type="file"
+              accept=".csv,text/csv"
+              onChange={handleFileChange}
+              disabled={isParsing || isImporting}
+            />
+
+            <button
+              type="button"
+              className={`importFilePseudoPicker${selectedFileName ? " active" : ""}`}
+              onClick={openFilePicker}
+              disabled={isParsing || isImporting}
+            >
+              {selectedFileName || "Choose CSV File"}
+            </button>
+          </div>
+
+          {parseResult && (
+            <div className="importSummary">
+              <div>Rows: {parseResult.totalRows}</div>
+              <div>Ready: {parseResult.importableRows.length}</div>
+              <div>Duplicates: {parseResult.duplicateRows}</div>
+              <div>Conflicts: {parseResult.conflictRows}</div>
+              <div>Invalid: {parseResult.invalidRows}</div>
+              <div>Delimiter: {JSON.stringify(parseResult.delimiter)}</div>
             </div>
-          </div>
-        )}
+          )}
 
-        {modalError && <div className="modalError">{modalError}</div>}
+          {previewRows.length > 0 && (
+            <div className="importPreview">
+              <div className="importPreviewTable">
+                {previewRows.map(row => (
+                  <div key={`${row.lineNumber}-${row.status}`} className={`importPreviewRow importPreviewRow-${row.status}`}>
+                    <div className="importPreviewCell importPreviewLine">Line {row.lineNumber}</div>
+                    <div className="importPreviewCell importPreviewDate">
+                      {row.reading ? row.reading.time.toLocaleString() : row.message}
+                    </div>
+                    <div className="importPreviewCell importPreviewValue">
+                      {row.reading ? `${row.reading.sys} / ${row.reading.dia}` : row.status}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {modalError && <div className="modalError">{modalError}</div>}
+        </div>
 
         <div className="modalWindowControls">
           <button onClick={onClose} disabled={isParsing || isImporting}>Close</button>
