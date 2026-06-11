@@ -1,5 +1,5 @@
 import type {BPReading, ModalMode} from "../types.ts"
-import {type SubmitEvent, useEffect, useState, type ChangeEvent} from "react"
+import {type ChangeEvent, type SubmitEvent, useEffect, useMemo, useRef, useState} from "react"
 import {getLocalDateInputValue, getLocalTimeInputValue} from "../functions/dateTime.ts"
 import {useModalDismiss} from "../hooks/useModalDismiss.ts"
 
@@ -23,6 +23,95 @@ interface ReadingFormState {
   dtTime: string
 }
 
+interface WheelNumberPickerProps {
+  label: string
+  value: string
+  values: number[]
+  disabled: boolean
+  onChange: (value: string) => void
+}
+
+const WheelNumberPicker = ({label, value, values, disabled, onChange}: WheelNumberPickerProps) => {
+  const listRef = useRef<HTMLDivElement>(null)
+  const itemRefs = useRef<Array<HTMLButtonElement | null>>([])
+
+  const selectedIndex = useMemo(() => {
+    const index = values.findIndex(option => option.toString() === value)
+    return index >= 0 ? index : 0
+  }, [value, values])
+
+  useEffect(() => {
+    const selectedItem = itemRefs.current[selectedIndex]
+    selectedItem?.scrollIntoView({block: "center", inline: "nearest"})
+  }, [selectedIndex])
+
+  const handleScroll = () => {
+    if (disabled) return
+
+    const container = listRef.current
+    if (!container) return
+
+    const containerCenter = container.scrollTop + container.clientHeight / 2
+    let closestIndex = selectedIndex
+    let smallestDistance = Number.POSITIVE_INFINITY
+
+    itemRefs.current.forEach((item, index) => {
+      if (!item) return
+      const itemCenter = item.offsetTop + item.offsetHeight / 2
+      const distance = Math.abs(itemCenter - containerCenter)
+
+      if (distance < smallestDistance) {
+        smallestDistance = distance
+        closestIndex = index
+      }
+    })
+
+    const nextValue = values[closestIndex]?.toString()
+    if (nextValue && nextValue !== value) {
+      onChange(nextValue)
+    }
+  }
+
+  return (
+    <div className="wheelPickerField" role="group" aria-label={label}>
+      <div className="wheelPickerShadow" />
+      <span className="wheelPickerLabelText">{label}</span>
+      <div
+        ref={listRef}
+        className={`wheelPicker${disabled ? " disabled" : ""}`}
+        onScroll={handleScroll}
+        aria-label={label}
+        aria-disabled={disabled}
+      >
+        <div className="wheelPickerSpacer" aria-hidden="true" />
+        {values.map((option, index) => {
+          const optionText = option.toString()
+          const isActive = optionText === value
+
+          return (
+            <button
+              key={option}
+              ref={(element) => {
+                itemRefs.current[index] = element
+              }}
+              type="button"
+              className={`wheelPickerItem${isActive ? " active" : ""}`}
+              onClick={() => !disabled && onChange(optionText)}
+              disabled={disabled}
+            >
+              {optionText}
+            </button>
+          )
+        })}
+        <div className="wheelPickerSpacer" aria-hidden="true" />
+      </div>
+    </div>
+  )
+}
+
+const systolicValues = Array.from({length: 171}, (_, index) => index + 70)
+const diastolicValues = Array.from({length: 101}, (_, index) => index + 40)
+
 const getInitialFormData = (mode: Exclude<ModalMode, null>, selectedReading: BPReading | null) => {
   const now = new Date()
 
@@ -44,7 +133,6 @@ const getInitialFormData = (mode: Exclude<ModalMode, null>, selectedReading: BPR
 }
 
 const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: ReadingModalProps) => {
-
   const [formData, setFormData] = useState<ReadingFormState>(
     () => getInitialFormData(mode, selectedReading)
   )
@@ -112,7 +200,6 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     } finally {
       setIsSubmitting(false)
     }
-
   }
 
   const config = modalConfig[mode]
@@ -124,44 +211,31 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
       <div className="modalWindow" role="dialog" aria-modal="true">
-
         <div className="modalWindowContent">
           <div className="modalWindowTitle">{config.title}</div>
 
           <form onSubmit={handleSubmit} id="readingForm">
-            <div>
-              <label>
-                Sys
-                <input
-                  className={getInputClass(formData.sys)}
-                  name="sys"
-                  type="number"
-                  value={formData.sys}
-                  onChange={handleChange}
-                  disabled={mode === 'delete'}
-                  required
-                />
-              </label>
+            <div className="readingWheelRow">
+              <WheelNumberPicker
+                label="Systolic"
+                value={formData.sys}
+                values={systolicValues}
+                disabled={mode === 'delete'}
+                onChange={(value) => setFormData(prev => ({...prev, sys: value}))}
+              />
+              <div className="readingWheelRowDivider">/</div>
+              <WheelNumberPicker
+                label="Diastolic"
+                value={formData.dia}
+                values={diastolicValues}
+                disabled={mode === 'delete'}
+                onChange={(value) => setFormData(prev => ({...prev, dia: value}))}
+              />
             </div>
 
-            <div>
+            <div className="readingDateRow">
               <label>
-                Dia
-                <input
-                  className={getInputClass(formData.dia)}
-                  name="dia"
-                  type="number"
-                  value={formData.dia}
-                  onChange={handleChange}
-                  disabled={mode === 'delete'}
-                  required
-                />
-              </label>
-            </div>
-
-            <div>
-              <label>
-                Time
+                Date
                 <input
                   className={getInputClass(formData.dtDate)}
                   name="dtDate"
@@ -172,9 +246,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                   required
                 />
               </label>
-            </div>
 
-            <div>
               <label>
                 Time
                 <input
@@ -188,6 +260,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 />
               </label>
             </div>
+
             {modalError && <div className="modalError">{modalError}</div>}
           </form>
         </div>
