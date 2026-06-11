@@ -72,8 +72,8 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
       <div className="modalWindow importModal" role="dialog" aria-modal="true">
+        <div className="modalWindowTitle">Import blood pressure readings</div>
         <div className="modalWindowContent">
-          <div className="modalWindowTitle">Import blood pressure readings</div>
           <div className="importModalBody">
             Select a CSV file in format: <span><b>datetime, systolic, diastolic, comment</b></span>.
             <br/> The importer skips exact duplicates and

@@ -211,8 +211,8 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
       <div className="modalWindow" role="dialog" aria-modal="true">
+        <div className="modalWindowTitle">{config.title}</div>
         <div className="modalWindowContent">
-          <div className="modalWindowTitle">{config.title}</div>
 
           <form onSubmit={handleSubmit} id="readingForm">
             <div className="readingWheelRow">
