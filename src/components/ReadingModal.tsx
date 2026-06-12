@@ -310,63 +310,61 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
           </div>
 
           <div className="readingDateRow">
-            <label>
-              Date
-              <div className="readingDateControlRow">
-                <input
-                  ref={dateInputRef}
-                  className={getInputClass(formData.dtDate)}
-                  name="dtDate"
-                  type="date"
-                  value={formData.dtDate}
-                  onChange={handleChange}
-                  onKeyDown={handleDateTimeTab}
-                  disabled={mode === 'delete'}
-                  required
-                />
-                <button
-                  ref={dateButtonRef}
-                  type="button"
-                  className="readingDateControlButton"
-                  onKeyDown={handleDateTimeTab}
-                  onClick={() => openNativePicker(dateInputRef.current)}
-                  disabled={mode === 'delete'}
-                  aria-label="Open date picker"
-                  title="Open date picker"
-                >
-                  <FaRegCalendar aria-hidden="true" />
-                </button>
-              </div>
-            </label>
+            <label htmlFor="dtDate">Date</label>
+            <div className="readingDateControlRow">
+              <input
+                ref={dateInputRef}
+                className={getInputClass(formData.dtDate)}
+                name="dtDate"
+                id="dtDate"
+                type="date"
+                value={formData.dtDate}
+                onChange={handleChange}
+                onKeyDown={handleDateTimeTab}
+                disabled={mode === 'delete'}
+                required
+              />
+              <button
+                ref={dateButtonRef}
+                type="button"
+                className="readingDateControlButton"
+                onKeyDown={handleDateTimeTab}
+                onClick={() => openNativePicker(dateInputRef.current)}
+                disabled={mode === 'delete'}
+                aria-label="Open date picker"
+                title="Open date picker"
+              >
+                <FaRegCalendar aria-hidden="true" />
+              </button>
+            </div>
 
-            <label>
-              Time
-              <div className="readingDateControlRow">
-                <input
-                  ref={timeInputRef}
-                  className={getInputClass(formData.dtTime)}
-                  name="dtTime"
-                  type="time"
-                  value={formData.dtTime}
-                  onChange={handleChange}
-                  onKeyDown={handleDateTimeTab}
-                  disabled={mode === 'delete'}
-                  required
-                />
-                <button
-                  ref={timeButtonRef}
-                  type="button"
-                  className="readingDateControlButton"
-                  onKeyDown={handleDateTimeTab}
-                  onClick={() => openNativePicker(timeInputRef.current)}
-                  disabled={mode === 'delete'}
-                  aria-label="Open time picker"
-                  title="Open time picker"
-                >
-                  <FaRegClock aria-hidden="true" />
-                </button>
-              </div>
-            </label>
+            <label htmlFor="dtTime">Time</label>
+            <div className="readingDateControlRow">
+              <input
+                ref={timeInputRef}
+                className={getInputClass(formData.dtTime)}
+                name="dtTime"
+                id="dtTime"
+                type="time"
+                value={formData.dtTime}
+                onChange={handleChange}
+                onKeyDown={handleDateTimeTab}
+                disabled={mode === 'delete'}
+                required
+              />
+              <button
+                ref={timeButtonRef}
+                type="button"
+                className="readingDateControlButton"
+                onKeyDown={handleDateTimeTab}
+                onClick={() => openNativePicker(timeInputRef.current)}
+                disabled={mode === 'delete'}
+                aria-label="Open time picker"
+                title="Open time picker"
+              >
+                <FaRegClock aria-hidden="true" />
+              </button>
+            </div>
           </div>
 
           {modalError && <div className="modalError">{modalError}</div>}
