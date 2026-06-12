@@ -857,6 +857,10 @@ body {
   gap: 8cqi;
 }
 
+.modalWindow:focus {
+  outline: none;
+}
+
 .readingWheelRow {
   display: flex;
   align-items: center;
