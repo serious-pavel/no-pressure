@@ -1,8 +1,7 @@
 import type {BPReading, ModalMode} from "../types.ts"
 import {type ChangeEvent, type KeyboardEvent, type SubmitEvent, useEffect, useId, useMemo, useRef, useState} from "react"
 import {getLocalDateInputValue, getLocalTimeInputValue} from "../functions/dateTime.ts"
-import {useModalDismiss} from "../hooks/useModalDismiss.ts"
-import {useModalWindowFocus} from "../hooks/useModalWindowFocus.ts"
+import ModalWindow from "./ModalWindow.tsx"
 
 interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
@@ -183,8 +182,6 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   )
   const [modalError, setModalError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const {handleOverlayClick} = useModalDismiss<HTMLDivElement>(onClose)
-  const {modalRef, handleMouseDown} = useModalWindowFocus<HTMLDivElement>()
 
   useEffect(() => {
     setFormData(getInitialFormData(mode, selectedReading))
@@ -255,68 +252,65 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   }
 
   return (
-    <div onClick={handleOverlayClick} className="modalWindowOverlay">
-      <div ref={modalRef} className="modalWindow" role="dialog" aria-modal="true" tabIndex={-1} onMouseDown={handleMouseDown}>
-        <div className="modalWindowTitle">{config.title}</div>
-        <div className="modalWindowContent">
+    <ModalWindow onClose={onClose}>
+      <div className="modalWindowTitle">{config.title}</div>
+      <div className="modalWindowContent">
+        <form onSubmit={handleSubmit} id="readingForm">
+          <div className="readingWheelRow">
+            <WheelNumberPicker
+              label="Systolic"
+              value={formData.sys}
+              values={systolicValues}
+              disabled={mode === 'delete'}
+              onChange={(value) => setFormData(prev => ({...prev, sys: value}))}
+            />
+            <div className="readingWheelRowDivider">/</div>
+            <WheelNumberPicker
+              label="Diastolic"
+              value={formData.dia}
+              values={diastolicValues}
+              disabled={mode === 'delete'}
+              onChange={(value) => setFormData(prev => ({...prev, dia: value}))}
+            />
+          </div>
 
-          <form onSubmit={handleSubmit} id="readingForm">
-            <div className="readingWheelRow">
-              <WheelNumberPicker
-                label="Systolic"
-                value={formData.sys}
-                values={systolicValues}
+          <div className="readingDateRow">
+            <label>
+              Date
+              <input
+                className={getInputClass(formData.dtDate)}
+                name="dtDate"
+                type="date"
+                value={formData.dtDate}
+                onChange={handleChange}
                 disabled={mode === 'delete'}
-                onChange={(value) => setFormData(prev => ({...prev, sys: value}))}
+                required
               />
-              <div className="readingWheelRowDivider">/</div>
-              <WheelNumberPicker
-                label="Diastolic"
-                value={formData.dia}
-                values={diastolicValues}
+            </label>
+
+            <label>
+              Time
+              <input
+                className={getInputClass(formData.dtTime)}
+                name="dtTime"
+                type="time"
+                value={formData.dtTime}
+                onChange={handleChange}
                 disabled={mode === 'delete'}
-                onChange={(value) => setFormData(prev => ({...prev, dia: value}))}
+                required
               />
-            </div>
+            </label>
+          </div>
 
-            <div className="readingDateRow">
-              <label>
-                Date
-                <input
-                  className={getInputClass(formData.dtDate)}
-                  name="dtDate"
-                  type="date"
-                  value={formData.dtDate}
-                  onChange={handleChange}
-                  disabled={mode === 'delete'}
-                  required
-                />
-              </label>
-
-              <label>
-                Time
-                <input
-                  className={getInputClass(formData.dtTime)}
-                  name="dtTime"
-                  type="time"
-                  value={formData.dtTime}
-                  onChange={handleChange}
-                  disabled={mode === 'delete'}
-                  required
-                />
-              </label>
-            </div>
-
-            {modalError && <div className="modalError">{modalError}</div>}
-          </form>
-        </div>
-
-        <div className="modalWindowControls">
-          <button onClick={onClose} disabled={isSubmitting}>Close</button>
-          <button type="submit" form="readingForm" disabled={isSubmitting}>{config.confirmText}</button>
-        </div>
+          {modalError && <div className="modalError">{modalError}</div>}
+        </form>
       </div>
-    </div>
+
+      <div className="modalWindowControls">
+        <button onClick={onClose} disabled={isSubmitting}>Close</button>
+        <button type="submit" form="readingForm" disabled={isSubmitting}>{config.confirmText}</button>
+      </div>
+    </ModalWindow>
   )
 }
 
