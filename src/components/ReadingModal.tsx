@@ -2,6 +2,7 @@ import type {BPReading, ModalMode} from "../types.ts"
 import {type ChangeEvent, type KeyboardEvent, type SubmitEvent, useEffect, useId, useMemo, useRef, useState} from "react"
 import {getLocalDateInputValue, getLocalTimeInputValue} from "../functions/dateTime.ts"
 import {useModalDismiss} from "../hooks/useModalDismiss.ts"
+import {useModalWindowFocus} from "../hooks/useModalWindowFocus.ts"
 
 interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
@@ -183,6 +184,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   const [modalError, setModalError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const {handleOverlayClick} = useModalDismiss<HTMLDivElement>(onClose)
+  const {modalRef, handleMouseDown} = useModalWindowFocus<HTMLDivElement>()
 
   useEffect(() => {
     setFormData(getInitialFormData(mode, selectedReading))
@@ -254,7 +256,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
 
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
-      <div className="modalWindow" role="dialog" aria-modal="true">
+      <div ref={modalRef} className="modalWindow" role="dialog" aria-modal="true" tabIndex={-1} onMouseDown={handleMouseDown}>
         <div className="modalWindowTitle">{config.title}</div>
         <div className="modalWindowContent">
 

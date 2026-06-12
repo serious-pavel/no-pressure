@@ -2,6 +2,7 @@ import {useMemo, useRef, useState, type ChangeEvent} from "react"
 import type {BPReading} from "../types.ts"
 import {parseBloodPressureCsv, type CsvImportResult} from "../functions/csvImport.ts"
 import {useModalDismiss} from "../hooks/useModalDismiss.ts"
+import {useModalWindowFocus} from "../hooks/useModalWindowFocus.ts"
 
 interface ImportReadingsModalProps {
   existingReadings: BPReading[]
@@ -18,6 +19,7 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
   const [isImporting, setIsImporting] = useState(false)
   const [modalError, setModalError] = useState<string | null>(null)
   const {handleOverlayClick} = useModalDismiss<HTMLDivElement>(onClose)
+  const {modalRef, handleMouseDown} = useModalWindowFocus<HTMLDivElement>()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +73,7 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
 
   return (
     <div onClick={handleOverlayClick} className="modalWindowOverlay">
-      <div className="modalWindow importModal" role="dialog" aria-modal="true">
+      <div ref={modalRef} className="modalWindow importModal" role="dialog" aria-modal="true" tabIndex={-1} onMouseDown={handleMouseDown}>
         <div className="modalWindowTitle">Import blood pressure readings</div>
         <div className="modalWindowContent">
           <div className="importModalBody">
@@ -88,6 +90,7 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
               accept=".csv,text/csv"
               onChange={handleFileChange}
               disabled={isParsing || isImporting}
+              tabIndex={-1}
             />
 
             <button
