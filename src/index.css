@@ -115,6 +115,10 @@
   font-size: clamp(0.5rem, 2.6cqi, 0.9rem);
 }
 
+.recharts-cartesian-axis-tick-labels {
+  user-select: none;
+}
+
 ul, li {
   padding: 0;
   margin: 0;
@@ -201,6 +205,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s, transform 0.08s ease;
+  user-select: none;
 }
 
 button:hover {
@@ -457,6 +462,8 @@ button:active:not(:disabled) {
     width: 80%;
     height: 80%;
   }
+
+  user-select: none;
 }
 
 /*600*/
@@ -872,6 +879,7 @@ body {
   align-self: end;
   padding-bottom: calc(var(--wheel-height) / 2 - (var(--wheel-item-font-size-active) / 2));
   font-size: var(--wheel-item-font-size);
+  user-select: none;
 }
 
 .readingDateRow {
