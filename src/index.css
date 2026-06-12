@@ -903,6 +903,11 @@ body {
   box-sizing: border-box;
 }
 
+.readingDateControlRow input[type="date"]::-webkit-calendar-picker-indicator,
+.readingDateControlRow input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
 .wheelPickerField {
   display: flex;
   flex-direction: column;

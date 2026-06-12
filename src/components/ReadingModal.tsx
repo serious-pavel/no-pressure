@@ -2,6 +2,7 @@ import type {BPReading, ModalMode} from "../types.ts"
 import {type ChangeEvent, type KeyboardEvent, type SubmitEvent, useEffect, useId, useMemo, useRef, useState} from "react"
 import {getLocalDateInputValue, getLocalTimeInputValue} from "../functions/dateTime.ts"
 import ModalWindow from "./ModalWindow.tsx"
+import {FaRegCalendar, FaRegClock} from "react-icons/fa"
 
 interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
@@ -182,6 +183,10 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   )
   const [modalError, setModalError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const dateInputRef = useRef<HTMLInputElement>(null)
+  const dateButtonRef = useRef<HTMLButtonElement>(null)
+  const timeInputRef = useRef<HTMLInputElement>(null)
+  const timeButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     setFormData(getInitialFormData(mode, selectedReading))
@@ -209,6 +214,36 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
       ...prev,
       [name]: value,
     }))
+  }
+
+  const handleDateTimeTab = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== "Tab") return
+
+    const orderedControls = [
+      dateInputRef.current,
+      dateButtonRef.current,
+      timeInputRef.current,
+      timeButtonRef.current,
+    ].filter(Boolean) as HTMLElement[]
+
+    const currentIndex = orderedControls.indexOf(event.currentTarget)
+    if (currentIndex < 0) return
+
+    const nextControl = orderedControls[currentIndex + (event.shiftKey ? -1 : 1)]
+    if (!nextControl) return
+
+    event.preventDefault()
+    nextControl.focus()
+  }
+
+  const openNativePicker = (input: HTMLInputElement | null) => {
+    const nativeInput = input as (HTMLInputElement & { showPicker?: () => void }) | null
+    if (nativeInput?.showPicker) {
+      nativeInput.showPicker()
+      return
+    }
+
+    nativeInput?.click()
   }
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
@@ -277,28 +312,60 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
           <div className="readingDateRow">
             <label>
               Date
-              <input
-                className={getInputClass(formData.dtDate)}
-                name="dtDate"
-                type="date"
-                value={formData.dtDate}
-                onChange={handleChange}
-                disabled={mode === 'delete'}
-                required
-              />
+              <div className="readingDateControlRow">
+                <input
+                  ref={dateInputRef}
+                  className={getInputClass(formData.dtDate)}
+                  name="dtDate"
+                  type="date"
+                  value={formData.dtDate}
+                  onChange={handleChange}
+                  onKeyDown={handleDateTimeTab}
+                  disabled={mode === 'delete'}
+                  required
+                />
+                <button
+                  ref={dateButtonRef}
+                  type="button"
+                  className="readingDateControlButton"
+                  onKeyDown={handleDateTimeTab}
+                  onClick={() => openNativePicker(dateInputRef.current)}
+                  disabled={mode === 'delete'}
+                  aria-label="Open date picker"
+                  title="Open date picker"
+                >
+                  <FaRegCalendar aria-hidden="true" />
+                </button>
+              </div>
             </label>
 
             <label>
               Time
-              <input
-                className={getInputClass(formData.dtTime)}
-                name="dtTime"
-                type="time"
-                value={formData.dtTime}
-                onChange={handleChange}
-                disabled={mode === 'delete'}
-                required
-              />
+              <div className="readingDateControlRow">
+                <input
+                  ref={timeInputRef}
+                  className={getInputClass(formData.dtTime)}
+                  name="dtTime"
+                  type="time"
+                  value={formData.dtTime}
+                  onChange={handleChange}
+                  onKeyDown={handleDateTimeTab}
+                  disabled={mode === 'delete'}
+                  required
+                />
+                <button
+                  ref={timeButtonRef}
+                  type="button"
+                  className="readingDateControlButton"
+                  onKeyDown={handleDateTimeTab}
+                  onClick={() => openNativePicker(timeInputRef.current)}
+                  disabled={mode === 'delete'}
+                  aria-label="Open time picker"
+                  title="Open time picker"
+                >
+                  <FaRegClock aria-hidden="true" />
+                </button>
+              </div>
             </label>
           </div>
 
