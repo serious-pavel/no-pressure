@@ -1,5 +1,5 @@
 import type {BPReading, ModalMode} from "../types.ts"
-import {type ChangeEvent, type SubmitEvent, useEffect, useMemo, useRef, useState} from "react"
+import {type ChangeEvent, type KeyboardEvent, type SubmitEvent, useEffect, useId, useMemo, useRef, useState} from "react"
 import {getLocalDateInputValue, getLocalTimeInputValue} from "../functions/dateTime.ts"
 import {useModalDismiss} from "../hooks/useModalDismiss.ts"
 
@@ -34,6 +34,7 @@ interface WheelNumberPickerProps {
 const WheelNumberPicker = ({label, value, values, disabled, onChange}: WheelNumberPickerProps) => {
   const listRef = useRef<HTMLDivElement>(null)
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([])
+  const pickerId = useId()
 
   const selectedIndex = useMemo(() => {
     const index = values.findIndex(option => option.toString() === value)
@@ -44,6 +45,40 @@ const WheelNumberPicker = ({label, value, values, disabled, onChange}: WheelNumb
     const selectedItem = itemRefs.current[selectedIndex]
     selectedItem?.scrollIntoView({block: "center", inline: "nearest"})
   }, [selectedIndex])
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return
+
+    const moveSelection = (nextIndex: number) => {
+      const clampedIndex = Math.min(Math.max(nextIndex, 0), values.length - 1)
+      const nextValue = values[clampedIndex]?.toString()
+
+      if (nextValue && nextValue !== value) {
+        onChange(nextValue)
+      }
+    }
+
+    switch (event.key) {
+      case "ArrowUp":
+      case "ArrowLeft":
+        event.preventDefault()
+        moveSelection(selectedIndex - 1)
+        break
+      case "ArrowDown":
+      case "ArrowRight":
+        event.preventDefault()
+        moveSelection(selectedIndex + 1)
+        break
+      case "Home":
+        event.preventDefault()
+        moveSelection(0)
+        break
+      case "End":
+        event.preventDefault()
+        moveSelection(values.length - 1)
+        break
+    }
+  }
 
   const handleScroll = () => {
     if (disabled) return
@@ -79,7 +114,12 @@ const WheelNumberPicker = ({label, value, values, disabled, onChange}: WheelNumb
       <div
         ref={listRef}
         className={`wheelPicker${disabled ? " disabled" : ""}`}
+        role="listbox"
+        tabIndex={disabled ? -1 : 0}
+        aria-activedescendant={`${pickerId}-option-${selectedIndex}`}
+        aria-orientation="vertical"
         onScroll={handleScroll}
+        onKeyDown={handleKeyDown}
         aria-label={label}
         aria-disabled={disabled}
       >
@@ -91,6 +131,7 @@ const WheelNumberPicker = ({label, value, values, disabled, onChange}: WheelNumb
           return (
             <button
               key={option}
+              id={`${pickerId}-option-${index}`}
               ref={(element) => {
                 itemRefs.current[index] = element
               }}
@@ -98,6 +139,9 @@ const WheelNumberPicker = ({label, value, values, disabled, onChange}: WheelNumb
               className={`wheelPickerItem${isActive ? " active" : ""}`}
               onClick={() => !disabled && onChange(optionText)}
               disabled={disabled}
+              role="option"
+              tabIndex={-1}
+              aria-selected={isActive}
             >
               {optionText}
             </button>
