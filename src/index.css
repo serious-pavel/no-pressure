@@ -868,6 +868,14 @@ body {
   outline: none;
 }
 
+#readingForm {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  justify-content: center;
+}
+
 .readingWheelRow {
   display: flex;
   align-items: center;
@@ -1331,5 +1339,9 @@ header {
   .readingWheelRow,
   .readingDateRow {
     grid-template-columns: 1fr;
+  }
+
+  #readingForm {
+    gap: 1.6rem;
   }
 }
