@@ -1,4 +1,6 @@
 :root {
+  color-scheme: light dark;
+
   --header-height: 3rem;
   --footer-height: 2.5rem;
 
@@ -135,7 +137,6 @@ body {
   min-height: var(--viewport-height);
   color: var(--bright-text-color);
 
-  color-scheme: light dark;
   background-color: #242424;
 }
 
