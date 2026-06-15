@@ -157,6 +157,33 @@ const WheelNumberPicker = ({label, value, values, disabled, onChange}: WheelNumb
 const systolicValues = Array.from({length: 171}, (_, index) => index + 70)
 const diastolicValues = Array.from({length: 101}, (_, index) => index + 40)
 
+const formatDateButtonValue = (value: string) => {
+  if (!value) return "Select date"
+
+  const [year, month, day] = value.split("-").map(Number)
+  if ([year, month, day].some(Number.isNaN)) return value
+
+  return new Date(year, month - 1, day).toLocaleDateString(undefined, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  })
+}
+
+const formatTimeButtonValue = (value: string) => {
+  if (!value) return "Select time"
+
+  const [hours, minutes] = value.split(":").map(Number)
+  if ([hours, minutes].some(Number.isNaN)) return value
+
+  const date = new Date()
+  date.setHours(hours, minutes, 0, 0)
+  return date.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+}
+
 const getInitialFormData = (mode: Exclude<ModalMode, null>, selectedReading: BPReading | null) => {
   const now = new Date()
 
@@ -184,9 +211,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
   const [modalError, setModalError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const dateInputRef = useRef<HTMLInputElement>(null)
-  const dateButtonRef = useRef<HTMLButtonElement>(null)
   const timeInputRef = useRef<HTMLInputElement>(null)
-  const timeButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     setFormData(getInitialFormData(mode, selectedReading))
@@ -214,26 +239,6 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
       ...prev,
       [name]: value,
     }))
-  }
-
-  const handleDateTimeTab = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key !== "Tab") return
-
-    const orderedControls = [
-      dateInputRef.current,
-      dateButtonRef.current,
-      timeInputRef.current,
-      timeButtonRef.current,
-    ].filter(Boolean) as HTMLElement[]
-
-    const currentIndex = orderedControls.indexOf(event.currentTarget)
-    if (currentIndex < 0) return
-
-    const nextControl = orderedControls[currentIndex + (event.shiftKey ? -1 : 1)]
-    if (!nextControl) return
-
-    event.preventDefault()
-    nextControl.focus()
   }
 
   const openNativePicker = (input: HTMLInputElement | null) => {
@@ -314,27 +319,27 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
             <div className="readingDateControlRow">
               <input
                 ref={dateInputRef}
-                className={getInputClass(formData.dtDate)}
+                className={`readingDateNativeInput ${getInputClass(formData.dtDate)}`}
                 name="dtDate"
                 id="dtDate"
                 type="date"
                 value={formData.dtDate}
                 onChange={handleChange}
-                onKeyDown={handleDateTimeTab}
                 disabled={mode === 'delete'}
+                tabIndex={-1}
+                aria-hidden="true"
                 required
               />
               <button
-                ref={dateButtonRef}
                 type="button"
-                className="readingDateControlButton"
-                onKeyDown={handleDateTimeTab}
+                className={`readingDateControlButton ${getInputClass(formData.dtDate)}`}
                 onClick={() => openNativePicker(dateInputRef.current)}
                 disabled={mode === 'delete'}
-                aria-label="Open date picker"
+                aria-label={`Open date picker, current value ${formatDateButtonValue(formData.dtDate)}`}
                 title="Open date picker"
               >
                 <FaRegCalendar aria-hidden="true" />
+                <span>{formatDateButtonValue(formData.dtDate)}</span>
               </button>
             </div>
 
@@ -342,27 +347,27 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
             <div className="readingDateControlRow">
               <input
                 ref={timeInputRef}
-                className={getInputClass(formData.dtTime)}
+                className={`readingDateNativeInput ${getInputClass(formData.dtTime)}`}
                 name="dtTime"
                 id="dtTime"
                 type="time"
                 value={formData.dtTime}
                 onChange={handleChange}
-                onKeyDown={handleDateTimeTab}
                 disabled={mode === 'delete'}
+                tabIndex={-1}
+                aria-hidden="true"
                 required
               />
               <button
-                ref={timeButtonRef}
                 type="button"
-                className="readingDateControlButton"
-                onKeyDown={handleDateTimeTab}
+                className={`readingDateControlButton ${getInputClass(formData.dtTime)}`}
                 onClick={() => openNativePicker(timeInputRef.current)}
                 disabled={mode === 'delete'}
-                aria-label="Open time picker"
+                aria-label={`Open time picker, current value ${formatTimeButtonValue(formData.dtTime)}`}
                 title="Open time picker"
               >
                 <FaRegClock aria-hidden="true" />
+                <span>{formatTimeButtonValue(formData.dtTime)}</span>
               </button>
             </div>
           </div>
