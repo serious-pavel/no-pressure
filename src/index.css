@@ -185,7 +185,12 @@ main {
   box-sizing: border-box;
   background-color: var(--main-color-light);
   height: calc(var(--viewport-height) - var(--header-height) - var(--footer-height));
-  overflow: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: var(--block-gap) var(--block-gap);
+  min-width: calc(var(--reading-list-width) + var(--block-gap) + var(--last-week-min-width) + 2 * var(--main-padding));
+  overflow: hidden;
+  position: relative;
 }
 
 h1 {
@@ -254,17 +259,6 @@ button:active:not(:disabled) {
   button {
     background-color: #f9f9f9;
   }
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: var(--block-gap) var(--block-gap);
-  min-width: calc(var(--reading-list-width) + var(--block-gap) + var(--last-week-min-width) + 2 * var(--main-padding));
-  overflow: hidden;
-  position: relative;
 }
 
 .addReadingWrapper,
@@ -477,7 +471,7 @@ button:active:not(:disabled) {
     --add-reading-flex-basis: min(var(--add-reading-block-width), var(--add-reading-btn-max-width));
   }
 
-  .main {
+  main {
     flex-direction: row;
     min-width: 340px;
     min-height: calc(var(--viewport-height) - var(--footer-height) - var(--header-height));

@@ -260,7 +260,7 @@ function App() {
         onClearAll={() => { void handleClearAll() }}
         onClearSelection={() => { setSelectedReadingId("") }}
       />
-      <main className="main">
+      <main>
         {!authLoading && !user ? (
           <div className="authPromptSlot">
             <section className="authPrompt">
