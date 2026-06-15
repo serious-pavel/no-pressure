@@ -874,6 +874,7 @@ body {
   flex-direction: column;
   gap: 3rem;
   justify-content: center;
+  align-items: center;
 }
 
 .readingWheelRow {
@@ -890,30 +891,69 @@ body {
   user-select: none;
 }
 
-.readingDateRow {
-  /*display: grid;*/
-  /*grid-template-columns: repeat(2, minmax(0, 1fr));*/
-  /*gap: 0.9rem;*/
-}
-
 .readingDateRow label {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   min-width: 0;
-  text-align: left;
+  /*text-align: left;*/
   color: var(--dimmed-text-color);
   font-weight: 600;
 }
 
-.readingDateRow input {
+.readingDateControlRow {
+  position: relative;
   width: 100%;
-  box-sizing: border-box;
 }
 
-.readingDateControlRow input[type="date"]::-webkit-calendar-picker-indicator,
-.readingDateControlRow input[type="time"]::-webkit-calendar-picker-indicator {
-  display: none;
+.readingDateNativeInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.readingDateControlButton {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.2rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--bright-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: 1.45rem;
+  font-family: inherit;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: none;
+  appearance: none;
+}
+
+.readingDateControlButton:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.readingDateControlButton span {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.readingDateControlButton svg {
+  flex: 0 0 auto;
+}
+
+.readingDateControlButton:disabled {
+  opacity: 0.55;
+  cursor: default;
 }
 
 .wheelPickerField {
