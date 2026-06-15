@@ -136,6 +136,7 @@ body {
   min-width: 350px;
   min-height: var(--viewport-height);
   color: var(--bright-text-color);
+  place-items: center;
 
   background-color: #242424;
 }
