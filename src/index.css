@@ -266,8 +266,6 @@ button:active:not(:disabled) {
   position: relative;
 }
 
-/**/
-
 .addReadingWrapper,
 .readingListWrapper,
 .graphWrapper,
@@ -462,10 +460,8 @@ button:active:not(:disabled) {
   user-select: none;
 }
 
-/**/
 @media (max-width: 815px) {
   :root {
-    --add-reading-width: 12rem;
     --add-reading-height: var(--last-week-height);
     --last-week-height: calc(100% - 15% - var(--block-gap));
     --day-min-width: 1.5rem;
@@ -476,8 +472,8 @@ button:active:not(:disabled) {
 
     --add-reading-btn-min-width: 3rem;
     --add-reading-btn-max-width: 5rem;
-    --add-reading-blok-width: 15%;
-    --add-reading-flex-basis: min(var(--add-reading-blok-width), var(--add-reading-btn-max-width));
+    --add-reading-block-width: 15%;
+    --add-reading-flex-basis: min(var(--add-reading-block-width), var(--add-reading-btn-max-width));
   }
 
   .main {
@@ -517,8 +513,6 @@ button:active:not(:disabled) {
     height: var(--day-height);
   }
 }
-
-/**/
 
 .readingListItem {
   --bg-main-color: var(--main-color);
