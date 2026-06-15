@@ -1,16 +1,4 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
   --header-height: 3rem;
   --footer-height: 2.5rem;
 
@@ -23,16 +11,12 @@
   --dimmed-text-color: rgba(255, 255, 255, 0.62);
   --bright-text-color: rgba(255, 255, 255, 0.87);
 
-  color: var(--bright-text-color);
-
   --add-reading-height: 6rem;
   --reading-list-width: 18rem;
-  /*--last-week-height: 7rem;*/
   --last-week-height: 10rem;
   --block-gap: 1rem;
   --block-padding: 0.5rem;
 
-  /*--day-width: 5rem;*/
   --day-width: 7rem;
   --day-min-width: 3rem;
   --day-height: 6rem;
@@ -136,11 +120,23 @@ a:hover {
 }
 
 body {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   margin: 0;
   display: flex;
-  place-items: center;
   min-width: 350px;
   min-height: var(--viewport-height);
+  color: var(--bright-text-color);
+
+  color-scheme: light dark;
+  background-color: #242424;
 }
 
 #root {
@@ -313,7 +309,6 @@ button:active:not(:disabled) {
   scrollbar-width: thin;
   flex-basis: calc(100% - var(--add-reading-height) - var(--block-gap));
   width: var(--reading-list-width);
-
 }
 
 .graphWrapper {
@@ -466,7 +461,7 @@ button:active:not(:disabled) {
   user-select: none;
 }
 
-/*600*/
+/**/
 @media (max-width: 815px) {
   :root {
     --add-reading-width: 12rem;
@@ -535,7 +530,6 @@ button:active:not(:disabled) {
   user-select: none;
   transition: all 0.3s ease-in-out;
   min-height: 2.7rem;
-  /*background: linear-gradient(135deg, var(--grade-color), var(--bg-main-color) 3rem);*/
   background: radial-gradient(circle at 0% 50%, var(--grade-color) 0.5rem, var(--bg-main-color) 0rem);
 }
 
@@ -578,13 +572,6 @@ button:active:not(:disabled) {
   display: flex;
   flex-direction: column;
 }
-
-body {
-  background: #0b0b0b;
-  font-family: system-ui, sans-serif;
-  color: white;
-}
-
 
 .weekDayTop,
 .weekDayBottom {
@@ -896,7 +883,6 @@ body {
   flex-direction: column;
   gap: 0.35rem;
   min-width: 0;
-  /*text-align: left;*/
   color: var(--dimmed-text-color);
   font-weight: 600;
 }
@@ -1251,7 +1237,6 @@ header {
   align-items: center;
   gap: 0.4rem;
   min-width: 0;
-  /*overflow: hidden;*/
   white-space: nowrap;
 }
 
@@ -1362,10 +1347,6 @@ header {
 
 @media (max-width: 600px) {
   :root {
-    /*--wheel-item-height: 2.2rem;*/
-    /*--picker-border-radius: 1.2rem;*/
-    /*--wheel-item-font-size: 1.2rem;*/
-    /*--wheel-item-font-size-active: 1.6rem;*/
     --wheel-item-height: 2.6rem;
     --wheel-visible-items: 4;
     --picker-border-radius: 2rem;
