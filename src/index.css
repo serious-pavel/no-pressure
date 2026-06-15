@@ -60,12 +60,12 @@
   --dot-unset-color: gray;
   --dot-unset-color-bright: oklch(from var(--dot-unset-color) calc(l + 0.06) c h);
 
-  --wheel-item-height: 2.6rem;
+  --wheel-item-height: 3rem;
   --wheel-visible-items: 4;
   --wheel-height: calc(var(--wheel-item-height) * (var(--wheel-visible-items)));
   --picker-border-radius: 2rem;
-  --wheel-item-font-size: 1.5rem;
-  --wheel-item-font-size-active: 2rem;
+  --wheel-item-font-size: 1.8rem;
+  --wheel-item-font-size-active: 2.4rem;
 }
 
 .color-grade-2 {
@@ -927,7 +927,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
-  font-size: 1.45rem;
+  font-size: calc(var(--wheel-item-font-size) - 0.1rem);
   font-family: inherit;
   font-weight: 500;
   text-align: center;
@@ -1362,10 +1362,15 @@ header {
 
 @media (max-width: 600px) {
   :root {
-    --wheel-item-height: 2.2rem;
-    --picker-border-radius: 1.2rem;
-    --wheel-item-font-size: 1.2rem;
-    --wheel-item-font-size-active: 1.6rem;
+    /*--wheel-item-height: 2.2rem;*/
+    /*--picker-border-radius: 1.2rem;*/
+    /*--wheel-item-font-size: 1.2rem;*/
+    /*--wheel-item-font-size-active: 1.6rem;*/
+    --wheel-item-height: 2.6rem;
+    --wheel-visible-items: 4;
+    --picker-border-radius: 2rem;
+    --wheel-item-font-size: 1.5rem;
+    --wheel-item-font-size-active: 2rem;
   }
 
   .modalWindowTitle {
