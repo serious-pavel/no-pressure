@@ -321,6 +321,7 @@ button:active:not(:disabled) {
 
 .lastWeekWrapper {
   display: flex;
+  flex-direction: row-reverse;
   gap: var(--last-week-gap);
   flex-basis: var(--last-week-height);
   max-width: var(--last-week-max-width);
@@ -487,15 +488,15 @@ button:active:not(:disabled) {
   }
 
   .addReadingWrapper {
-    order: 2;
+    order: 3;
     flex-basis: var(--add-reading-flex-basis);
     min-width: var(--add-reading-btn-min-width);
     flex-shrink: 1;
-    padding-right: 0;
+    padding-left: 0;
   }
 
   .lastWeekWrapper {
-    order: 3;
+    order: 2;
     flex-basis: calc(100% - var(--add-reading-flex-basis) - var(--block-gap));
     flex-shrink: 1;
   }
