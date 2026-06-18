@@ -482,7 +482,7 @@ button:active:not(:disabled) {
   }
 }
 
-@media (max-width: 615px) {
+@media (max-width: 545px) {
   :root {
     --weekday-font-size: 0.6rem;
   }
