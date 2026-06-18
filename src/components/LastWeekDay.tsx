@@ -10,7 +10,6 @@ import {
   FaRegDizzy,
   FaRegSmile,
   FaRegMehRollingEyes,
-  FaRegDotCircle
 } from "react-icons/fa"
 import type {IconType} from "react-icons"
 
@@ -30,7 +29,7 @@ const iconMap: Record<Grade, IconType> = {
   'normal': FaRegGrin,
   'low': FaRegMehRollingEyes,
   'out': FaRegDizzy,
-  'unset': FaRegDotCircle,
+  'unset': FaCircle,
 }
 
 const LastWeekDay = ({day}: LastWeekDayProps) => {
