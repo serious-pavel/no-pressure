@@ -42,13 +42,14 @@
   --dot-low-color: #0b3e1e;
   --dot-low-color-bright: #185a2f;
   --dot-out-color: #955c79;
+  --dot-out-color-bright: #ae5f86;
   --dot-grade-1-color: #8e3e08;
   --dot-grade-1-color-bright: #da6212;
   --dot-grade-2-color: #7c1515;
   --dot-grade-2-color-bright: #f90408;
 
-  --dot-unset-color: gray;
-  --dot-unset-color-bright: oklch(from var(--dot-unset-color) calc(l + 0.06) c h);
+  --dot-unset-color: #7c7c7c;
+  --dot-unset-color-bright: var(--dot-unset-color);
 
   --wheel-item-height: 3rem;
   --wheel-visible-items: 4;
@@ -87,7 +88,7 @@
 
 .color-out {
   --grade-color: var(--dot-out-color);
-  --grade-color-bright: var(--dot-out-color);
+  --grade-color-bright: var(--dot-out-color-bright);
 }
 
 .color-unset {
