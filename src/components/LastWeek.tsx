@@ -1,8 +1,8 @@
-import type {BPReading} from "../types"
+import type {BucketedWeekday} from "../functions/timeFunctions.ts"
 import LastWeekDay from "./LastWeekDay.tsx"
 
 interface LastWeekProps {
-  days: BPReading[][]
+  days: BucketedWeekday[]
 }
 
 const LastWeek = ({days}: LastWeekProps) => {

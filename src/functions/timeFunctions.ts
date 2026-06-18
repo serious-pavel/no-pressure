@@ -1,6 +1,10 @@
 import type {BPReading} from "../types.ts"
 
 type WithTime = { time: Date }
+export type BucketedWeekday = {
+  dayLabel: string
+  readings: BPReading[]
+}
 
 export function readingsLastNDays<T extends WithTime>(
   readings: T[],
@@ -25,9 +29,18 @@ export function getDayOffset(date2: Date) {
 }
 
 export function getBucketedReadings(readings: BPReading[]) {
-  const bucketedReadings: BPReading[][] = Array.from({length: 7}, () => [])
-  readings.map(
-    (reading) => bucketedReadings[getDayOffset(reading.time)].push(reading)
+  const bucketedReadings: BucketedWeekday[] = Array.from({length: 7}, (_, index) => {
+    const day = new Date()
+    day.setDate(day.getDate() - index)
+
+    return {
+      dayLabel: day.toLocaleDateString(undefined, {weekday: "short"}),
+      readings: [],
+    }
+  })
+
+  readings.forEach(
+    (reading) => bucketedReadings[getDayOffset(reading.time)].readings.push(reading)
   )
   return bucketedReadings
 }
