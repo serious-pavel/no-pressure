@@ -56,6 +56,8 @@
   --picker-border-radius: 2rem;
   --wheel-item-font-size: 1.8rem;
   --wheel-item-font-size-active: 2.4rem;
+
+  --weekday-font-size: 1.2rem;
 }
 
 .color-grade-2 {
@@ -91,6 +93,12 @@
 .color-unset {
   --grade-color: var(--dot-unset-color);
   --grade-color-bright: var(--dot-unset-color-bright);
+
+}
+
+.weekDayIcon.color-unset {
+  width: 25%;
+  height: 25%;
 }
 
 @supports (height: 100dvh) {
@@ -439,23 +447,44 @@ button:active:not(:disabled) {
   box-shadow: 0 0 0 1px oklch(from var(--main-color) calc(l + 0.14) c h);
   min-height: var(--day-height);
   border-radius: 0.5rem;
-  flex-shrink: 1;
-  flex-basis: var(--day-width);
-
-  grid-template-rows: 1fr 2fr;
+  flex: 1 1 0;
+  grid-template-rows: 1.2fr 1.2fr 1.8fr;
   grid-template-columns: 1fr;
-
-  min-width: var(--day-min-width);
   overflow: hidden;
   display: grid;
   place-items: center;
+  color: var(--dimmed-text-color);
 
   svg {
-    width: 80%;
-    height: 80%;
+    width: 55%;
+    height: 55%;
   }
 
   user-select: none;
+}
+
+@media (max-width: 985px) {
+  :root {
+    --weekday-font-size: 1rem;
+  }
+}
+
+@media (max-width: 815px) {
+  :root {
+    --weekday-font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 715px) {
+  :root {
+    --weekday-font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 615px) {
+  :root {
+    --weekday-font-size: 0.6rem;
+  }
 }
 
 @media (max-width: 815px) {
@@ -566,7 +595,8 @@ button:active:not(:disabled) {
   flex-direction: column;
 }
 
-.weekDayTop,
+.weekDayReading,
+.weekDayName,
 .weekDayBottom {
   display: flex;
   justify-content: center;
@@ -574,6 +604,9 @@ button:active:not(:disabled) {
   position: relative;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
+  font-size: var(--weekday-font-size);
 }
 
 .weekDayBottom {
