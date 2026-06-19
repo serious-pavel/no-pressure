@@ -443,8 +443,6 @@ button:active:not(:disabled) {
 }
 
 .weekDay {
-  font-size: min(calc(3cqi + 2px), 1.3rem);
-
   box-shadow: 0 0 0 1px oklch(from var(--main-color) calc(l + 0.14) c h);
   min-height: var(--day-height);
   border-radius: 0.5rem;
