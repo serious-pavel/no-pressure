@@ -1,6 +1,6 @@
 import {FaHeartPulse} from "react-icons/fa6"
 import type {AppUser} from "../types.ts"
-import {FaGoogle, FaBars, FaSignOutAlt} from "react-icons/fa"
+import {FaGoogle, FaBars, FaSignOutAlt, FaFileExcel, FaExpand} from "react-icons/fa"
 import {FaFileArrowUp} from "react-icons/fa6"
 import DropdownMenu from "./DropdownMenu.tsx";
 import DropdownMenuItem from "./DropdownMenuItem.tsx";
@@ -13,11 +13,11 @@ interface HeaderProps {
   onImportReadings: () => void
   onCreateRandomReading: () => void
   onCreateRandomWeek: () => void
-  onClearAll: () => void
+  onDeleteAll: () => void
   onClearSelection: () => void
 }
 
-const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings, onCreateRandomReading, onCreateRandomWeek, onClearAll, onClearSelection}: HeaderProps) => {
+const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings, onCreateRandomReading, onCreateRandomWeek, onDeleteAll, onClearSelection}: HeaderProps) => {
   return (
     <header>
       <div className="headerLogo">
@@ -42,16 +42,26 @@ const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings, onCreat
                   <span>Import CSV</span>
                 </span>
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={onDeleteAll}>
+                <span className="dropdownMenuItemIconLabel">
+                  <FaFileExcel/>
+                  <span>Delete all readings</span>
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onClearSelection}>
+                <span className="dropdownMenuItemIconLabel">
+                  <FaExpand/>
+                  <span>Clear Selection</span>
+                </span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={onSignOut}>
                 <span className="dropdownMenuItemIconLabel">
                   <FaSignOutAlt/>
                   <span>Sign out</span>
                 </span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={onClearSelection}>Clear Selection</DropdownMenuItem>
               <DropdownMenuItem onClick={onCreateRandomWeek}>Add 2 random weeks</DropdownMenuItem>
               <DropdownMenuItem onClick={onCreateRandomReading}>Add an arbitrary reading</DropdownMenuItem>
-              <DropdownMenuItem onClick={onClearAll}>Clear all readings</DropdownMenuItem>
             </DropdownMenu>
           </>
         )}

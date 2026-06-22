@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from "react"
+import {useCallback, useEffect, useMemo, useState, type ReactNode} from "react"
 import type {AppUser, BPReading, ModalMode, TimeRangeMode, TimeRangeScale} from "./types.ts"
 import ReadingList from "./components/ReadingList.tsx"
 import Graph from "./components/Graph.tsx"
@@ -10,6 +10,7 @@ import {getVisibleReadings} from "./functions/timeRangeHelper.tsx"
 import ReadingModal from "./components/ReadingModal.tsx"
 import Header from "./components/Header.tsx"
 import ImportReadingsModal from "./components/ImportReadingsModal.tsx"
+import GenericModal from "./components/GenericModal.tsx"
 import {
   createRandomWeekDrafts,
   createReading,
@@ -24,6 +25,16 @@ import {
 import Footer from "./components/Footer.tsx";
 
 const storageKey = (scope: string, key: string) => `no-pressure:${scope}:${key}`
+
+interface GenericModalConfig {
+  title: string
+  body: ReactNode
+  important?: boolean
+  confirmText: string
+  cancelText?: string
+  onConfirm: () => void | Promise<void>
+  getErrorMessage?: (error: unknown) => string
+}
 
 const readJson = <T,>(key: string, fallback: T) => {
   const stored = localStorage.getItem(key)
@@ -43,6 +54,9 @@ function App() {
   const [bplist, setBPList] = useState<BPReading[]>([])
   const [selectedReadingId, setSelectedReadingId] = useState<string>("")
   const [importModalOpen, setImportModalOpen] = useState<boolean>(false)
+  const [genericModal, setGenericModal] = useState<GenericModalConfig | null>(null)
+  const [genericModalBusy, setGenericModalBusy] = useState<boolean>(false)
+  const [genericModalError, setGenericModalError] = useState<string | null>(null)
 
   // time range controls states
   const [timeRangeMode, setTimeRangeMode] = useState<TimeRangeMode>("relative")
@@ -143,6 +157,18 @@ function App() {
     setImportModalOpen(true)
   }, [])
 
+  const openGenericModal = useCallback((config: GenericModalConfig) => {
+    setGenericModalError(null)
+    setGenericModal(config)
+  }, [])
+
+  const closeGenericModal = useCallback(() => {
+    if (!genericModalBusy) {
+      setGenericModal(null)
+      setGenericModalError(null)
+    }
+  }, [genericModalBusy])
+
   const handleDeleteReading = useCallback(async () => {
     if (selectedReadingId) {
       await deleteReading(selectedReadingId)
@@ -183,12 +209,39 @@ function App() {
     }
   }, [])
 
-  const handleClearAll = useCallback(async () => {
+  const handleDeleteAll = useCallback(async () => {
     await Promise.all(bplist.map((reading) => deleteReading(reading.id)))
 
     setBPList([])
     setSelectedReadingId("")
   }, [bplist])
+
+  const handleOpenDeleteAllModal = useCallback(() => {
+    openGenericModal({
+      title: "Delete all readings",
+      important: true,
+      body: "This will permanently delete every reading in your account. This cannot be undone.",
+      confirmText: "Delete",
+      onConfirm: handleDeleteAll,
+      getErrorMessage: (error) => error instanceof Error ? error.message : "Failed to delete readings",
+    })
+  }, [handleDeleteAll, openGenericModal])
+
+  const handleGenericModalConfirm = useCallback(async () => {
+    if (!genericModal) return
+
+    setGenericModalBusy(true)
+    setGenericModalError(null)
+    try {
+      await genericModal.onConfirm()
+      setGenericModal(null)
+    } catch (error) {
+      const fallbackError = error instanceof Error ? error.message : "Something went wrong"
+      setGenericModalError(genericModal.getErrorMessage?.(error) ?? fallbackError)
+    } finally {
+      setGenericModalBusy(false)
+    }
+  }, [genericModal])
 
   const handleImportReadings = useCallback(async (readings: BPReading[]) => {
     const importedReadings: BPReading[] = []
@@ -249,6 +302,19 @@ function App() {
           onSave={handleSaveReading}
         />
       }
+      {genericModal && (
+        <GenericModal
+          title={genericModal.title}
+          body={genericModal.body}
+          important={genericModal.important}
+          confirmText={genericModal.confirmText}
+          cancelText={genericModal.cancelText}
+          isConfirming={genericModalBusy}
+          errorMessage={genericModalError}
+          onClose={closeGenericModal}
+          onConfirm={handleGenericModalConfirm}
+        />
+      )}
       <Header
         user={user}
         isLoading={authLoading}
@@ -257,7 +323,7 @@ function App() {
         onImportReadings={openImportModal}
         onCreateRandomReading={() => { void handleCreateRandomReading() }}
         onCreateRandomWeek={() => { void handleCreateRandomWeek() }}
-        onClearAll={() => { void handleClearAll() }}
+        onDeleteAll={handleOpenDeleteAllModal}
         onClearSelection={() => { setSelectedReadingId("") }}
       />
       <main>
