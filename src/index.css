@@ -975,6 +975,7 @@ button:active:not(:disabled) {
   padding-bottom: calc(var(--wheel-height) / 2 - (var(--wheel-item-font-size-active) / 2));
   font-size: var(--wheel-item-font-size);
   user-select: none;
+  color: var(--text-color-dimmed);
 }
 
 .readingDateRow label {
