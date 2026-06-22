@@ -5,28 +5,37 @@
 :root {
   color-scheme: light dark;
 
+  --main-color: #1f1f1f;
+  --main-color-soft: #333333;;
+  --header-color: #040404;
+  --modal-window-bg-color: var(--header-color);
+
+  --text-color-faint: rgb(117 117 117);
+  --text-color-dimmed: rgba(255, 255, 255, 0.62);
+  --text-color-bright: rgba(255, 255, 255, 0.87);
+
+  --outline-color: var(--text-color-bright);
+
   --header-height: 3rem;
   --footer-height: 2.5rem;
 
   --main-padding: 1rem;
-
-  --main-color: #232323;
-  --main-color-light: oklch(from var(--main-color) calc(l + 0.06) c h);
-  --button-color: #1a1a1a;
+  --block-gap: 1rem;
+  --block-padding: 0.5rem;
   --viewport-height: 100vh;
-  --dimmed-text-color: rgba(255, 255, 255, 0.62);
-  --bright-text-color: rgba(255, 255, 255, 0.87);
+
+  --button-bg-color: rgba(255, 255, 255, 0.08);
+  --button-border-color: rgba(255, 255, 255, 0.12);
+  --button-color: #1a1a1a;
 
   --add-reading-height: 6rem;
   --reading-list-width: 18rem;
-  --last-week-height: 10rem;
-  --block-gap: 1rem;
-  --block-padding: 0.5rem;
 
+  --last-week-gap: 0.1rem;
+  --last-week-height: 10rem;
   --day-width: 7rem;
   --day-min-width: 3rem;
   --day-height: 6rem;
-  --last-week-gap: 0.5rem;
 
   --control-button-size: 2.4rem;
   --control-divider-width: 2px;
@@ -94,6 +103,29 @@
 .color-unset {
   --grade-color: var(--dot-unset-color);
   --grade-color-bright: var(--dot-unset-color-bright);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --main-color: #dcdcdc;
+    --main-color-soft: #c2c2c2;
+
+    --header-color: #e4ebe5;;
+
+    --button-bg-color: rgb(0 0 0 / 0.08);
+    --button-border-color: rgb(0 0 0 / 0.12);
+
+    --button-color: #9c9c9c;
+    --modal-window-bg-color: #eeeeee;
+
+    --text-color-dimmed: rgb(55 55 55 / 0.62);
+    --text-color-bright: rgb(32 32 32 / 0.87);
+
+    .readingListItemControlButton {
+      color: white;
+    }
+  }
+
 
 }
 
@@ -142,7 +174,7 @@ body {
   display: flex;
   min-width: 350px;
   min-height: var(--viewport-height);
-  color: var(--bright-text-color);
+  color: var(--text-color-bright);
   place-items: center;
 
   background-color: #242424;
@@ -169,7 +201,7 @@ main {
 
 footer,
 header {
-  background-color: var(--button-color);
+  background-color: var(--header-color);
   padding: 0 0.9rem;
   box-sizing: border-box;
   justify-content: space-between;
@@ -183,14 +215,14 @@ header {
 footer {
   height: var(--footer-height);
   flex: 0 0 var(--footer-height);
-  color: var(--dimmed-text-color);
+  color: var(--text-color-dimmed);
   font-size: 0.77rem;
 }
 
 main {
   padding: var(--main-padding);
   box-sizing: border-box;
-  background-color: var(--main-color-light);
+  background-color: var(--main-color-soft);
   height: calc(var(--viewport-height) - var(--header-height) - var(--footer-height));
   flex-direction: column;
   flex-wrap: wrap;
@@ -207,23 +239,24 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.4em 1.2em;
+  border: 1px solid var(--button-border-color);
+  padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg-color);
   cursor: pointer;
   transition: border-color 0.25s, transform 0.08s ease;
   user-select: none;
+  color: var(--text-color-bright);
 }
 
 button:hover {
-  border-color: var(--dimmed-text-color);
+  border-color: var(--text-color-dimmed);
 }
 
 *:focus {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--outline-color);
   outline-offset: 2px;
 }
 
@@ -239,7 +272,7 @@ button:hover {
   }
 
   *:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid cyan;
     outline-offset: 2px;
   }
 }
@@ -251,21 +284,6 @@ button.dropdownMenuItemButton {
 
 button:active:not(:disabled) {
   transform: scale(0.98);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
 }
 
 /* ==========================================================================
@@ -281,14 +299,12 @@ button:active:not(:disabled) {
 }
 
 .addReadingWrapper,
-.graphWrapper,
-.lastWeekWrapper {
+.graphWrapper {
   padding: var(--block-padding);
 }
 
 .readingListWrapper,
-.graphWrapper,
-.lastWeekWrapper {
+.graphWrapper {
   background-color: var(--main-color);
 }
 
@@ -359,7 +375,7 @@ button:active:not(:disabled) {
 .dropdownMenu {
   position: absolute;
   width: 17rem;
-  background: gray;
+  background: var(--text-color-faint);
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -415,6 +431,7 @@ button:active:not(:disabled) {
   justify-content: flex-start;
   gap: 0.5rem;
   padding: 0 0.75rem;
+  background-color: var(--modal-window-bg-color);
 }
 
 .addReadingIcon,
@@ -428,12 +445,12 @@ button:active:not(:disabled) {
 }
 
 .dropdownMenuIcon {
-  fill: var(--dimmed-text-color);
+  fill: var(--text-color-dimmed);
 }
 
 .addReadingIcon:hover,
 .dropdownMenuIcon:hover {
-  fill: var(--bright-text-color);
+  fill: var(--text-color-bright);
 }
 
 .dropdownMenuItemIconLabel {
@@ -443,7 +460,6 @@ button:active:not(:disabled) {
 }
 
 .weekDay {
-  box-shadow: 0 0 0 1px oklch(from var(--main-color) calc(l + 0.14) c h);
   min-height: var(--day-height);
   border-radius: 0.5rem;
   flex: 1 1 0;
@@ -452,7 +468,8 @@ button:active:not(:disabled) {
   overflow: hidden;
   display: grid;
   place-items: center;
-  color: var(--dimmed-text-color);
+  color: var(--text-color-dimmed);
+  background-color: var(--main-color);
 
   svg {
     width: 55%;
@@ -545,7 +562,7 @@ button:active:not(:disabled) {
    ========================================================================== */
 
 .readingListItem {
-  --bg-main-color: var(--main-color);
+  --reading-list-item-bg-color: var(--main-color);
   display: grid;
   grid-template-columns: 1fr calc(var(--control-button-size) * 2 + var(--control-divider-width));
   grid-template-rows: 1fr;
@@ -555,15 +572,15 @@ button:active:not(:disabled) {
   user-select: none;
   transition: all 0.3s ease-in-out;
   min-height: 2.7rem;
-  background: radial-gradient(circle at 0% 50%, var(--grade-color) 0.5rem, var(--bg-main-color) 0rem);
+  background: radial-gradient(circle at 0% 50%, var(--grade-color) 0.5rem, var(--reading-list-item-bg-color) 0rem);
 }
 
 .readingListItem:not(:last-child) {
-  box-shadow: inset 0 -1px 0 0 oklch(from var(--main-color) calc(l + 0.14) c h);
+  box-shadow: inset 0 -2px 0 0 var(--main-color-soft);
 }
 
 .readingListItem.selected {
-  --bg-main-color: black;
+  --reading-list-item-bg-color: var(--modal-window-bg-color);
   font-weight: bold;
   min-height: 3.5rem;
 
@@ -682,7 +699,7 @@ button:active:not(:disabled) {
 
 .recharts-cartesian-axis-tick-value {
   font-weight: 400;
-  fill: var(--dimmed-text-color);
+  fill: var(--text-color-dimmed);
   font-size: clamp(0.5rem, 2.6cqi, 0.9rem);
 }
 
@@ -892,7 +909,7 @@ button:active:not(:disabled) {
 .modalWindow {
   width: min(66rem, calc(100% - 2 * var(--block-gap)));
   height: min(83vh, 54rem);
-  background-color: black;
+  background-color: var(--modal-window-bg-color);
   z-index: 1001;
   border-radius: 1rem;
   padding: calc(2 * var(--block-padding));
@@ -955,7 +972,7 @@ button:active:not(:disabled) {
   flex-direction: column;
   gap: 0.35rem;
   min-width: 0;
-  color: var(--dimmed-text-color);
+  color: var(--text-color-dimmed);
   font-weight: 600;
 }
 
@@ -978,9 +995,9 @@ button:active:not(:disabled) {
   width: 100%;
   min-height: 3rem;
   padding: 0.2rem 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background-color: rgba(255, 255, 255, 0.08);
-  color: var(--bright-text-color);
+  border: 1px solid var(--button-border-color);
+  background-color: var(--button-bg-color);
+  color: var(--text-color-bright);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -991,10 +1008,6 @@ button:active:not(:disabled) {
   text-align: center;
   box-shadow: none;
   appearance: none;
-}
-
-.readingDateControlButton:hover {
-  border-color: rgba(255, 255, 255, 0.28);
 }
 
 .readingDateControlButton span {
@@ -1026,7 +1039,7 @@ button:active:not(:disabled) {
 .wheelPickerLabelText {
   text-align: center;
   font-weight: 600;
-  color: var(--dimmed-text-color);
+  color: var(--text-color-dimmed);
 }
 
 .wheelPicker {
@@ -1049,7 +1062,7 @@ button:active:not(:disabled) {
   bottom: 0;
   left: 0;
   right: 0;
-  box-shadow: inset 0 0 30px 15px black;
+  box-shadow: inset 0 0 30px 15px var(--modal-window-bg-color);
   border-radius: var(--picker-border-radius);
   height: var(--wheel-height);
   z-index: 1;
@@ -1073,7 +1086,6 @@ button:active:not(:disabled) {
   padding: 0;
   margin: 0;
   background: transparent;
-  color: rgba(255, 255, 255, 0.52);
   font: inherit;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
@@ -1085,15 +1097,21 @@ button:active:not(:disabled) {
   align-items: center;
 }
 
+.wheelPickerItem:not(.active) {
+  opacity: 0.55;
+}
+
 .wheelPickerItem:hover {
-  border-color: transparent;
-  color: rgba(255, 255, 255, 0.8);
+  /*border-color: transparent;*/
+  color: var(--text-color-bright);
+  opacity: 0.85;
 }
 
 .wheelPickerItem.active {
-  color: var(--bright-text-color);
+  color: var(--text-color-bright);
   font-size: var(--wheel-item-font-size-active);
   font-weight: 700;
+  opacity: 1;
 }
 
 .wheelPicker.disabled {
@@ -1134,7 +1152,7 @@ button:active:not(:disabled) {
   max-width: 100%;
   padding: 0.25rem 0.6rem;
   font: inherit;
-  color: var(--dimmed-text-color);
+  color: var(--text-color-dimmed);
   background: transparent;
   border: 1px solid currentColor;
   border-radius: 0.35rem;
@@ -1145,7 +1163,7 @@ button:active:not(:disabled) {
 }
 
 .importFilePseudoPicker.active {
-  color: var(--bright-text-color);
+  color: var(--text-color-bright);
   font-weight: 600;
 }
 
@@ -1284,12 +1302,22 @@ header {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
 }
 
 .headerStatus,
 .headerUser {
-  opacity: 0.8;
+  opacity: 0.9;
+  overflow: hidden;
+}
+
+@media (max-width: 515px) {
+  .headerStatus,
+  .headerUser {
+    text-wrap-mode: wrap;
+    max-width: 9rem;
+    font-size: 0.85rem;
+  }
 }
 
 .authPromptButton {
@@ -1359,7 +1387,7 @@ header {
 }
 
 .footerAttributionLink:hover {
-  color: var(--bright-text-color);
+  color: var(--text-color-bright);
 }
 
 .footerAttributionIcon {
@@ -1392,7 +1420,7 @@ header {
 
 .footerIconButton:hover {
   border-color: transparent;
-  color: var(--bright-text-color);
+  color: var(--text-color-bright);
 }
 
 .footerIconButton svg {
