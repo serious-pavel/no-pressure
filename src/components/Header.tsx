@@ -11,13 +11,11 @@ interface HeaderProps {
   onSignIn: () => void
   onSignOut: () => void
   onImportReadings: () => void
-  onCreateRandomReading: () => void
-  onCreateRandomWeek: () => void
   onDeleteAll: () => void
   onClearSelection: () => void
 }
 
-const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings, onCreateRandomReading, onCreateRandomWeek, onDeleteAll, onClearSelection}: HeaderProps) => {
+const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings, onDeleteAll, onClearSelection}: HeaderProps) => {
   return (
     <header>
       <div className="headerLogo">
@@ -60,8 +58,6 @@ const Header = ({user, isLoading, onSignIn, onSignOut, onImportReadings, onCreat
                   <span>Sign out</span>
                 </span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={onCreateRandomWeek}>Add 2 random weeks</DropdownMenuItem>
-              <DropdownMenuItem onClick={onCreateRandomReading}>Add an arbitrary reading</DropdownMenuItem>
             </DropdownMenu>
           </>
         )}

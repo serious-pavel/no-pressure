@@ -12,9 +12,7 @@ import Header from "./components/Header.tsx"
 import ImportReadingsModal from "./components/ImportReadingsModal.tsx"
 import GenericModal from "./components/GenericModal.tsx"
 import {
-  createRandomWeekDrafts,
   createReading,
-  createReadingDraft,
   deleteReading,
   getAuthStartUrl,
   loadReadings,
@@ -195,20 +193,6 @@ function App() {
     setModalMode(null)
   }, [bplist])
 
-  const handleCreateRandomReading = useCallback(async () => {
-    await handleSaveReading(createReadingDraft())
-  }, [handleSaveReading])
-
-  const handleCreateRandomWeek = useCallback(async () => {
-    const drafts = createRandomWeekDrafts()
-
-    const saved = await Promise.all(drafts.map((reading) => createReading(reading)))
-    setBPList(prev => [...prev, ...saved])
-    if (saved.length > 0) {
-      setSelectedReadingId(saved[0].id)
-    }
-  }, [])
-
   const handleDeleteAll = useCallback(async () => {
     await Promise.all(bplist.map((reading) => deleteReading(reading.id)))
 
@@ -321,8 +305,6 @@ function App() {
         onSignIn={handleSignIn}
         onSignOut={handleSignOut}
         onImportReadings={openImportModal}
-        onCreateRandomReading={() => { void handleCreateRandomReading() }}
-        onCreateRandomWeek={() => { void handleCreateRandomWeek() }}
         onDeleteAll={handleOpenDeleteAllModal}
         onClearSelection={() => { setSelectedReadingId("") }}
       />

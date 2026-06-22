@@ -97,22 +97,3 @@ export const updateReading = async (reading: BPReading): Promise<BPReading> => {
 export const deleteReading = async (readingId: string) => {
   await request<void>(`/bpreading/${readingId}`, {method: "DELETE"})
 }
-
-export const createReadingDraft = (time = new Date()): BPReading => ({
-  id: crypto.randomUUID(),
-  sys: Math.floor(Math.random() * (165 - 110 + 1)) + 110,
-  dia: Math.floor(Math.random() * (100 - 70 + 1)) + 70,
-  time,
-})
-
-export const createRandomWeekDrafts = (): BPReading[] => {
-  const readings: BPReading[] = []
-
-  for (let i = 0; i < 14; i++) {
-    const dt = new Date(Date.now() - (i + 1) * 24 * 60 * 60 * 1000)
-    const newDate = new Date(dt.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60)))
-    readings.push(createReadingDraft(newDate))
-  }
-
-  return readings
-}
