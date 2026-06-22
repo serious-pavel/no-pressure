@@ -632,9 +632,13 @@ button:active:not(:disabled) {
 .valueMid {
   position: absolute;
   transform: translate(-50%, -50%);
-  left: 52%; /* systolic value is often 3 digits and visually weights more than diastolic */
+  left: 50%;
   top: 50%;
   opacity: 0.5;
+}
+
+.valueSys + .valueMid {
+  left: 52%; /* systolic value is often 3 digits and visually weights more than diastolic */
 }
 
 .divider {
