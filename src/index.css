@@ -31,7 +31,7 @@
   --add-reading-height: 6rem;
   --reading-list-width: 18rem;
 
-  --last-week-gap: 0.1rem;
+  --last-week-gap: 2px;
   --last-week-height: 10rem;
   --day-width: 7rem;
   --day-min-width: 3rem;
