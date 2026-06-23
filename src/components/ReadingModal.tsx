@@ -1,8 +1,16 @@
 import type {BPReading, ModalMode} from "../types.ts"
-import {type ChangeEvent, type KeyboardEvent, type SubmitEvent, useEffect, useId, useMemo, useRef, useState} from "react"
-import {getLocalDateInputValue, getLocalTimeInputValue} from "../functions/dateTime.ts"
+import {type ChangeEvent, type SubmitEvent, useEffect, useRef, useState} from "react"
 import ModalWindow from "./ModalWindow.tsx"
 import {FaRegCalendar, FaRegClock} from "react-icons/fa"
+import ReadingWheelPicker from "./ReadingWheelPicker.tsx"
+import {
+  diastolicValues,
+  formatDateButtonValue,
+  formatTimeButtonValue,
+  getInitialFormData,
+  systolicValues,
+  type ReadingFormState,
+} from "../functions/readingModal.ts"
 
 interface ReadingModalProps {
   mode: Exclude<ModalMode, null>
@@ -12,202 +20,13 @@ interface ReadingModalProps {
   onSave: (reading: BPReading) => Promise<void> | void
 }
 
-interface modalConfig {
+interface ModalConfig {
   title: string
   confirmText: string
 }
 
-interface ReadingFormState {
-  sys: string
-  dia: string
-  dtDate: string
-  dtTime: string
-}
-
-interface WheelNumberPickerProps {
-  label: string
-  value: string
-  values: number[]
-  disabled: boolean
-  onChange: (value: string) => void
-}
-
-const WheelNumberPicker = ({label, value, values, disabled, onChange}: WheelNumberPickerProps) => {
-  const listRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<Array<HTMLButtonElement | null>>([])
-  const pickerId = useId()
-
-  const selectedIndex = useMemo(() => {
-    const index = values.findIndex(option => option.toString() === value)
-    return index >= 0 ? index : 0
-  }, [value, values])
-
-  useEffect(() => {
-    const selectedItem = itemRefs.current[selectedIndex]
-    selectedItem?.scrollIntoView({block: "center", inline: "nearest"})
-  }, [selectedIndex])
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (disabled) return
-
-    const moveSelection = (nextIndex: number) => {
-      const clampedIndex = Math.min(Math.max(nextIndex, 0), values.length - 1)
-      const nextValue = values[clampedIndex]?.toString()
-
-      if (nextValue && nextValue !== value) {
-        onChange(nextValue)
-      }
-    }
-
-    switch (event.key) {
-      case "ArrowUp":
-      case "ArrowLeft":
-        event.preventDefault()
-        moveSelection(selectedIndex - 1)
-        break
-      case "ArrowDown":
-      case "ArrowRight":
-        event.preventDefault()
-        moveSelection(selectedIndex + 1)
-        break
-      case "Home":
-        event.preventDefault()
-        moveSelection(0)
-        break
-      case "End":
-        event.preventDefault()
-        moveSelection(values.length - 1)
-        break
-    }
-  }
-
-  const handleScroll = () => {
-    if (disabled) return
-
-    const container = listRef.current
-    if (!container) return
-
-    const containerCenter = container.scrollTop + container.clientHeight / 2
-    let closestIndex = selectedIndex
-    let smallestDistance = Number.POSITIVE_INFINITY
-
-    itemRefs.current.forEach((item, index) => {
-      if (!item) return
-      const itemCenter = item.offsetTop + item.offsetHeight / 2
-      const distance = Math.abs(itemCenter - containerCenter)
-
-      if (distance < smallestDistance) {
-        smallestDistance = distance
-        closestIndex = index
-      }
-    })
-
-    const nextValue = values[closestIndex]?.toString()
-    if (nextValue && nextValue !== value) {
-      onChange(nextValue)
-    }
-  }
-
-  return (
-    <div className="wheelPickerField" role="group" aria-label={label}>
-      <div className="wheelPickerShadow" />
-      <span className="wheelPickerLabelText">{label}</span>
-      <div
-        ref={listRef}
-        className={`wheelPicker${disabled ? " disabled" : ""}`}
-        role="listbox"
-        tabIndex={disabled ? -1 : 0}
-        aria-activedescendant={`${pickerId}-option-${selectedIndex}`}
-        aria-orientation="vertical"
-        onScroll={handleScroll}
-        onKeyDown={handleKeyDown}
-        aria-label={label}
-        aria-disabled={disabled}
-      >
-        <div className="wheelPickerSpacer" aria-hidden="true" />
-        {values.map((option, index) => {
-          const optionText = option.toString()
-          const isActive = optionText === value
-
-          return (
-            <button
-              key={option}
-              id={`${pickerId}-option-${index}`}
-              ref={(element) => {
-                itemRefs.current[index] = element
-              }}
-              type="button"
-              className={`wheelPickerItem${isActive ? " active" : ""}`}
-              onClick={() => !disabled && onChange(optionText)}
-              disabled={disabled}
-              role="option"
-              tabIndex={-1}
-              aria-selected={isActive}
-            >
-              {optionText}
-            </button>
-          )
-        })}
-        <div className="wheelPickerSpacer" aria-hidden="true" />
-      </div>
-    </div>
-  )
-}
-
-const systolicValues = Array.from({length: 171}, (_, index) => index + 70)
-const diastolicValues = Array.from({length: 101}, (_, index) => index + 40)
-
-const formatDateButtonValue = (value: string) => {
-  if (!value) return "Select date"
-
-  const [year, month, day] = value.split("-").map(Number)
-  if ([year, month, day].some(Number.isNaN)) return value
-
-  return new Date(year, month - 1, day).toLocaleDateString(undefined, {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  })
-}
-
-const formatTimeButtonValue = (value: string) => {
-  if (!value) return "Select time"
-
-  const [hours, minutes] = value.split(":").map(Number)
-  if ([hours, minutes].some(Number.isNaN)) return value
-
-  const date = new Date()
-  date.setHours(hours, minutes, 0, 0)
-  return date.toLocaleTimeString(undefined, {
-    hour: "2-digit",
-    minute: "2-digit",
-  })
-}
-
-const getInitialFormData = (mode: Exclude<ModalMode, null>, selectedReading: BPReading | null) => {
-  const now = new Date()
-
-  if (mode === 'add') {
-    return {
-      sys: "120",
-      dia: "80",
-      dtDate: getLocalDateInputValue(now),
-      dtTime: getLocalTimeInputValue(now),
-    }
-  }
-
-  return {
-    sys: selectedReading?.sys.toString() ?? "",
-    dia: selectedReading?.dia.toString() ?? "",
-    dtDate: selectedReading ? getLocalDateInputValue(selectedReading.time) : "",
-    dtTime: selectedReading ? getLocalTimeInputValue(selectedReading.time) : "",
-  }
-}
-
 const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: ReadingModalProps) => {
-  const [formData, setFormData] = useState<ReadingFormState>(
-    () => getInitialFormData(mode, selectedReading)
-  )
+  const [formData, setFormData] = useState<ReadingFormState>(() => getInitialFormData(mode, selectedReading))
   const [modalError, setModalError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const dateInputRef = useRef<HTMLInputElement>(null)
@@ -218,16 +37,16 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     setModalError(null)
   }, [mode, selectedReading])
 
-  const modalConfig: Record<Exclude<ModalMode, null>, modalConfig> = {
-    'edit': {
+  const modalConfig: Record<Exclude<ModalMode, null>, ModalConfig> = {
+    edit: {
       title: "Edit the reading",
       confirmText: "Save",
     },
-    'add': {
+    add: {
       title: "Add new reading",
       confirmText: "Add",
     },
-    'delete': {
+    delete: {
       title: "Delete this reading",
       confirmText: "Delete",
     },
@@ -257,21 +76,21 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
     setIsSubmitting(true)
 
     try {
-      if (mode === 'delete') {
+      if (mode === "delete") {
         if (selectedReading) {
           await onDelete()
           return
         }
       }
 
-      if (!selectedReading && mode === 'edit') return
+      if (!selectedReading && mode === "edit") return
       if (!formData.sys || !formData.dia || !formData.dtDate || !formData.dtTime) {
         setModalError("Please fill in all fields")
         return
       }
 
       const readingToSave: BPReading = {
-        id: mode === 'edit' ? selectedReading?.id || crypto.randomUUID() : crypto.randomUUID(),
+        id: mode === "edit" ? selectedReading?.id || crypto.randomUUID() : crypto.randomUUID(),
         sys: Number(formData.sys),
         dia: Number(formData.dia),
         time: new Date(`${formData.dtDate}T${formData.dtTime}`),
@@ -297,19 +116,19 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
       <div className="modalWindowContent">
         <form onSubmit={handleSubmit} id="readingForm">
           <div className="readingWheelRow">
-            <WheelNumberPicker
+            <ReadingWheelPicker
               label="Systolic"
               value={formData.sys}
               values={systolicValues}
-              disabled={mode === 'delete'}
+              disabled={mode === "delete"}
               onChange={(value) => setFormData(prev => ({...prev, sys: value}))}
             />
             <div className="readingWheelRowDivider">/</div>
-            <WheelNumberPicker
+            <ReadingWheelPicker
               label="Diastolic"
               value={formData.dia}
               values={diastolicValues}
-              disabled={mode === 'delete'}
+              disabled={mode === "delete"}
               onChange={(value) => setFormData(prev => ({...prev, dia: value}))}
             />
           </div>
@@ -325,7 +144,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 type="date"
                 value={formData.dtDate}
                 onChange={handleChange}
-                disabled={mode === 'delete'}
+                disabled={mode === "delete"}
                 tabIndex={-1}
                 aria-hidden="true"
                 required
@@ -334,7 +153,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 type="button"
                 className={`readingDateControlButton ${getInputClass(formData.dtDate)}`}
                 onClick={() => openNativePicker(dateInputRef.current)}
-                disabled={mode === 'delete'}
+                disabled={mode === "delete"}
                 aria-label={`Open date picker, current value ${formatDateButtonValue(formData.dtDate)}`}
                 title="Open date picker"
               >
@@ -353,7 +172,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 type="time"
                 value={formData.dtTime}
                 onChange={handleChange}
-                disabled={mode === 'delete'}
+                disabled={mode === "delete"}
                 tabIndex={-1}
                 aria-hidden="true"
                 required
@@ -362,7 +181,7 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
                 type="button"
                 className={`readingDateControlButton ${getInputClass(formData.dtTime)}`}
                 onClick={() => openNativePicker(timeInputRef.current)}
-                disabled={mode === 'delete'}
+                disabled={mode === "delete"}
                 aria-label={`Open time picker, current value ${formatTimeButtonValue(formData.dtTime)}`}
                 title="Open time picker"
               >
