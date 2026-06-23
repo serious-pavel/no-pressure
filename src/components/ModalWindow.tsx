@@ -1,4 +1,4 @@
-import {type KeyboardEvent, type MouseEvent, type ReactNode, useCallback, useEffect, useRef} from "react"
+import {type MouseEvent, type ReactNode, useCallback, useEffect, useRef} from "react"
 
 interface ModalWindowProps {
   children: ReactNode
@@ -14,7 +14,7 @@ const ModalWindow = ({children, className = "", onClose}: ModalWindowProps) => {
   }, [])
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault()
         onClose()
