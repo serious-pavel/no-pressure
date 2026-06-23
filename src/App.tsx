@@ -6,7 +6,7 @@ import {getBucketedReadings, readingsLastNDays} from "./functions/timeFunctions.
 import LastWeek from "./components/LastWeek.tsx"
 import AddReading from "./components/AddReading.tsx"
 import TimeRangeControls from "./components/TimeRangeControls.tsx"
-import {getVisibleReadings} from "./functions/timeRangeHelper.tsx"
+import {getVisibleReadings} from "./functions/timeRangeHelper.ts"
 import ReadingModal from "./components/ReadingModal.tsx"
 import Header from "./components/Header.tsx"
 import ImportReadingsModal from "./components/ImportReadingsModal.tsx"
