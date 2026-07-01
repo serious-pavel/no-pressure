@@ -1,7 +1,7 @@
-import {useMemo, useState, type ChangeEvent} from "react"
+import {useMemo, useRef, useState, type ChangeEvent} from "react"
 import type {BPReading} from "../types.ts"
 import {parseBloodPressureCsv, type CsvImportResult} from "../functions/csvImport.ts"
-import {useModalDismiss} from "../hooks/useModalDismiss.ts"
+import ModalWindow from "./ModalWindow.tsx"
 
 interface ImportReadingsModalProps {
   existingReadings: BPReading[]
@@ -17,7 +17,7 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
   const [isParsing, setIsParsing] = useState(false)
   const [isImporting, setIsImporting] = useState(false)
   const [modalError, setModalError] = useState<string | null>(null)
-  const {handleOverlayClick} = useModalDismiss<HTMLDivElement>(onClose)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -40,7 +40,13 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
       setModalError(error instanceof Error ? error.message : "Could not read the file")
     } finally {
       setIsParsing(false)
+      event.currentTarget.value = ""
     }
+  }
+
+  const openFilePicker = () => {
+    if (isParsing || isImporting) return
+    fileInputRef.current?.click()
   }
 
   const previewRows = useMemo(() => {
@@ -63,28 +69,35 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
   }
 
   return (
-    <div onClick={handleOverlayClick} className="modalWindowOverlay">
-      <div className="modalWindow importModal" role="dialog" aria-modal="true">
-        <div className="importModalTitle">Import blood pressure readings</div>
+    <ModalWindow onClose={onClose} className="importModal">
+      <div className="modalWindowTitle">Import blood pressure readings</div>
+      <div className="modalWindowContent">
         <div className="importModalBody">
-          Select a CSV file in the frozen format:
-          <code>datetime,systolic,diastolic,comment</code>. The importer skips exact duplicates and
+          Select a CSV file in format: <span><b>datetime, systolic, diastolic, comment</b></span>.
+          <br/> The importer skips exact duplicates and
           rows that collide with an existing reading in the same minute.
         </div>
 
-        <label className="importFilePicker">
-          <span>CSV file</span>
+        <div className="importFilePicker">
           <input
+            ref={fileInputRef}
+            className="importFilePickerInput"
             type="file"
             accept=".csv,text/csv"
             onChange={handleFileChange}
             disabled={isParsing || isImporting}
+            tabIndex={-1}
           />
-        </label>
 
-        {selectedFileName && (
-          <div className="importSummaryFile">{selectedFileName}</div>
-        )}
+          <button
+            type="button"
+            className={`importFilePseudoPicker${selectedFileName ? " active" : ""}`}
+            onClick={openFilePicker}
+            disabled={isParsing || isImporting}
+          >
+            {selectedFileName || "Choose CSV File"}
+          </button>
+        </div>
 
         {parseResult && (
           <div className="importSummary">
@@ -99,7 +112,6 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
 
         {previewRows.length > 0 && (
           <div className="importPreview">
-            <div className="importPreviewTitle">Preview</div>
             <div className="importPreviewTable">
               {previewRows.map(row => (
                 <div key={`${row.lineNumber}-${row.status}`} className={`importPreviewRow importPreviewRow-${row.status}`}>
@@ -117,15 +129,15 @@ const ImportReadingsModal = ({existingReadings, onClose, onImport}: ImportReadin
         )}
 
         {modalError && <div className="modalError">{modalError}</div>}
-
-        <div className="modalWindowControls">
-          <button onClick={onClose} disabled={isParsing || isImporting}>Close</button>
-          <button type="button" onClick={handleImport} disabled={!parseResult || parseResult.importableRows.length === 0 || isParsing || isImporting}>
-            {isImporting ? "Importing..." : `Import ${parseResult?.importableRows.length ?? 0}`}
-          </button>
-        </div>
       </div>
-    </div>
+
+      <div className="modalWindowControls">
+        <button onClick={onClose} disabled={isParsing || isImporting}>Close</button>
+        <button type="button" onClick={handleImport} disabled={!parseResult || parseResult.importableRows.length === 0 || isParsing || isImporting}>
+          {isImporting ? "Importing..." : `Import ${parseResult?.importableRows.length ?? 0}`}
+        </button>
+      </div>
+    </ModalWindow>
   )
 }
 

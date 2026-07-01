@@ -1,7 +1,7 @@
 import {useMemo, useState, type Dispatch, type SetStateAction} from "react"
 import {FaArrowCircleLeft, FaArrowCircleRight, FaChevronDown} from "react-icons/fa"
 import type {TimeRangeMode, TimeRangeScale} from "../types.ts"
-import {getAlignedTimeRangeOffset, getWindowBounds} from "../functions/timeRangeHelper.tsx"
+import {getAlignedTimeRangeOffset, getWindowBounds} from "../functions/timeRangeHelper.ts"
 
 interface TimeRangeControlsProps {
   timeRangeMode: TimeRangeMode

@@ -1,6 +1,7 @@
 import {memo} from "react"
-import type {BPReading, Grade} from "../types.ts"
+import type {Grade} from "../types.ts"
 import {getGrade} from "../functions/colorFunctions.ts"
+import type {BucketedWeekday} from "../functions/timeFunctions.ts"
 import {
   FaCircle,
   FaRegFlushed,
@@ -9,15 +10,14 @@ import {
   FaRegDizzy,
   FaRegSmile,
   FaRegMehRollingEyes,
-  FaRegDotCircle
 } from "react-icons/fa"
 import type {IconType} from "react-icons"
 
 interface LastWeekDayProps {
-  day: BPReading[]
+  day: BucketedWeekday
 }
 
-const getMaxReading = (dayReadings: BPReading[]) => ({
+const getMaxReading = (dayReadings: BucketedWeekday["readings"]) => ({
   sys: Math.max(...dayReadings.map(reading => reading.sys)),
   dia: Math.max(...dayReadings.map(reading => reading.dia)),
 })
@@ -29,18 +29,19 @@ const iconMap: Record<Grade, IconType> = {
   'normal': FaRegGrin,
   'low': FaRegMehRollingEyes,
   'out': FaRegDizzy,
-  'unset': FaRegDotCircle,
+  'unset': FaCircle,
 }
 
 const LastWeekDay = ({day}: LastWeekDayProps) => {
-  const isDayEmpty = day.length === 0
-  const maxReading = isDayEmpty ? null : getMaxReading(day)
+  const isDayEmpty = day.readings.length === 0
+  const maxReading = isDayEmpty ? null : getMaxReading(day.readings)
   const grade: Grade = !maxReading ? "unset" : getGrade(maxReading)
   const Icon = iconMap[grade] ?? FaCircle
 
   return (
     <div className={`weekDay color-${grade}`}>
-      <div className="weekDayTop">
+      <div className="weekDayName">{day.dayLabel}</div>
+      <div className="weekDayReading">
         {maxReading ? (
           <>
             <div className="value valueSys">{maxReading.sys}</div>
@@ -49,7 +50,7 @@ const LastWeekDay = ({day}: LastWeekDayProps) => {
           </>
         ) : (
           <div className={`valueMid`}>
-            unset
+            -
           </div>
         )}
 

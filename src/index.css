@@ -1,42 +1,41 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
   color-scheme: light dark;
-  background-color: #242424;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --main-color: #1f1f1f;
+  --main-color-soft: #333333;;
+  --header-color: #040404;
+  --modal-window-bg-color: var(--header-color);
+
+  --text-color-faint: rgb(117 117 117);
+  --text-color-dimmed: rgba(255, 255, 255, 0.62);
+  --text-color-bright: rgba(255, 255, 255, 0.87);
+
+  --outline-color: var(--text-color-bright);
 
   --header-height: 3rem;
   --footer-height: 2.5rem;
 
   --main-padding: 1rem;
-
-  --main-color: #232323;
-  --main-color-light: oklch(from var(--main-color) calc(l + 0.06) c h);
-  --button-color: #1a1a1a;
+  --block-gap: 1rem;
+  --block-padding: 0.5rem;
   --viewport-height: 100vh;
-  --dimmed-text-color: rgba(255, 255, 255, 0.62);
-  --bright-text-color: rgba(255, 255, 255, 0.87);
 
-  color: var(--bright-text-color);
+  --button-bg-color: rgba(255, 255, 255, 0.08);
+  --button-border-color: rgba(255, 255, 255, 0.12);
+  --button-color: #1a1a1a;
 
   --add-reading-height: 6rem;
   --reading-list-width: 18rem;
-  /*--last-week-height: 7rem;*/
-  --last-week-height: 10rem;
-  --block-gap: 1rem;
-  --block-padding: 0.5rem;
 
-  /*--day-width: 5rem;*/
+  --last-week-gap: 2px;
+  --last-week-height: 10rem;
   --day-width: 7rem;
   --day-min-width: 3rem;
   --day-height: 6rem;
-  --last-week-gap: 0.5rem;
 
   --control-button-size: 2.4rem;
   --control-divider-width: 2px;
@@ -52,13 +51,23 @@
   --dot-low-color: #0b3e1e;
   --dot-low-color-bright: #185a2f;
   --dot-out-color: #955c79;
+  --dot-out-color-bright: #ae5f86;
   --dot-grade-1-color: #8e3e08;
   --dot-grade-1-color-bright: #da6212;
   --dot-grade-2-color: #7c1515;
   --dot-grade-2-color-bright: #f90408;
 
-  --dot-unset-color: gray;
-  --dot-unset-color-bright: oklch(from var(--dot-unset-color) calc(l + 0.06) c h);
+  --dot-unset-color: #7c7c7c;
+  --dot-unset-color-bright: var(--dot-unset-color);
+
+  --wheel-item-height: 3rem;
+  --wheel-visible-items: 4;
+  --wheel-height: calc(var(--wheel-item-height) * (var(--wheel-visible-items)));
+  --picker-border-radius: 2rem;
+  --wheel-item-font-size: 1.8rem;
+  --wheel-item-font-size-active: 2.4rem;
+
+  --weekday-font-size: 1.2rem;
 }
 
 .color-grade-2 {
@@ -88,12 +97,41 @@
 
 .color-out {
   --grade-color: var(--dot-out-color);
-  --grade-color-bright: var(--dot-out-color);
+  --grade-color-bright: var(--dot-out-color-bright);
 }
 
 .color-unset {
   --grade-color: var(--dot-unset-color);
   --grade-color-bright: var(--dot-unset-color-bright);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --main-color: #dcdcdc;
+    --main-color-soft: #c2c2c2;
+
+    --header-color: #e4ebe5;;
+
+    --button-bg-color: rgb(0 0 0 / 0.08);
+    --button-border-color: rgb(0 0 0 / 0.12);
+
+    --button-color: #9c9c9c;
+    --modal-window-bg-color: #eeeeee;
+
+    --text-color-dimmed: rgb(55 55 55 / 0.62);
+    --text-color-bright: rgb(32 32 32 / 0.87);
+
+    .readingListItemControlButton {
+      color: white;
+    }
+  }
+
+
+}
+
+.weekDayIcon.color-unset {
+  width: 25%;
+  height: 25%;
 }
 
 @supports (height: 100dvh) {
@@ -102,11 +140,9 @@
   }
 }
 
-.recharts-cartesian-axis-tick-value {
-  font-weight: 400;
-  fill: var(--dimmed-text-color);
-  font-size: clamp(0.5rem, 2.6cqi, 0.9rem);
-}
+/* ==========================================================================
+   Global base styles
+   ========================================================================== */
 
 ul, li {
   padding: 0;
@@ -125,11 +161,21 @@ a:hover {
 }
 
 body {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   margin: 0;
   display: flex;
-  place-items: center;
   min-width: 350px;
   min-height: var(--viewport-height);
+  color: var(--text-color-bright);
+  place-items: center;
 }
 
 #root {
@@ -153,7 +199,7 @@ main {
 
 footer,
 header {
-  background-color: var(--button-color);
+  background-color: var(--header-color);
   padding: 0 0.9rem;
   box-sizing: border-box;
   justify-content: space-between;
@@ -167,16 +213,21 @@ header {
 footer {
   height: var(--footer-height);
   flex: 0 0 var(--footer-height);
-  color: var(--dimmed-text-color);
+  color: var(--text-color-dimmed);
   font-size: 0.77rem;
 }
 
 main {
   padding: var(--main-padding);
   box-sizing: border-box;
-  background-color: var(--main-color-light);
+  background-color: var(--main-color-soft);
   height: calc(var(--viewport-height) - var(--header-height) - var(--footer-height));
-  overflow: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: var(--block-gap) var(--block-gap);
+  min-width: calc(var(--reading-list-width) + var(--block-gap) + var(--last-week-min-width) + 2 * var(--main-padding));
+  overflow: hidden;
+  position: relative;
 }
 
 h1 {
@@ -186,22 +237,34 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.4em 1.2em;
+  border: 1px solid var(--button-border-color);
+  padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg-color);
   cursor: pointer;
   transition: border-color 0.25s, transform 0.08s ease;
+  user-select: none;
+  color: var(--text-color-bright);
 }
 
-button:hover {
-  border-color: var(--dimmed-text-color);
+button:disabled {
+  color: var(--text-color-dimmed);
+  opacity: 0.7;
+  cursor: unset;
+}
+
+button:not(:disabled):hover {
+  border-color: var(--text-color-dimmed);
+}
+
+.importantButton {
+  color: var(--dot-grade-2-color-bright)
 }
 
 *:focus {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--outline-color);
   outline-offset: 2px;
 }
 
@@ -217,7 +280,7 @@ button:hover {
   }
 
   *:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid cyan;
     outline-offset: 2px;
   }
 }
@@ -231,33 +294,9 @@ button:active:not(:disabled) {
   transform: scale(0.98);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: var(--block-gap) var(--block-gap);
-  min-width: calc(var(--reading-list-width) + var(--block-gap) + var(--last-week-min-width) + 2 * var(--main-padding));
-  overflow: hidden;
-  position: relative;
-}
-
-/**/
+/* ==========================================================================
+   App shell and layout blocks
+   ========================================================================== */
 
 .addReadingWrapper,
 .readingListWrapper,
@@ -268,14 +307,12 @@ button:active:not(:disabled) {
 }
 
 .addReadingWrapper,
-.graphWrapper,
-.lastWeekWrapper {
+.graphWrapper {
   padding: var(--block-padding);
 }
 
 .readingListWrapper,
-.graphWrapper,
-.lastWeekWrapper {
+.graphWrapper {
   background-color: var(--main-color);
 }
 
@@ -301,7 +338,6 @@ button:active:not(:disabled) {
   scrollbar-width: thin;
   flex-basis: calc(100% - var(--add-reading-height) - var(--block-gap));
   width: var(--reading-list-width);
-
 }
 
 .graphWrapper {
@@ -318,6 +354,7 @@ button:active:not(:disabled) {
 
 .lastWeekWrapper {
   display: flex;
+  flex-direction: row-reverse;
   gap: var(--last-week-gap);
   flex-basis: var(--last-week-height);
   max-width: var(--last-week-max-width);
@@ -346,7 +383,7 @@ button:active:not(:disabled) {
 .dropdownMenu {
   position: absolute;
   width: 17rem;
-  background: gray;
+  background: var(--text-color-faint);
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -402,6 +439,7 @@ button:active:not(:disabled) {
   justify-content: flex-start;
   gap: 0.5rem;
   padding: 0 0.75rem;
+  background-color: var(--modal-window-bg-color);
 }
 
 .addReadingIcon,
@@ -415,12 +453,12 @@ button:active:not(:disabled) {
 }
 
 .dropdownMenuIcon {
-  fill: var(--dimmed-text-color);
+  fill: var(--text-color-dimmed);
 }
 
 .addReadingIcon:hover,
 .dropdownMenuIcon:hover {
-  fill: var(--bright-text-color);
+  fill: var(--text-color-bright);
 }
 
 .dropdownMenuItemIconLabel {
@@ -430,32 +468,51 @@ button:active:not(:disabled) {
 }
 
 .weekDay {
-  font-size: min(calc(3cqi + 2px), 1.3rem);
-
-  box-shadow: 0 0 0 1px oklch(from var(--main-color) calc(l + 0.14) c h);
   min-height: var(--day-height);
   border-radius: 0.5rem;
-  flex-shrink: 1;
-  flex-basis: var(--day-width);
-
-  grid-template-rows: 1fr 2fr;
+  flex: 1 1 0;
+  grid-template-rows: 1.2fr 1.2fr 1.8fr;
   grid-template-columns: 1fr;
-
-  min-width: var(--day-min-width);
   overflow: hidden;
   display: grid;
   place-items: center;
+  color: var(--text-color-dimmed);
+  background-color: var(--main-color);
 
   svg {
-    width: 80%;
-    height: 80%;
+    width: 55%;
+    height: 55%;
+  }
+
+  user-select: none;
+}
+
+@media (max-width: 985px) {
+  :root {
+    --weekday-font-size: 1rem;
   }
 }
 
-/*600*/
 @media (max-width: 815px) {
   :root {
-    --add-reading-width: 12rem;
+    --weekday-font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 715px) {
+  :root {
+    --weekday-font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 545px) {
+  :root {
+    --weekday-font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 815px) {
+  :root {
     --add-reading-height: var(--last-week-height);
     --last-week-height: calc(100% - 15% - var(--block-gap));
     --day-min-width: 1.5rem;
@@ -466,11 +523,11 @@ button:active:not(:disabled) {
 
     --add-reading-btn-min-width: 3rem;
     --add-reading-btn-max-width: 5rem;
-    --add-reading-blok-width: 15%;
-    --add-reading-flex-basis: min(var(--add-reading-blok-width), var(--add-reading-btn-max-width));
+    --add-reading-block-width: 15%;
+    --add-reading-flex-basis: min(var(--add-reading-block-width), var(--add-reading-btn-max-width));
   }
 
-  .main {
+  main {
     flex-direction: row;
     min-width: 340px;
     min-height: calc(var(--viewport-height) - var(--footer-height) - var(--header-height));
@@ -484,15 +541,15 @@ button:active:not(:disabled) {
   }
 
   .addReadingWrapper {
-    order: 2;
+    order: 3;
     flex-basis: var(--add-reading-flex-basis);
     min-width: var(--add-reading-btn-min-width);
     flex-shrink: 1;
-    padding-right: 0;
+    padding-left: 0;
   }
 
   .lastWeekWrapper {
-    order: 3;
+    order: 2;
     flex-basis: calc(100% - var(--add-reading-flex-basis) - var(--block-gap));
     flex-shrink: 1;
   }
@@ -508,10 +565,12 @@ button:active:not(:disabled) {
   }
 }
 
-/**/
+/* ==========================================================================
+   Dashboard content
+   ========================================================================== */
 
 .readingListItem {
-  --bg-main-color: var(--main-color);
+  --reading-list-item-bg-color: var(--main-color);
   display: grid;
   grid-template-columns: 1fr calc(var(--control-button-size) * 2 + var(--control-divider-width));
   grid-template-rows: 1fr;
@@ -521,16 +580,15 @@ button:active:not(:disabled) {
   user-select: none;
   transition: all 0.3s ease-in-out;
   min-height: 2.7rem;
-  /*background: linear-gradient(135deg, var(--grade-color), var(--bg-main-color) 3rem);*/
-  background: radial-gradient(circle at 0% 50%, var(--grade-color) 0.5rem, var(--bg-main-color) 0rem);
+  background: radial-gradient(circle at 0% 50%, var(--grade-color) 0.5rem, var(--reading-list-item-bg-color) 0rem);
 }
 
 .readingListItem:not(:last-child) {
-  box-shadow: inset 0 -1px 0 0 oklch(from var(--main-color) calc(l + 0.14) c h);
+  box-shadow: inset 0 -2px 0 0 var(--main-color-soft);
 }
 
 .readingListItem.selected {
-  --bg-main-color: black;
+  --reading-list-item-bg-color: var(--modal-window-bg-color);
   font-weight: bold;
   min-height: 3.5rem;
 
@@ -552,10 +610,6 @@ button:active:not(:disabled) {
   gap: var(--control-divider-width);
 }
 
-.graphDot {
-  fill: var(--grade-color-bright);
-}
-
 .hidden {
   display: none;
 }
@@ -565,14 +619,8 @@ button:active:not(:disabled) {
   flex-direction: column;
 }
 
-body {
-  background: #0b0b0b;
-  font-family: system-ui, sans-serif;
-  color: white;
-}
-
-
-.weekDayTop,
+.weekDayReading,
+.weekDayName,
 .weekDayBottom {
   display: flex;
   justify-content: center;
@@ -580,6 +628,9 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
+  font-size: var(--weekday-font-size);
 }
 
 .weekDayBottom {
@@ -592,19 +643,22 @@ body {
   left: 50%;
   top: 50%;
   opacity: 0.5;
+}
 
+.valueSys + .valueMid {
+  left: 52%; /* systolic value is often 3 digits and visually weights more than diastolic */
 }
 
 .divider {
-  width: 4cqi;
-  height: 2px;
+  width: calc(var(--weekday-font-size) * 1.3);
+  height: 1px;
   transform: translate(-50%, -50%) rotate(-45deg);
-  background-color: var(--grade-color);
+  background-color: var(--grade-color-bright);
 }
 
 .value {
   position: absolute;
-  opacity: 0.7;
+  opacity: 0.8;
   color: var(--grade-color-bright);
 }
 
@@ -620,9 +674,54 @@ body {
   transform: translate(50%, 50%);
 }
 
+@container lastWeekWrapper (max-width: 545px) {
+  .valueMid {
+    left: 50%;
+  }
+
+  .divider {
+    transform: translate(-50%, -50%); /* remove rotation */
+  }
+
+  .valueSys {
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+  }
+
+  .valueDia {
+    right: 50%;
+    bottom: 20%;
+    transform: translate(50%, 50%);
+  }
+}
+
 .weekDayIcon {
   fill: var(--grade-color-bright);
 }
+
+.graphDot {
+  fill: var(--grade-color-bright);
+}
+
+.recharts-default-tooltip {
+  border-radius: var(--block-gap);
+  backdrop-filter: blur(2px);
+}
+
+.recharts-cartesian-axis-tick-value {
+  font-weight: 400;
+  fill: var(--text-color-dimmed);
+  font-size: clamp(0.5rem, 2.6cqi, 0.9rem);
+}
+
+.recharts-cartesian-axis-tick-labels {
+  user-select: none;
+}
+
+/* ==========================================================================
+   Time range controls
+   ========================================================================== */
 
 .timeRangeControlsWrapper {
   --position-offset: var(--main-padding);
@@ -801,6 +900,10 @@ body {
   }
 }
 
+/* ==========================================================================
+   Modal windows and form controls
+   ========================================================================== */
+
 .modalWindowOverlay {
   position: fixed;
   top: 0;
@@ -816,41 +919,266 @@ body {
 }
 
 .modalWindow {
-  width: 70%;
-  height: 70%;
-  background-color: black;
+  width: min(66rem, calc(100% - 2 * var(--block-gap)));
+  height: min(83vh, 54rem);
+  background-color: var(--modal-window-bg-color);
   z-index: 1001;
   border-radius: 1rem;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
+  padding: calc(2 * var(--block-padding));
+  display: grid;
+  grid-template-rows: 2rem 1fr 3rem;
+  grid-template-columns: 1fr;
   gap: 1rem;
+  box-sizing: border-box;
+  min-width: 365px;
 }
 
-.modalWindow.importModal {
-  width: min(56rem, calc(100% - 2rem));
-  height: min(80vh, 44rem);
-}
-
-.importModalTitle {
-  font-size: 1.1rem;
+.modalWindowTitle {
+  font-size: 1.3rem;
   font-weight: 700;
 }
 
+.modalWindowContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: auto;
+}
+
+.modalWindowControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8cqi;
+}
+
+.modalWindow:focus {
+  outline: none;
+}
+
+#readingForm {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.readingWheelRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.readingWheelRowDivider {
+  align-self: end;
+  padding-bottom: calc(var(--wheel-height) / 2 - (var(--wheel-item-font-size-active) / 2));
+  font-size: var(--wheel-item-font-size);
+  user-select: none;
+  color: var(--text-color-dimmed);
+}
+
+.readingDateRow label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  color: var(--text-color-dimmed);
+  font-weight: 600;
+}
+
+.readingDateControlRow {
+  position: relative;
+  width: 100%;
+}
+
+.readingDateNativeInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.readingDateControlButton {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.2rem 0.8rem;
+  border: 1px solid var(--button-border-color);
+  background-color: var(--button-bg-color);
+  color: var(--text-color-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: calc(var(--wheel-item-font-size) - 0.1rem);
+  font-family: inherit;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: none;
+  appearance: none;
+}
+
+.readingDateControlButton span {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.readingDateControlButton svg {
+  flex: 0 0 auto;
+}
+
+.readingDateControlButton:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.wheelPickerField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  width: 7rem;
+  position: relative;
+}
+
+.wheelPickerLabelText {
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-color-dimmed);
+}
+
+.wheelPicker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: var(--wheel-height);
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  scroll-padding-block: calc((var(--wheel-height) - var(--wheel-item-height)) / 2);
+  scrollbar-gutter: stable;
+  border-radius: var(--picker-border-radius);
+  /*background: rgba(255, 255, 255, 0.06);*/
+}
+
+.wheelPickerShadow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: inset 0 0 30px 15px var(--modal-window-bg-color);
+  border-radius: var(--picker-border-radius);
+  height: var(--wheel-height);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.wheelPicker::-webkit-scrollbar {
+  display: none;
+}
+
+.wheelPickerSpacer {
+  flex: 0 0 calc((var(--wheel-height) - var(--wheel-item-height)) / 2);
+}
+
+.wheelPickerItem {
+  flex: 0 0 var(--wheel-item-height);
+  height: var(--wheel-item-height);
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  scroll-snap-align: center;
+  user-select: none;
+  font-size: var(--wheel-item-font-size);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wheelPickerItem:not(.active) {
+  opacity: 0.55;
+}
+
+.wheelPickerItem:hover {
+  /*border-color: transparent;*/
+  color: var(--text-color-bright);
+  opacity: 0.85;
+}
+
+.wheelPickerItem.active {
+  color: var(--text-color-bright);
+  font-size: var(--wheel-item-font-size-active);
+  font-weight: 700;
+  opacity: 1;
+}
+
+.wheelPicker.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 .importModalBody {
-  font-size: 0.9rem;
   opacity: 0.85;
 }
 
 .importFilePicker {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.35rem;
-  text-align: left;
+  justify-content: center;
+  align-items: center;
 }
 
-.importFilePicker input {
-  padding: 0.4rem 0;
+.importFilePickerInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.importFilePseudoPicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  font: inherit;
+  color: var(--text-color-dimmed);
+  cursor: pointer;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.importFilePseudoPicker.active {
+  color: var(--text-color-bright);
+  font-weight: 600;
+}
+
+.importFilePseudoPicker:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
 .importSummaryFile,
@@ -863,13 +1191,18 @@ body {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.25rem 0.75rem;
-  font-size: 0.9rem;
   opacity: 0.9;
+}
+
+.importSummary div {
+  text-align: center;
+  text-wrap-mode: nowrap;
 }
 
 .importPreview {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
   min-height: 0;
 }
@@ -880,11 +1213,13 @@ body {
   gap: 0.35rem;
   overflow: auto;
   min-height: 0;
+  width: auto;
+  min-width: 60%;
 }
 
 .importPreviewRow {
   display: grid;
-  grid-template-columns: 5rem minmax(0, 1.8fr) minmax(6rem, 0.8fr);
+  grid-template-columns: 9ch 1fr 9ch;
   gap: 0.5rem;
   align-items: center;
   padding: 0.4rem 0.5rem;
@@ -914,8 +1249,39 @@ body {
 .importPreviewDate {
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: left;
+  text-align: center;
 }
+
+@media (max-width: 600px) {
+  :root {
+    --wheel-item-height: 2.6rem;
+    --wheel-visible-items: 4;
+    --picker-border-radius: 2rem;
+    --wheel-item-font-size: 1.5rem;
+    --wheel-item-font-size-active: 2rem;
+  }
+
+  .modalWindowTitle {
+    font-size: 1.1rem;
+  }
+
+  .modalWindowContent {
+    font-size: small;
+  }
+
+  .readingWheelRow,
+  .readingDateRow {
+    grid-template-columns: 1fr;
+  }
+
+  #readingForm {
+    gap: 1.6rem;
+  }
+}
+
+/* ==========================================================================
+   Header, footer, and auth chrome
+   ========================================================================== */
 
 header {
   color: var(--dot-normal-color-bright);
@@ -945,12 +1311,29 @@ header {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
+}
+
+.headerAction {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.95rem;
 }
 
 .headerStatus,
 .headerUser {
-  opacity: 0.8;
+  opacity: 0.9;
+  overflow: hidden;
+}
+
+@media (max-width: 515px) {
+  .headerStatus,
+  .headerUser {
+    text-wrap-mode: wrap;
+    max-width: 9rem;
+    font-size: 0.85rem;
+  }
 }
 
 .authPromptButton {
@@ -1001,7 +1384,6 @@ header {
   align-items: center;
   gap: 0.4rem;
   min-width: 0;
-  /*overflow: hidden;*/
   white-space: nowrap;
 }
 
@@ -1021,7 +1403,7 @@ header {
 }
 
 .footerAttributionLink:hover {
-  color: var(--bright-text-color);
+  color: var(--text-color-bright);
 }
 
 .footerAttributionIcon {
@@ -1054,7 +1436,7 @@ header {
 
 .footerIconButton:hover {
   border-color: transparent;
-  color: var(--bright-text-color);
+  color: var(--text-color-bright);
 }
 
 .footerIconButton svg {
@@ -1101,12 +1483,6 @@ header {
   color: #ffffff;
 }
 
-
 .inputError {
   background-color: var(--dot-grade-1-color);
-}
-
-.recharts-default-tooltip {
-  border-radius: var(--block-gap);
-  backdrop-filter: blur(2px);
 }
