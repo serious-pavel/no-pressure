@@ -18,6 +18,7 @@ interface ReadingModalProps {
   onClose: () => void
   onDelete: () => Promise<void> | void
   onSave: (reading: BPReading) => Promise<void> | void
+  standardDateTimeInputs: boolean
 }
 
 interface ModalConfig {
@@ -25,7 +26,7 @@ interface ModalConfig {
   confirmText: string
 }
 
-const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: ReadingModalProps) => {
+const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave, standardDateTimeInputs}: ReadingModalProps) => {
   const [formData, setFormData] = useState<ReadingFormState>(() => getInitialFormData(mode, selectedReading))
   const [modalError, setModalError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -138,56 +139,60 @@ const ReadingModal = ({mode, selectedReading, onClose, onDelete, onSave}: Readin
             <div className="readingDateControlRow">
               <input
                 ref={dateInputRef}
-                className={`readingDateNativeInput ${getInputClass(formData.dtDate)}`}
+                className={`${standardDateTimeInputs ? "readingDateStandardInput" : "readingDateNativeInput"} ${getInputClass(formData.dtDate)}`}
                 name="dtDate"
                 id="dtDate"
                 type="date"
                 value={formData.dtDate}
                 onChange={handleChange}
                 disabled={mode === "delete"}
-                tabIndex={-1}
-                aria-hidden="true"
+                tabIndex={standardDateTimeInputs ? undefined : -1}
+                aria-hidden={standardDateTimeInputs ? undefined : true}
                 required
               />
-              <button
-                type="button"
-                className={`readingDateControlButton ${getInputClass(formData.dtDate)}`}
-                onClick={() => openNativePicker(dateInputRef.current)}
-                disabled={mode === "delete"}
-                aria-label={`Open date picker, current value ${formatDateButtonValue(formData.dtDate)}`}
-                title="Open date picker"
-              >
-                <FaRegCalendar aria-hidden="true" />
-                <span>{formatDateButtonValue(formData.dtDate)}</span>
-              </button>
+              {!standardDateTimeInputs && (
+                <button
+                  type="button"
+                  className={`readingDateControlButton ${getInputClass(formData.dtDate)}`}
+                  onClick={() => openNativePicker(dateInputRef.current)}
+                  disabled={mode === "delete"}
+                  aria-label={`Open date picker, current value ${formatDateButtonValue(formData.dtDate)}`}
+                  title="Open date picker"
+                >
+                  <FaRegCalendar aria-hidden="true" />
+                  <span>{formatDateButtonValue(formData.dtDate)}</span>
+                </button>
+              )}
             </div>
 
             <label htmlFor="dtTime">Time</label>
             <div className="readingDateControlRow">
               <input
                 ref={timeInputRef}
-                className={`readingDateNativeInput ${getInputClass(formData.dtTime)}`}
+                className={`${standardDateTimeInputs ? "readingDateStandardInput" : "readingDateNativeInput"} ${getInputClass(formData.dtTime)}`}
                 name="dtTime"
                 id="dtTime"
                 type="time"
                 value={formData.dtTime}
                 onChange={handleChange}
                 disabled={mode === "delete"}
-                tabIndex={-1}
-                aria-hidden="true"
+                tabIndex={standardDateTimeInputs ? undefined : -1}
+                aria-hidden={standardDateTimeInputs ? undefined : true}
                 required
               />
-              <button
-                type="button"
-                className={`readingDateControlButton ${getInputClass(formData.dtTime)}`}
-                onClick={() => openNativePicker(timeInputRef.current)}
-                disabled={mode === "delete"}
-                aria-label={`Open time picker, current value ${formatTimeButtonValue(formData.dtTime)}`}
-                title="Open time picker"
-              >
-                <FaRegClock aria-hidden="true" />
-                <span>{formatTimeButtonValue(formData.dtTime)}</span>
-              </button>
+              {!standardDateTimeInputs && (
+                <button
+                  type="button"
+                  className={`readingDateControlButton ${getInputClass(formData.dtTime)}`}
+                  onClick={() => openNativePicker(timeInputRef.current)}
+                  disabled={mode === "delete"}
+                  aria-label={`Open time picker, current value ${formatTimeButtonValue(formData.dtTime)}`}
+                  title="Open time picker"
+                >
+                  <FaRegClock aria-hidden="true" />
+                  <span>{formatTimeButtonValue(formData.dtTime)}</span>
+                </button>
+              )}
             </div>
           </div>
 

@@ -1003,6 +1003,27 @@ button:active:not(:disabled) {
   pointer-events: none;
 }
 
+.readingDateStandardInput {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.2rem 0.8rem;
+  border: 1px solid var(--button-border-color);
+  border-radius: 8px;
+  background-color: var(--button-bg-color);
+  color: var(--text-color-bright);
+  font-family: inherit;
+  font-size: calc(var(--wheel-item-font-size) - 0.1rem);
+  font-weight: 500;
+  text-align: center;
+  color-scheme: light dark;
+}
+
+.readingDateStandardInput:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
 .readingDateControlButton {
   box-sizing: border-box;
   width: 100%;
