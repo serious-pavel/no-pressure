@@ -24,6 +24,45 @@ import Footer from "./components/Footer.tsx";
 
 const storageKey = (scope: string, key: string) => `no-pressure:${scope}:${key}`
 
+interface NavigatorWithUserAgentData extends Navigator {
+  userAgentData?: {
+    brands?: Array<{
+      brand: string
+      version: string
+    }>
+    mobile?: boolean
+  }
+}
+
+const isMobileBrowser = (navigatorData: NavigatorWithUserAgentData) => {
+  const userAgent = navigatorData.userAgent
+  const hasMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(userAgent)
+  const hasIPadDesktopUserAgent = /Macintosh/i.test(userAgent) && navigatorData.maxTouchPoints > 1
+
+  return Boolean(navigatorData.userAgentData?.mobile) || hasMobileUserAgent || hasIPadDesktopUserAgent
+}
+
+const isChromeBrowser = (navigatorData: NavigatorWithUserAgentData) => {
+  const brandNames = navigatorData.userAgentData?.brands?.map(({brand}) => brand) ?? []
+
+  if (brandNames.length > 0) {
+    return brandNames.includes("Google Chrome")
+  }
+
+  const userAgent = navigatorData.userAgent
+  const hasChromeUserAgent = /(?:Chrome|CriOS)\//i.test(userAgent)
+  const hasKnownNonChromeUserAgent = /Edg\/|EdgA\/|EdgiOS\/|OPR\/|Opera\/|SamsungBrowser\/|YaBrowser\/|Vivaldi\//i.test(userAgent)
+
+  return hasChromeUserAgent && !hasKnownNonChromeUserAgent
+}
+
+const shouldUseStandardDateTimeInputs = () => {
+  if (typeof navigator === "undefined") return false
+
+  const navigatorData = navigator as NavigatorWithUserAgentData
+  return !isMobileBrowser(navigatorData) && !isChromeBrowser(navigatorData)
+}
+
 interface GenericModalConfig {
   title: string
   body: ReactNode
@@ -55,6 +94,7 @@ function App() {
   const [genericModal, setGenericModal] = useState<GenericModalConfig | null>(null)
   const [genericModalBusy, setGenericModalBusy] = useState<boolean>(false)
   const [genericModalError, setGenericModalError] = useState<string | null>(null)
+  const standardDateTimeInputs = useMemo(() => shouldUseStandardDateTimeInputs(), [])
 
   // time range controls states
   const [timeRangeMode, setTimeRangeMode] = useState<TimeRangeMode>("relative")
@@ -284,6 +324,7 @@ function App() {
           onClose={() => setModalMode(null)}
           onDelete={handleDeleteReading}
           onSave={handleSaveReading}
+          standardDateTimeInputs={standardDateTimeInputs}
         />
       }
       {genericModal && (
