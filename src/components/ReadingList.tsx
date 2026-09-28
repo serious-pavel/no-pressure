@@ -42,23 +42,25 @@ const ReadingListItem = memo(({reading, isSelected, onSelect, onDelete, onEdit}:
       <div className="readingListItemControl">
         <button
           className="readingListItemControlButton"
+          aria-label={`Delete reading from ${shortDate} at ${shortTime}`}
           onClick={(event) => {
             event.stopPropagation()
             onSelect(reading.id)
             onDelete(reading)
           }}
         >
-          <FaRegTrashAlt/>
+          <FaRegTrashAlt aria-hidden="true"/>
         </button>
         <button
           className="readingListItemControlButton"
+          aria-label={`Edit reading from ${shortDate} at ${shortTime}`}
           onClick={(event) => {
             event.stopPropagation()
             onSelect(reading.id)
             onEdit(reading)
           }}
         >
-          <FaRegEdit/>
+          <FaRegEdit aria-hidden="true"/>
         </button>
       </div>
     </div>
