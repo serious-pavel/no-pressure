@@ -60,6 +60,8 @@
   --dot-unset-color: #7c7c7c;
   --dot-unset-color-bright: var(--dot-unset-color);
 
+  --header-text-color: #17af56;
+
   --wheel-item-height: 3rem;
   --wheel-visible-items: 4;
   --wheel-height: calc(var(--wheel-item-height) * (var(--wheel-visible-items)));
@@ -120,6 +122,8 @@
 
     --text-color-dimmed: rgb(55 55 55 / 0.62);
     --text-color-bright: rgb(32 32 32 / 0.87);
+
+    --header-text-color: #0d4e29;
 
     .readingListItemControlButton {
       color: white;
@@ -1313,7 +1317,7 @@ button:active:not(:disabled) {
    ========================================================================== */
 
 header {
-  color: var(--dot-normal-color-bright);
+  color: var(--header-text-color);
   font-weight: 600;
   user-select: none;
   text-wrap: nowrap;
